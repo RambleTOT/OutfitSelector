@@ -1,9 +1,11 @@
-import { buildDigitizationPrompt } from "./prompts";
-import { createGarmentArt, type GarmentArtKind } from "./wardrobeArt";
+import { buildDigitizationPrompt, buildSegmentationPrompt } from "./prompts";
 import type { WardrobeCategory, WardrobeItem } from "../types";
 
 const remoteVisionApiUrl = import.meta.env.VITE_VISION_API_URL;
 const remoteVisionApiToken = import.meta.env.VITE_VISION_API_TOKEN;
+const segmentationApiUrl = import.meta.env.VITE_SEGMENTATION_API_URL;
+const segmentationApiToken = import.meta.env.VITE_SEGMENTATION_API_TOKEN;
+const segmentationModel = import.meta.env.VITE_SEGMENTATION_MODEL ?? "BiRefNet";
 
 const colorMap: Record<string, string> = {
   белый: "#F7F7F5",
@@ -33,7 +35,6 @@ const categoryFallbacks: Record<
     seasons: string[];
     styleTags: string[];
     palette: string[];
-    artKind: GarmentArtKind;
   }
 > = {
   Верх: {
@@ -46,7 +47,6 @@ const categoryFallbacks: Record<
     seasons: ["весна", "лето", "осень"],
     styleTags: ["город", "минимализм", "повседневный"],
     palette: ["молочный", "серый"],
-    artKind: "shirt",
   },
   Низ: {
     name: "Оцифрованный низ",
@@ -58,7 +58,6 @@ const categoryFallbacks: Record<
     seasons: ["весна", "осень", "зима"],
     styleTags: ["город", "офис", "минимализм"],
     palette: ["серый", "черный"],
-    artKind: "trousers",
   },
   "Верхняя одежда": {
     name: "Оцифрованная верхняя одежда",
@@ -70,7 +69,6 @@ const categoryFallbacks: Record<
     seasons: ["весна", "осень", "зима"],
     styleTags: ["город", "офис", "минимализм"],
     palette: ["бежевый", "черный"],
-    artKind: "trench",
   },
   Обувь: {
     name: "Оцифрованная обувь",
@@ -82,7 +80,6 @@ const categoryFallbacks: Record<
     seasons: ["весна", "осень", "зима"],
     styleTags: ["город", "повседневный", "минимализм"],
     palette: ["черный", "белый"],
-    artKind: "loafers",
   },
   Аксессуары: {
     name: "Оцифрованный аксессуар",
@@ -94,7 +91,6 @@ const categoryFallbacks: Record<
     seasons: ["весна", "лето", "осень", "зима"],
     styleTags: ["акцент", "город", "минимализм"],
     palette: ["черный", "красный"],
-    artKind: "bag",
   },
 };
 
@@ -102,12 +98,21 @@ function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function fileToDataUrl(file: File) {
+function fileToDataUrl(file: Blob) {
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result));
     reader.onerror = () => reject(reader.error);
     reader.readAsDataURL(file);
+  });
+}
+
+function dataUrlToImage(dataUrl: string) {
+  return new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = dataUrl;
   });
 }
 
@@ -137,29 +142,27 @@ function nearestColorName(r: number, g: number, b: number) {
     .sort((left, right) => left.distance - right.distance)[0].name;
 }
 
-async function extractPaletteNames(file: File, fallbackPalette: string[]) {
+async function extractPaletteNames(dataUrl: string, fallbackPalette: string[]) {
   if (typeof document === "undefined") {
     return fallbackPalette;
   }
 
   try {
-    const bitmap = await createImageBitmap(file);
+    const image = await dataUrlToImage(dataUrl);
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
 
     if (!context) {
-      bitmap.close();
       return fallbackPalette;
     }
 
     const maxSize = 48;
-    const scale = Math.min(maxSize / bitmap.width, maxSize / bitmap.height, 1);
-    const width = Math.max(1, Math.round(bitmap.width * scale));
-    const height = Math.max(1, Math.round(bitmap.height * scale));
+    const scale = Math.min(maxSize / image.width, maxSize / image.height, 1);
+    const width = Math.max(1, Math.round(image.width * scale));
+    const height = Math.max(1, Math.round(image.height * scale));
     canvas.width = width;
     canvas.height = height;
-    context.drawImage(bitmap, 0, 0, width, height);
-    bitmap.close();
+    context.drawImage(image, 0, 0, width, height);
 
     const { data } = context.getImageData(0, 0, width, height);
     const counts = new Map<string, number>();
@@ -171,7 +174,7 @@ async function extractPaletteNames(file: File, fallbackPalette: string[]) {
       const a = data[index + 3];
       const brightness = (r + g + b) / 3;
 
-      if (a < 200 || brightness > 244) {
+      if (a < 120 || brightness > 244) {
         continue;
       }
 
@@ -234,21 +237,244 @@ function detectCategory(fileName: string): WardrobeCategory {
   return "Верх";
 }
 
-function detectArtKind(fileName: string, category: WardrobeCategory): GarmentArtKind {
-  const normalized = fileName.toLowerCase();
+function averageCornerColor(data: Uint8ClampedArray, width: number, height: number) {
+  const points = [
+    [0, 0],
+    [width - 1, 0],
+    [0, height - 1],
+    [width - 1, height - 1],
+  ];
 
-  if (normalized.includes("blouse")) return "blouse";
-  if (normalized.includes("long")) return "longsleeve";
-  if (normalized.includes("skirt")) return "skirt";
-  if (normalized.includes("jean")) return "jeans";
-  if (normalized.includes("blazer")) return "blazer";
-  if (normalized.includes("coat")) return "coat";
-  if (normalized.includes("boot")) return "boots";
-  if (normalized.includes("sneaker")) return "sneakers";
-  if (normalized.includes("bag")) return "bag";
-  if (normalized.includes("scarf")) return "scarf";
+  const result = points.reduce(
+    (acc, [x, y]) => {
+      const index = (y * width + x) * 4;
+      acc.r += data[index];
+      acc.g += data[index + 1];
+      acc.b += data[index + 2];
+      return acc;
+    },
+    { r: 0, g: 0, b: 0 },
+  );
 
-  return categoryFallbacks[category].artKind;
+  return {
+    r: result.r / points.length,
+    g: result.g / points.length,
+    b: result.b / points.length,
+  };
+}
+
+function colorDistance(
+  r: number,
+  g: number,
+  b: number,
+  background: { r: number; g: number; b: number },
+) {
+  return Math.sqrt(
+    (r - background.r) ** 2 +
+      (g - background.g) ** 2 +
+      (b - background.b) ** 2,
+  );
+}
+
+async function localSegmentClothing(file: File) {
+  const originalDataUrl = await fileToDataUrl(file);
+
+  if (typeof document === "undefined") {
+    return originalDataUrl;
+  }
+
+  const image = await dataUrlToImage(originalDataUrl);
+  const workingCanvas = document.createElement("canvas");
+  const context = workingCanvas.getContext("2d");
+
+  if (!context) {
+    return originalDataUrl;
+  }
+
+  const maxSize = 900;
+  const scale = Math.min(maxSize / image.width, maxSize / image.height, 1);
+  const width = Math.max(1, Math.round(image.width * scale));
+  const height = Math.max(1, Math.round(image.height * scale));
+  workingCanvas.width = width;
+  workingCanvas.height = height;
+  context.drawImage(image, 0, 0, width, height);
+
+  const imageData = context.getImageData(0, 0, width, height);
+  const { data } = imageData;
+  const background = averageCornerColor(data, width, height);
+  const bgMask = new Uint8Array(width * height);
+  const queue: number[] = [];
+  const threshold = 42;
+
+  const tryPush = (x: number, y: number) => {
+    if (x < 0 || y < 0 || x >= width || y >= height) {
+      return;
+    }
+
+    const index = y * width + x;
+
+    if (bgMask[index]) {
+      return;
+    }
+
+    const offset = index * 4;
+    const distance = colorDistance(
+      data[offset],
+      data[offset + 1],
+      data[offset + 2],
+      background,
+    );
+
+    if (distance < threshold) {
+      bgMask[index] = 1;
+      queue.push(index);
+    }
+  };
+
+  for (let x = 0; x < width; x += 1) {
+    tryPush(x, 0);
+    tryPush(x, height - 1);
+  }
+
+  for (let y = 0; y < height; y += 1) {
+    tryPush(0, y);
+    tryPush(width - 1, y);
+  }
+
+  while (queue.length) {
+    const index = queue.shift()!;
+    const x = index % width;
+    const y = Math.floor(index / width);
+
+    tryPush(x + 1, y);
+    tryPush(x - 1, y);
+    tryPush(x, y + 1);
+    tryPush(x, y - 1);
+  }
+
+  let minX = width;
+  let minY = height;
+  let maxX = 0;
+  let maxY = 0;
+
+  for (let index = 0; index < width * height; index += 1) {
+    const offset = index * 4;
+
+    if (bgMask[index]) {
+      data[offset + 3] = 0;
+      continue;
+    }
+
+    const alpha = data[offset + 3];
+
+    if (alpha < 40) {
+      continue;
+    }
+
+    const x = index % width;
+    const y = Math.floor(index / width);
+    minX = Math.min(minX, x);
+    minY = Math.min(minY, y);
+    maxX = Math.max(maxX, x);
+    maxY = Math.max(maxY, y);
+  }
+
+  if (minX >= maxX || minY >= maxY) {
+    return originalDataUrl;
+  }
+
+  context.putImageData(imageData, 0, 0);
+
+  const padding = Math.round(Math.max(maxX - minX, maxY - minY) * 0.14);
+  const cropX = Math.max(0, minX - padding);
+  const cropY = Math.max(0, minY - padding);
+  const cropWidth = Math.min(width - cropX, maxX - minX + padding * 2);
+  const cropHeight = Math.min(height - cropY, maxY - minY + padding * 2);
+
+  const outputCanvas = document.createElement("canvas");
+  outputCanvas.width = 720;
+  outputCanvas.height = 960;
+  const outputContext = outputCanvas.getContext("2d");
+
+  if (!outputContext) {
+    return originalDataUrl;
+  }
+
+  outputContext.fillStyle = "#F5F1EB";
+  outputContext.fillRect(0, 0, outputCanvas.width, outputCanvas.height);
+  outputContext.shadowColor = "rgba(0,0,0,0.14)";
+  outputContext.shadowBlur = 34;
+  outputContext.shadowOffsetY = 18;
+
+  const targetScale = Math.min(
+    (outputCanvas.width * 0.74) / cropWidth,
+    (outputCanvas.height * 0.74) / cropHeight,
+  );
+  const drawWidth = cropWidth * targetScale;
+  const drawHeight = cropHeight * targetScale;
+  const drawX = (outputCanvas.width - drawWidth) / 2;
+  const drawY = (outputCanvas.height - drawHeight) / 2;
+
+  outputContext.drawImage(
+    workingCanvas,
+    cropX,
+    cropY,
+    cropWidth,
+    cropHeight,
+    drawX,
+    drawY,
+    drawWidth,
+    drawHeight,
+  );
+
+  return outputCanvas.toDataURL("image/png");
+}
+
+async function requestRemoteSegmentation(file: File) {
+  if (!segmentationApiUrl) {
+    return null;
+  }
+
+  const image = await fileToDataUrl(file);
+  const response = await fetch(segmentationApiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(segmentationApiToken ? { Authorization: `Bearer ${segmentationApiToken}` } : {}),
+    },
+    body: JSON.stringify({
+      model: segmentationModel,
+      prompt: buildSegmentationPrompt(file.name),
+      image,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Segmentation endpoint returned a non-200 response");
+  }
+
+  const payload = await response.json();
+  return payload.image ?? payload.cutout ?? null;
+}
+
+async function segmentPhoto(file: File) {
+  try {
+    const remoteResult = await requestRemoteSegmentation(file);
+
+    if (remoteResult) {
+      return {
+        image: remoteResult,
+        model: segmentationModel,
+      };
+    }
+  } catch (error) {
+    console.error("segmentation:remote", error);
+  }
+
+  return {
+    image: await localSegmentClothing(file),
+    model: "Local Background Segmentation",
+  };
 }
 
 async function createLocalDigitizedItem(file: File) {
@@ -257,20 +483,12 @@ async function createLocalDigitizedItem(file: File) {
   const seed = hashString(file.name);
   const extractedAt = new Date().toISOString();
   const confidence = 0.88 + (seed % 10) / 100;
-  const artKind = detectArtKind(file.name, category);
-  const palette = await extractPaletteNames(file, base.palette);
-  const accent = palette[1] ?? base.palette[1] ?? "красный";
-  const image = createGarmentArt({
-    kind: artKind,
-    primary: palette[0] ?? base.palette[0],
-    secondary: accent,
-    accent: palette[2] ?? "красный",
-    background: "молочный",
-  });
+  const segmented = await segmentPhoto(file);
+  const palette = await extractPaletteNames(segmented.image, base.palette);
 
   return {
     id: crypto.randomUUID(),
-    image,
+    image: segmented.image,
     name: `${base.name} ${seed % 7 + 1}`,
     brand: base.brand,
     category,
@@ -289,8 +507,8 @@ async function createLocalDigitizedItem(file: File) {
       silhouette: base.fit,
       palette,
       summary:
-        "AI выделила вещь с фото, очистила фон, собрала аккуратную модель вещи и сохранила карточку.",
-      model: "Wardrobe Vision Demo",
+        "Одежда вырезана из исходного фото, очищена от фона и сохранена как отдельная карточка вещи.",
+      model: segmented.model,
     },
   } satisfies WardrobeItem;
 }
@@ -319,17 +537,16 @@ function normalizeVisionPayload(payload: any, fallback: WardrobeItem) {
       silhouette: payload.silhouette ?? fallback.ai.silhouette,
       palette: payload.palette ?? fallback.ai.palette,
       summary: payload.summary ?? fallback.ai.summary,
-      model: payload.model ?? "Remote Vision",
+      model: payload.model ?? fallback.ai.model,
     },
   } satisfies WardrobeItem;
 }
 
-async function requestRemoteDigitization(file: File, fallback: WardrobeItem) {
+async function requestRemoteDigitization(segmentedImage: string, fileName: string, fallback: WardrobeItem) {
   if (!remoteVisionApiUrl) {
     return fallback;
   }
 
-  const image = await fileToDataUrl(file);
   const response = await fetch(remoteVisionApiUrl, {
     method: "POST",
     headers: {
@@ -337,8 +554,8 @@ async function requestRemoteDigitization(file: File, fallback: WardrobeItem) {
       ...(remoteVisionApiToken ? { Authorization: `Bearer ${remoteVisionApiToken}` } : {}),
     },
     body: JSON.stringify({
-      prompt: buildDigitizationPrompt(file.name),
-      image,
+      prompt: buildDigitizationPrompt(fileName),
+      image: segmentedImage,
     }),
   });
 
@@ -356,7 +573,7 @@ export async function digitizeWardrobePhoto(file: File) {
   await wait(1400);
 
   try {
-    return await requestRemoteDigitization(file, fallback);
+    return await requestRemoteDigitization(fallback.image, file.name, fallback);
   } catch (error) {
     console.error("vision:error", error);
     return fallback;

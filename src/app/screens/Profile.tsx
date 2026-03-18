@@ -6,7 +6,8 @@ import { useAppState } from "../state/AppState";
 
 export function Profile() {
   const navigate = useNavigate();
-  const { userProfile, wardrobeItems, favoriteLooks, latestOutfit, weather } = useAppState();
+  const { userProfile, wardrobeItems, favoriteLooks, latestOutfit, weather, logoutUser } =
+    useAppState();
 
   const stats = [
     { label: "Вещей", value: String(wardrobeItems.length) },
@@ -116,7 +117,9 @@ export function Profile() {
         </Button>
         <Button
           variant="outline"
-          onClick={() => navigate("/login")}
+          onClick={() => {
+            void logoutUser().then(() => navigate("/login"));
+          }}
           className="h-12 w-full rounded-2xl border-[#FC7070] bg-white text-[#FC7070]"
         >
           <LogOut size={18} />

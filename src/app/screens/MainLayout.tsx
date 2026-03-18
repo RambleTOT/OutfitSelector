@@ -1,9 +1,11 @@
-import { Outlet, useNavigate, useLocation } from "react-router";
+import { Navigate, Outlet, useNavigate, useLocation } from "react-router";
 import { Home, Shirt, Bookmark, User, Grid3x3 } from "lucide-react";
+import { useAppState } from "../state/AppState";
 
 export function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { authReady, isAuthenticated } = useAppState();
 
   const navItems = [
     { path: "/app/wardrobe", icon: Shirt, label: "Гардероб" },
@@ -12,6 +14,10 @@ export function MainLayout() {
     { path: "/app/favorites", icon: Bookmark, label: "Избранное" },
     { path: "/app/profile", icon: User, label: "Профиль" },
   ];
+
+  if (authReady && !isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-[#ececed]">

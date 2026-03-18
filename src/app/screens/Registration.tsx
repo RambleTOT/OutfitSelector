@@ -8,7 +8,7 @@ import { useAppState } from "../state/AppState";
 
 export function Registration() {
   const navigate = useNavigate();
-  const { userProfile, updateUserProfile } = useAppState();
+  const { userProfile, registerUser, authBusy, authError } = useAppState();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -24,19 +24,23 @@ export function Registration() {
     formData.password === formData.confirmPassword;
   const phoneIsComplete = isPhoneComplete(formData.phone);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!phoneIsComplete || !passwordsMatch) {
       return;
     }
 
-    updateUserProfile({
+    const success = await registerUser({
       name: formData.name,
       email: formData.email,
       phone: formData.phone,
+      password: formData.password,
     });
-    navigate("/verify");
+
+    if (success) {
+      navigate("/verify");
+    }
   };
 
   return (
@@ -155,11 +159,16 @@ export function Registration() {
 
         <Button
           type="submit"
-          disabled={!phoneIsComplete || (formData.confirmPassword.length > 0 && !passwordsMatch)}
+          disabled={
+            authBusy ||
+            !phoneIsComplete ||
+            (formData.confirmPassword.length > 0 && !passwordsMatch)
+          }
           className="h-12 w-full rounded-2xl bg-[#FC7070] text-white hover:bg-[#f45d5d]"
         >
-          Продолжить
+          {authBusy ? "Сохраняем аккаунт..." : "Продолжить"}
         </Button>
+        {authError ? <p className="text-center text-xs text-[#FC7070]">{authError}</p> : null}
 
         <button
           type="button"

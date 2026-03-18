@@ -2,6 +2,7 @@ import { mockShopCatalog } from "../data/mockData";
 import { buildStylistPrompt } from "./prompts";
 import type {
   GeneratedOutfit,
+  OutfitGenerationOptions,
   OutfitSlot,
   OutfitSlotKey,
   ShopRecommendation,
@@ -21,6 +22,14 @@ const slotConfig: Array<{ key: OutfitSlotKey; title: string; category: WardrobeC
 
 const remoteApiUrl = import.meta.env.VITE_STYLIST_API_URL;
 const remoteApiToken = import.meta.env.VITE_STYLIST_API_TOKEN;
+const remoteApiModel = import.meta.env.VITE_STYLIST_MODEL;
+
+export const defaultGenerationOptions: OutfitGenerationOptions = {
+  considerPreviousLooks: true,
+  avoidRepeatingItems: true,
+  includeStoreRecommendations: true,
+  preferClassicStyle: false,
+};
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -34,30 +43,43 @@ function getTargetWarmth(weather: WeatherSnapshot) {
   return 1;
 }
 
-function getOccasionTags(occasion: string) {
+function getOccasionTags(occasion: string, preferClassicStyle: boolean) {
   const normalized = occasion.toLowerCase();
 
   if (normalized.includes("офис")) {
-    return ["офис", "минимализм", "город"];
+    return ["офис", "классика", "минимализм", "город"];
   }
 
   if (normalized.includes("встреч")) {
-    return ["вечер", "офис", "акцент"];
+    return ["вечер", "офис", "акцент", "классика"];
   }
 
   if (normalized.includes("прогул")) {
-    return ["город", "повседневный", "travel"];
+    return preferClassicStyle
+      ? ["город", "классика", "минимализм"]
+      : ["город", "повседневный", "travel"];
   }
 
-  return ["город", "повседневный", "минимализм"];
+  return preferClassicStyle
+    ? ["город", "классика", "минимализм"]
+    : ["город", "повседневный", "минимализм"];
 }
 
-function scoreItem(
-  item: WardrobeItem,
-  weather: WeatherSnapshot,
-  preferredTags: string[],
-  userProfile: UserProfile,
-) {
+function getRecentItemIds(previousLooks: GeneratedOutfit[]) {
+  return previousLooks
+    .slice(0, 3)
+    .flatMap((look) => look.slots.map((slot) => slot.item?.id).filter(Boolean)) as string[];
+}
+
+function scoreItem(args: {
+  item: WardrobeItem;
+  weather: WeatherSnapshot;
+  preferredTags: string[];
+  userProfile: UserProfile;
+  options: OutfitGenerationOptions;
+  previousLooks: GeneratedOutfit[];
+}) {
+  const { item, weather, preferredTags, userProfile, options, previousLooks } = args;
   const targetWarmth = getTargetWarmth(weather);
   const warmthScore = 12 - Math.abs(item.warmth - targetWarmth) * 3;
   const styleScore = item.styleTags.filter((tag) => preferredTags.includes(tag)).length * 4;
@@ -72,19 +94,41 @@ function scoreItem(
       : weather.mood === "rain" && !item.waterResistant && item.category !== "Верх"
         ? -2
         : 0;
-  const paletteScore = item.palette.includes("черный") || item.palette.includes("молочный") ? 2 : 0;
+  const paletteScore =
+    item.palette.includes("черный") || item.palette.includes("молочный") ? 2 : 0;
+  const classicalScore =
+    options.preferClassicStyle &&
+    item.styleTags.some((tag) => ["классика", "офис", "минимализм"].includes(tag))
+      ? 5
+      : 0;
+  const recentPenalty =
+    options.considerPreviousLooks && options.avoidRepeatingItems
+      ? getRecentItemIds(previousLooks).includes(item.id)
+        ? -8
+        : 0
+      : 0;
 
-  return warmthScore + styleScore + personalScore + rainScore + paletteScore;
+  return (
+    warmthScore +
+    styleScore +
+    personalScore +
+    rainScore +
+    paletteScore +
+    classicalScore +
+    recentPenalty
+  );
 }
 
-function pickItem(
-  wardrobeItems: WardrobeItem[],
-  category: WardrobeCategory,
-  weather: WeatherSnapshot,
-  preferredTags: string[],
-  userProfile: UserProfile,
-) {
-  const options = wardrobeItems.filter((item) => item.category === category);
+function pickItem(args: {
+  wardrobeItems: WardrobeItem[];
+  category: WardrobeCategory;
+  weather: WeatherSnapshot;
+  preferredTags: string[];
+  userProfile: UserProfile;
+  options: OutfitGenerationOptions;
+  previousLooks: GeneratedOutfit[];
+}) {
+  const options = args.wardrobeItems.filter((item) => item.category === args.category);
 
   if (!options.length) {
     return null;
@@ -92,8 +136,7 @@ function pickItem(
 
   return [...options].sort(
     (left, right) =>
-      scoreItem(right, weather, preferredTags, userProfile) -
-      scoreItem(left, weather, preferredTags, userProfile),
+      scoreItem({ ...args, item: right }) - scoreItem({ ...args, item: left }),
   )[0];
 }
 
@@ -122,7 +165,12 @@ function buildStoreRecommendations(
   weather: WeatherSnapshot,
   preferredTags: string[],
   chosenItems: WardrobeItem[],
+  options: OutfitGenerationOptions,
 ) {
+  if (!options.includeStoreRecommendations) {
+    return [];
+  }
+
   const pickedCategories = new Set(chosenItems.map((item) => item.category));
 
   return [...mockShopCatalog]
@@ -143,18 +191,22 @@ function buildLocalOutfit(args: {
   weather: WeatherSnapshot;
   userProfile: UserProfile;
   occasion: string;
+  options: OutfitGenerationOptions;
+  previousLooks: GeneratedOutfit[];
 }): GeneratedOutfit {
-  const { wardrobeItems, weather, userProfile, occasion } = args;
-  const preferredTags = getOccasionTags(occasion);
+  const { wardrobeItems, weather, userProfile, occasion, options, previousLooks } = args;
+  const preferredTags = getOccasionTags(occasion, options.preferClassicStyle);
 
   const slots: OutfitSlot[] = slotConfig.map((slot) => {
-    const item = pickItem(
+    const item = pickItem({
       wardrobeItems,
-      slot.category,
+      category: slot.category,
       weather,
       preferredTags,
       userProfile,
-    );
+      options,
+      previousLooks,
+    });
 
     return {
       key: slot.key,
@@ -165,7 +217,12 @@ function buildLocalOutfit(args: {
   });
 
   const chosenItems = slots.flatMap((slot) => (slot.item ? [slot.item] : []));
-  const storeRecommendations = buildStoreRecommendations(weather, preferredTags, chosenItems);
+  const storeRecommendations = buildStoreRecommendations(
+    weather,
+    preferredTags,
+    chosenItems,
+    options,
+  );
   const baseTitle = `${occasion}: образ на ${weather.temperature}°C`;
   const accentRecommendation =
     weather.mood === "rain"
@@ -231,7 +288,10 @@ function normalizeRemoteOutfit(
           return {
             key: template.key,
             title: template.title,
-            reason: slot.reason ?? fallback.slots.find((item) => item.key === template.key)?.reason ?? "",
+            reason:
+              slot.reason ??
+              fallback.slots.find((item) => item.key === template.key)?.reason ??
+              "",
             item: slot.itemId ? slotMap.get(slot.itemId) ?? null : null,
           };
         })
@@ -256,11 +316,15 @@ async function requestRemoteOutfit(args: {
   weather: WeatherSnapshot;
   userProfile: UserProfile;
   occasion: string;
+  options: OutfitGenerationOptions;
+  previousLooks: GeneratedOutfit[];
   fallback: GeneratedOutfit;
 }) {
   if (!remoteApiUrl) {
     return args.fallback;
   }
+
+  const prompt = buildStylistPrompt(args);
 
   const response = await fetch(remoteApiUrl, {
     method: "POST",
@@ -268,13 +332,33 @@ async function requestRemoteOutfit(args: {
       "Content-Type": "application/json",
       ...(remoteApiToken ? { Authorization: `Bearer ${remoteApiToken}` } : {}),
     },
-    body: JSON.stringify({
-      prompt: buildStylistPrompt(args),
-      wardrobeItems: args.wardrobeItems,
-      weather: args.weather,
-      userProfile: args.userProfile,
-      occasion: args.occasion,
-    }),
+    body: JSON.stringify(
+      remoteApiModel
+        ? {
+            model: remoteApiModel,
+            messages: [
+              {
+                role: "system",
+                content:
+                  "Ты AI-стилист. Верни только JSON без markdown и без пояснений вне JSON.",
+              },
+              {
+                role: "user",
+                content: prompt,
+              },
+            ],
+            response_format: { type: "json_object" },
+          }
+        : {
+            prompt,
+            wardrobeItems: args.wardrobeItems,
+            weather: args.weather,
+            userProfile: args.userProfile,
+            occasion: args.occasion,
+            options: args.options,
+            previousLooks: args.previousLooks,
+          },
+    ),
   });
 
   if (!response.ok) {
@@ -282,7 +366,12 @@ async function requestRemoteOutfit(args: {
   }
 
   const payload = await response.json();
-  return normalizeRemoteOutfit(payload, args.fallback, args.wardrobeItems);
+  const normalizedPayload =
+    payload?.choices?.[0]?.message?.content
+      ? JSON.parse(payload.choices[0].message.content)
+      : payload;
+
+  return normalizeRemoteOutfit(normalizedPayload, args.fallback, args.wardrobeItems);
 }
 
 export async function generateStylistOutfit(args: {
@@ -290,6 +379,8 @@ export async function generateStylistOutfit(args: {
   weather: WeatherSnapshot;
   userProfile: UserProfile;
   occasion: string;
+  options: OutfitGenerationOptions;
+  previousLooks: GeneratedOutfit[];
 }) {
   const fallback = buildLocalOutfit(args);
 
@@ -317,5 +408,7 @@ export function createInitialOutfit(args: {
   return buildLocalOutfit({
     ...args,
     occasion: "На каждый день",
+    options: defaultGenerationOptions,
+    previousLooks: [],
   });
 }

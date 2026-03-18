@@ -11,8 +11,10 @@ import {
 } from "lucide-react";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
+import { Checkbox } from "../components/ui/checkbox";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { outfitOccasions } from "../data/mockData";
+import { defaultGenerationOptions } from "../lib/stylist";
 import { useAppState } from "../state/AppState";
 
 function getSourceLabel(source: string) {
@@ -41,8 +43,10 @@ export function Home() {
     generationError,
     addLookToFavorites,
     lastDigitizedItem,
+    outfitHistory,
   } = useAppState();
   const [selectedOccasion, setSelectedOccasion] = useState(outfitOccasions[0]);
+  const [generationOptions, setGenerationOptions] = useState(defaultGenerationOptions);
 
   return (
     <div className="min-h-full bg-[#f7f7f8] px-5 pb-8 pt-7">
@@ -134,8 +138,63 @@ export function Home() {
           ))}
         </div>
 
+        <div className="mb-4 space-y-3 rounded-2xl bg-white/5 p-3">
+          <label className="flex items-center justify-between gap-3 text-sm text-white/80">
+            <span>Учитывать прошлые образы</span>
+            <Checkbox
+              checked={generationOptions.considerPreviousLooks}
+              onCheckedChange={(checked) =>
+                setGenerationOptions((current) => ({
+                  ...current,
+                  considerPreviousLooks: checked === true,
+                }))
+              }
+              className="border-white/20 bg-white/10 data-[state=checked]:border-[#FC7070] data-[state=checked]:bg-[#FC7070]"
+            />
+          </label>
+          <label className="flex items-center justify-between gap-3 text-sm text-white/80">
+            <span>Избегать повтора вещей</span>
+            <Checkbox
+              checked={generationOptions.avoidRepeatingItems}
+              onCheckedChange={(checked) =>
+                setGenerationOptions((current) => ({
+                  ...current,
+                  avoidRepeatingItems: checked === true,
+                }))
+              }
+              className="border-white/20 bg-white/10 data-[state=checked]:border-[#FC7070] data-[state=checked]:bg-[#FC7070]"
+            />
+          </label>
+          <label className="flex items-center justify-between gap-3 text-sm text-white/80">
+            <span>Сделать образ более классическим</span>
+            <Checkbox
+              checked={generationOptions.preferClassicStyle}
+              onCheckedChange={(checked) =>
+                setGenerationOptions((current) => ({
+                  ...current,
+                  preferClassicStyle: checked === true,
+                }))
+              }
+              className="border-white/20 bg-white/10 data-[state=checked]:border-[#FC7070] data-[state=checked]:bg-[#FC7070]"
+            />
+          </label>
+          <label className="flex items-center justify-between gap-3 text-sm text-white/80">
+            <span>Добавлять 2 рекомендации из магазинов</span>
+            <Checkbox
+              checked={generationOptions.includeStoreRecommendations}
+              onCheckedChange={(checked) =>
+                setGenerationOptions((current) => ({
+                  ...current,
+                  includeStoreRecommendations: checked === true,
+                }))
+              }
+              className="border-white/20 bg-white/10 data-[state=checked]:border-[#FC7070] data-[state=checked]:bg-[#FC7070]"
+            />
+          </label>
+        </div>
+
         <Button
-          onClick={() => void generateLook(selectedOccasion)}
+          onClick={() => void generateLook(selectedOccasion, generationOptions)}
           disabled={isGeneratingLook}
           className="h-12 w-full rounded-2xl bg-[#FC7070] text-white hover:bg-[#f45d5d]"
         >
@@ -153,7 +212,7 @@ export function Home() {
         </Button>
 
         <p className="mt-3 text-xs text-white/65">
-          Обязательные слоты: верх, низ, верхняя одежда, обувь и аксессуары.
+          Обязательные слоты: верх, низ, верхняя одежда, обувь и аксессуары. В памяти стилиста: {outfitHistory.length} образов.
         </p>
         {generationError ? <p className="mt-2 text-xs text-[#FC7070]">{generationError}</p> : null}
       </div>

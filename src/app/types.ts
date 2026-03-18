@@ -119,3 +119,30 @@ export interface GeneratedOutfit {
   slots: OutfitSlot[];
   storeRecommendations: ShopRecommendation[];
 }
+
+export interface OutfitGenerationOptions {
+  considerPreviousLooks: boolean;
+  avoidRepeatingItems: boolean;
+  includeStoreRecommendations: boolean;
+  preferClassicStyle: boolean;
+}
+
+export interface AuthCredentials {
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
+export interface StoredUserRecord {
+  phoneKey: string;
+  passwordHash: string;
+  profile: UserProfile;
+  wardrobeItems: WardrobeItem[];
+  favoriteLooks: FavoriteLook[];
+  latestOutfit: GeneratedOutfit | null;
+  outfitHistory: GeneratedOutfit[];
+  lastDigitizedItem: WardrobeItem | null;
+  createdAt: string;
+  updatedAt: string;
+}

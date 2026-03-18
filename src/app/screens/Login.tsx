@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../components/ui/button";
@@ -8,7 +8,8 @@ import { useAppState } from "../state/AppState";
 
 export function Login() {
   const navigate = useNavigate();
-  const { userProfile, updateUserProfile } = useAppState();
+  const { userProfile, loginUser, authBusy, authError, authReady, isAuthenticated } =
+    useAppState();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     phone: userProfile.phone,
@@ -16,15 +17,24 @@ export function Login() {
   });
   const phoneIsComplete = isPhoneComplete(formData.phone);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  useEffect(() => {
+    if (authReady && isAuthenticated) {
+      navigate("/app/home", { replace: true });
+    }
+  }, [authReady, isAuthenticated, navigate]);
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     if (!phoneIsComplete) {
       return;
     }
 
-    updateUserProfile({ phone: formData.phone });
-    navigate("/app/home");
+    const success = await loginUser(formData.phone, formData.password);
+
+    if (success) {
+      navigate("/app/home");
+    }
   };
 
   return (
@@ -96,11 +106,12 @@ export function Login() {
 
         <Button
           type="submit"
-          disabled={!phoneIsComplete}
+          disabled={!phoneIsComplete || authBusy}
           className="h-12 w-full rounded-2xl bg-[#FC7070] text-white hover:bg-[#f45d5d]"
         >
-          Войти
+          {authBusy ? "Входим..." : "Войти"}
         </Button>
+        {authError ? <p className="text-center text-xs text-[#FC7070]">{authError}</p> : null}
         <button
           type="button"
           onClick={() => navigate("/")}
