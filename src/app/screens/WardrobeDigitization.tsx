@@ -39,7 +39,7 @@ export function WardrobeDigitization() {
         <p className="text-sm text-gray-500">AI-оцифровка</p>
         <h1 className="mt-1 text-[30px] leading-[1.15] text-black">Добавить вещь в гардероб</h1>
         <p className="mt-2 text-sm text-gray-500">
-          Загрузите фото. Модель выделит вещь, создаст цифровую карточку и сохранит ее в приложении.
+          Загрузите фото. AI выделит вещь, попробует найти похожий товарный кадр без человека и сохранит clean-карточку в приложении.
         </p>
       </div>
 
@@ -68,7 +68,7 @@ export function WardrobeDigitization() {
               <LoaderCircle className="mb-3 animate-spin" size={28} />
               <p className="text-lg">AI анализирует фото</p>
               <p className="mt-2 text-sm text-white/75">
-                Очищаем фон, выделяем контур вещи, улучшаем подачу и строим clean item-модель.
+                Выделяем вещь, ищем похожий product shot в интернете и сохраняем лучший clean-вариант для гардероба.
               </p>
             </div>
           ) : null}
@@ -142,7 +142,7 @@ export function WardrobeDigitization() {
                 <p className="text-sm font-medium">Как это работает</p>
               </div>
               <p className="text-sm text-white/75">
-                1. Загружаешь фото. 2. Vision-модель выделяет вещь, убирает лишний фон и создает чистую fashion-модель. 3. AI-стилист использует ее при сборке образа.
+                1. Загружаешь фото. 2. Vision-модель выделяет вещь. 3. Сервис ищет похожие clean product photos без человека. 4. Лучший кадр сохраняется и потом участвует в подборе образа.
               </p>
             </div>
           )}

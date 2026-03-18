@@ -1,4 +1,9 @@
-import { buildDigitizationPrompt, buildSegmentationPrompt } from "./prompts";
+import { mockShopCatalog, mockWardrobeItems } from "../data/mockData";
+import {
+  buildDigitizationPrompt,
+  buildSegmentationPrompt,
+  buildSimilarImageSearchPrompt,
+} from "./prompts";
 import type { WardrobeCategory, WardrobeItem } from "../types";
 
 const remoteVisionApiUrl = import.meta.env.VITE_VISION_API_URL;
@@ -6,6 +11,10 @@ const remoteVisionApiToken = import.meta.env.VITE_VISION_API_TOKEN;
 const segmentationApiUrl = import.meta.env.VITE_SEGMENTATION_API_URL;
 const segmentationApiToken = import.meta.env.VITE_SEGMENTATION_API_TOKEN;
 const segmentationModel = import.meta.env.VITE_SEGMENTATION_MODEL ?? "BiRefNet";
+const similarSearchApiUrl = import.meta.env.VITE_SIMILAR_SEARCH_API_URL;
+const similarSearchApiToken = import.meta.env.VITE_SIMILAR_SEARCH_API_TOKEN;
+const similarSearchModel =
+  import.meta.env.VITE_SIMILAR_SEARCH_MODEL ?? "Internet Similar Product Search";
 
 const colorMap: Record<string, string> = {
   белый: "#F7F7F5",
@@ -17,6 +26,7 @@ const colorMap: Record<string, string> = {
   черный: "#1E2227",
   синий: "#4C6898",
   деним: "#5D77A7",
+  золотой: "#C3A35D",
   красный: "#FC7070",
   бордовый: "#8C3F50",
   пудровый: "#D8B3AC",
@@ -94,6 +104,15 @@ const categoryFallbacks: Record<
   },
 };
 
+interface SimilarProductPhoto {
+  image: string;
+  name?: string;
+  brand?: string;
+  category?: WardrobeCategory;
+  palette?: string[];
+  sourceLabel: string;
+}
+
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -118,6 +137,46 @@ function dataUrlToImage(dataUrl: string) {
 
 function hashString(value: string) {
   return value.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+}
+
+function normalizePaletteValues(value: unknown) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => String(item).trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function normalizeCategory(value: unknown): WardrobeCategory | null {
+  if (!value) {
+    return null;
+  }
+
+  const normalized = String(value).trim().toLowerCase();
+
+  if (normalized.includes("верхняя") || normalized.includes("outer") || normalized.includes("jacket")) {
+    return "Верхняя одежда";
+  }
+
+  if (normalized.includes("обув") || normalized.includes("shoe") || normalized.includes("boot")) {
+    return "Обувь";
+  }
+
+  if (normalized.includes("аксесс") || normalized.includes("access") || normalized.includes("bag")) {
+    return "Аксессуары";
+  }
+
+  if (normalized.includes("низ") || normalized.includes("bottom") || normalized.includes("pant")) {
+    return "Низ";
+  }
+
+  if (normalized.includes("верх") || normalized.includes("top") || normalized.includes("shirt")) {
+    return "Верх";
+  }
+
+  return null;
 }
 
 function hexToRgb(hex: string) {
@@ -235,6 +294,64 @@ function detectCategory(fileName: string): WardrobeCategory {
   }
 
   return "Верх";
+}
+
+function buildLocalSimilarSearchPool(): SimilarProductPhoto[] {
+  const wardrobePool = mockWardrobeItems.map((item) => ({
+    image: item.image,
+    name: item.name,
+    brand: item.brand,
+    category: item.category,
+    palette: item.palette,
+    sourceLabel: "Local Product Catalog",
+  }));
+
+  const shopPool = mockShopCatalog.map((item) => ({
+    image: item.image,
+    name: item.title,
+    brand: item.brand,
+    category: item.category,
+    palette: item.palette,
+    sourceLabel: "Local Product Catalog",
+  }));
+
+  return [...wardrobePool, ...shopPool];
+}
+
+function scoreSimilarSearchCandidate(args: {
+  candidate: SimilarProductPhoto;
+  category: WardrobeCategory;
+  palette: string[];
+  fileName: string;
+}) {
+  const { candidate, category, palette, fileName } = args;
+  const normalizedFileName = fileName.toLowerCase();
+  const keywordScore =
+    candidate.name
+      ?.toLowerCase()
+      .split(/[\s/-]+/)
+      .filter((word) => word.length > 3 && normalizedFileName.includes(word)).length ?? 0;
+  const paletteOverlap = candidate.palette?.filter((value) => palette.includes(value)).length ?? 0;
+
+  return (
+    (candidate.category === category ? 8 : 0) +
+    paletteOverlap * 3 +
+    keywordScore * 2 +
+    (candidate.brand ? 1 : 0)
+  );
+}
+
+function findLocalSimilarProductPhoto(args: {
+  category: WardrobeCategory;
+  palette: string[];
+  fileName: string;
+}) {
+  return buildLocalSimilarSearchPool()
+    .sort(
+      (left, right) =>
+        scoreSimilarSearchCandidate({ candidate: right, ...args }) -
+        scoreSimilarSearchCandidate({ candidate: left, ...args }),
+    )[0];
 }
 
 function averageCornerColor(data: Uint8ClampedArray, width: number, height: number) {
@@ -477,6 +594,112 @@ async function segmentPhoto(file: File) {
   };
 }
 
+function normalizeRemoteSearchPayload(
+  payload: any,
+  fallbackCategory: WardrobeCategory,
+): SimilarProductPhoto | null {
+  const normalizedPayload =
+    payload?.choices?.[0]?.message?.content
+      ? JSON.parse(payload.choices[0].message.content)
+      : payload;
+
+  if (!normalizedPayload) {
+    return null;
+  }
+
+  const directImage = typeof normalizedPayload.image === "string" ? normalizedPayload.image : null;
+
+  if (directImage) {
+    return {
+      image: directImage,
+      name: normalizedPayload.name,
+      brand: normalizedPayload.brand,
+      category: normalizeCategory(normalizedPayload.category) ?? fallbackCategory,
+      palette: normalizePaletteValues(normalizedPayload.palette),
+      sourceLabel: similarSearchModel,
+    };
+  }
+
+  if (!Array.isArray(normalizedPayload.results)) {
+    return null;
+  }
+
+  const candidate = normalizedPayload.results
+    .filter((item: any) => typeof item?.image === "string")
+    .filter((item: any) => item?.hasPerson === false || item?.containsHuman === false)
+    .map((item: any) => ({
+      image: String(item.image),
+      name: item.name ? String(item.name) : undefined,
+      brand: item.brand ? String(item.brand) : undefined,
+      category: normalizeCategory(item.category) ?? fallbackCategory,
+      palette: normalizePaletteValues(item.palette),
+      sourceLabel: similarSearchModel,
+    } satisfies SimilarProductPhoto))[0];
+
+  return candidate ?? null;
+}
+
+async function requestRemoteSimilarProductPhoto(args: {
+  file: File;
+  category: WardrobeCategory;
+  palette: string[];
+  segmentedImage: string;
+}) {
+  if (!similarSearchApiUrl) {
+    return null;
+  }
+
+  const originalImage = await fileToDataUrl(args.file);
+  const response = await fetch(similarSearchApiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(similarSearchApiToken ? { Authorization: `Bearer ${similarSearchApiToken}` } : {}),
+    },
+    body: JSON.stringify({
+      model: similarSearchModel,
+      prompt: buildSimilarImageSearchPrompt({
+        fileName: args.file.name,
+        category: args.category,
+        palette: args.palette,
+      }),
+      image: originalImage,
+      segmentedImage: args.segmentedImage,
+      category: args.category,
+      palette: args.palette,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Similar search endpoint returned a non-200 response");
+  }
+
+  return normalizeRemoteSearchPayload(await response.json(), args.category);
+}
+
+async function findBestCleanProductPhoto(args: {
+  file: File;
+  category: WardrobeCategory;
+  palette: string[];
+  segmentedImage: string;
+}) {
+  try {
+    const remoteResult = await requestRemoteSimilarProductPhoto(args);
+
+    if (remoteResult) {
+      return remoteResult;
+    }
+  } catch (error) {
+    console.error("similar-search:remote", error);
+  }
+
+  return findLocalSimilarProductPhoto({
+    category: args.category,
+    palette: args.palette,
+    fileName: args.file.name,
+  });
+}
+
 async function createLocalDigitizedItem(file: File) {
   const category = detectCategory(file.name);
   const base = categoryFallbacks[category];
@@ -484,31 +707,48 @@ async function createLocalDigitizedItem(file: File) {
   const extractedAt = new Date().toISOString();
   const confidence = 0.88 + (seed % 10) / 100;
   const segmented = await segmentPhoto(file);
-  const palette = await extractPaletteNames(segmented.image, base.palette);
+  const segmentedPalette = await extractPaletteNames(segmented.image, base.palette);
+  const similarProduct = await findBestCleanProductPhoto({
+    file,
+    category,
+    palette: segmentedPalette,
+    segmentedImage: segmented.image,
+  });
+  const resolvedCategory = similarProduct?.category ?? category;
+  const resolvedBase = categoryFallbacks[resolvedCategory];
+  const resolvedImage = similarProduct?.image ?? segmented.image;
+  const palette = await extractPaletteNames(
+    resolvedImage,
+    similarProduct?.palette?.length ? similarProduct.palette : resolvedBase.palette,
+  );
 
   return {
     id: crypto.randomUUID(),
-    image: segmented.image,
-    name: `${base.name} ${seed % 7 + 1}`,
-    brand: base.brand,
-    category,
-    warmth: base.warmth,
-    seasons: base.seasons,
-    styleTags: [...base.styleTags],
+    image: resolvedImage,
+    name: similarProduct?.name ?? `${resolvedBase.name} ${seed % 7 + 1}`,
+    brand: similarProduct?.brand ?? resolvedBase.brand,
+    category: resolvedCategory,
+    warmth: resolvedBase.warmth,
+    seasons: resolvedBase.seasons,
+    styleTags: [...resolvedBase.styleTags],
     palette,
-    material: base.material,
-    fit: base.fit,
-    note: base.note,
-    waterResistant: category === "Обувь" || category === "Верхняя одежда",
+    material: resolvedBase.material,
+    fit: resolvedBase.fit,
+    note: resolvedBase.note,
+    waterResistant:
+      resolvedCategory === "Обувь" || resolvedCategory === "Верхняя одежда",
     source: "digitized" as const,
     ai: {
       extractedAt,
       confidence: Number(confidence.toFixed(2)),
-      silhouette: base.fit,
+      silhouette: resolvedBase.fit,
       palette,
-      summary:
-        "Одежда вырезана из исходного фото, очищена от фона и сохранена как отдельная карточка вещи.",
-      model: segmented.model,
+      summary: similarProduct
+        ? "По исходному фото найден похожий товарный кадр без человека, и вещь сохранена как clean product card."
+        : "Одежда вырезана из исходного фото, очищена от фона и сохранена как отдельная карточка вещи.",
+      model: similarProduct
+        ? `${segmented.model} + ${similarProduct.sourceLabel}`
+        : segmented.model,
     },
   } satisfies WardrobeItem;
 }

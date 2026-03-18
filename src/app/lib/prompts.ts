@@ -77,3 +77,24 @@ export function buildSegmentationPrompt(fileName: string) {
     `Имя файла: ${fileName}.`,
   ].join("\n");
 }
+
+export function buildSimilarImageSearchPrompt(args: {
+  fileName: string;
+  category: string;
+  palette: string[];
+}) {
+  const { fileName, category, palette } = args;
+
+  return [
+    "Ты ассистент для интернет-поиска одежды.",
+    "По фото пользователя найди в интернете похожие варианты одежды.",
+    "Выбери только clean product photo без человека, без рук, без модели и без сложного фона.",
+    "Подходят только фотографии, где видна одна вещь на однотонном фоне или в формате каталога.",
+    "Верни JSON с полями results.",
+    "results должен быть массивом максимум из 5 объектов формата { image, name, brand, category, palette, hasPerson }.",
+    "hasPerson должен быть false для подходящих результатов.",
+    `Имя файла: ${fileName}.`,
+    `Ожидаемая категория: ${category}.`,
+    `Ожидаемая палитра: ${palette.join(", ")}.`,
+  ].join("\n");
+}
