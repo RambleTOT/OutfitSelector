@@ -1,119 +1,203 @@
-import { Plus, Filter } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { useMemo, useState } from "react";
+import { Link } from "react-router";
+import { Filter, Plus, ScanSearch } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "../components/ui/sheet";
+import { useAppState } from "../state/AppState";
+import type { WardrobeCategory, WardrobeItem } from "../types";
+
+const wardrobeCategories: Array<WardrobeCategory | "Все"> = [
+  "Все",
+  "Верх",
+  "Низ",
+  "Верхняя одежда",
+  "Обувь",
+  "Аксессуары",
+];
 
 export function DigitalWardrobe() {
-  const wardrobeItems = [
-    {
-      id: 1,
-      image: "https://images.unsplash.com/photo-1711477270970-14340bee9000?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZW5pbSUyMGphY2tldCUyMHN0cmVldCUyMHN0eWxlfGVufDF8fHx8MTc3MjAyMDYyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      name: "Джинсовая куртка",
-      brand: "Levi's",
-      category: "Верхняя одежда",
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1689357642277-65228ee23680?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aGl0ZSUyMHNuZWFrZXJzJTIwZm9vdHdlYXJ8ZW58MXx8fHwxNzcyMDIwNjI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      name: "Белые кроссовки",
-      brand: "Nike",
-      category: "Обувь",
-    },
-    {
-      id: 3,
-      image: "https://images.unsplash.com/photo-1564801586444-f08648006f0f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdW1tZXIlMjBkcmVzcyUyMGZsb3JhbHxlbnwxfHx8fDE3NzIwMDI1ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      name: "Летнее платье",
-      brand: "Zara",
-      category: "Платья",
-    },
-    {
-      id: 4,
-      image: "https://images.unsplash.com/photo-1763742937367-e3481b64da81?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3aW50ZXIlMjBjb2F0JTIwb3V0ZXJ3ZWFyfGVufDF8fHx8MTc3MTk3MjE5MHww&ixlib=rb-4.1.0&q=80&w=1080",
-      name: "Зимнее пальто",
-      brand: "H&M",
-      category: "Верхняя одежда",
-    },
-    {
-      id: 5,
-      image: "https://images.unsplash.com/photo-1575295912464-fcfd1186d11d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsZWF0aGVyJTIwaGFuZGJhZyUyMGFjY2Vzc29yaWVzfGVufDF8fHx8MTc3MTkyNTcxOHww&ixlib=rb-4.1.0&q=80&w=1080",
-      name: "Кожаная сумка",
-      brand: "Michael Kors",
-      category: "Аксессуары",
-    },
-    {
-      id: 6,
-      image: "https://images.unsplash.com/photo-1629426958003-35a5583b2977?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmYXNoaW9uJTIwd2FyZHJvYmUlMjBjbG90aGVzfGVufDF8fHx8MTc3MjAyMDYyNnww&ixlib=rb-4.1.0&q=80&w=1080",
-      name: "Черные брюки",
-      brand: "Mango",
-      category: "Брюки",
-    },
-  ];
+  const { wardrobeItems, lastDigitizedItem } = useAppState();
+  const [activeCategory, setActiveCategory] = useState<WardrobeCategory | "Все">("Все");
+  const [selectedItem, setSelectedItem] = useState<WardrobeItem | null>(null);
 
-  const categories = ["Все", "Верхняя одежда", "Платья", "Брюки", "Обувь", "Аксессуары"];
+  const filteredItems = useMemo(
+    () =>
+      activeCategory === "Все"
+        ? wardrobeItems
+        : wardrobeItems.filter((item) => item.category === activeCategory),
+    [activeCategory, wardrobeItems],
+  );
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="px-6 pt-8 pb-4">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-3xl text-black mb-1">Мой гардероб</h1>
-            <p className="text-gray-500">{wardrobeItems.length} вещей</p>
+    <div className="min-h-full bg-[#f7f7f8] px-5 pb-8 pt-7">
+      <div className="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <p className="text-sm text-gray-500">Цифровой гардероб</p>
+          <h1 className="mt-1 text-[30px] leading-[1.15] text-black">Мои вещи</h1>
+          <p className="mt-2 text-sm text-gray-500">
+            {wardrobeItems.length} вещей уже доступны для AI-стилиста
+          </p>
+        </div>
+        <Button asChild size="icon" className="rounded-full bg-[#FC7070] hover:bg-[#f45d5d]">
+          <Link to="/digitize">
+            <Plus size={22} />
+          </Link>
+        </Button>
+      </div>
+
+      {lastDigitizedItem ? (
+        <div className="mb-5 rounded-[26px] bg-[#111111] p-4 text-white">
+          <div className="mb-2 flex items-center gap-2">
+            <ScanSearch size={16} className="text-[#FC7070]" />
+            <p className="text-sm font-medium">Новая AI-карточка готова</p>
           </div>
-          <Button size="icon" className="bg-[#FC7070] hover:bg-[#fc5050] rounded-full">
-            <Plus size={24} />
-          </Button>
+          <p className="text-base">{lastDigitizedItem.name}</p>
+          <p className="mt-1 text-sm text-white/65">{lastDigitizedItem.ai.summary}</p>
         </div>
-      </div>
+      ) : null}
 
-      {/* Categories Filter */}
-      <div className="px-6 mb-4">
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
-          <Button
-            size="sm"
-            variant="ghost"
-            className="flex-shrink-0 border border-gray-200"
+      <div className="mb-4 flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <div className="rounded-full border border-gray-200 bg-white px-3 py-2 text-sm text-gray-500">
+          <Filter size={14} className="mr-2 inline-block" />
+          Категории
+        </div>
+        {wardrobeCategories.map((category) => (
+          <button
+            key={category}
+            type="button"
+            onClick={() => setActiveCategory(category)}
+            className={`rounded-full border px-3 py-2 text-sm whitespace-nowrap transition ${
+              activeCategory === category
+                ? "border-[#FC7070] bg-[#FC7070] text-white"
+                : "border-gray-200 bg-white text-gray-600"
+            }`}
           >
-            <Filter size={16} className="mr-1" />
-            Фильтр
-          </Button>
-          {categories.map((category, index) => (
-            <Button
-              key={category}
-              size="sm"
-              variant={index === 0 ? "default" : "outline"}
-              className={
-                index === 0
-                  ? "bg-[#FC7070] hover:bg-[#fc5050] flex-shrink-0"
-                  : "flex-shrink-0 border-gray-200"
-              }
-            >
-              {category}
-            </Button>
-          ))}
+            {category}
+          </button>
+        ))}
+      </div>
+
+      <div className="mb-5 grid grid-cols-3 gap-3">
+        <div className="rounded-2xl bg-white p-3 shadow-[0_10px_28px_rgba(15,23,42,0.05)]">
+          <p className="text-xs text-gray-500">Всего</p>
+          <p className="mt-1 text-2xl text-black">{wardrobeItems.length}</p>
+        </div>
+        <div className="rounded-2xl bg-white p-3 shadow-[0_10px_28px_rgba(15,23,42,0.05)]">
+          <p className="text-xs text-gray-500">AI-сканы</p>
+          <p className="mt-1 text-2xl text-black">
+            {wardrobeItems.filter((item) => item.source === "digitized").length}
+          </p>
+        </div>
+        <div className="rounded-2xl bg-white p-3 shadow-[0_10px_28px_rgba(15,23,42,0.05)]">
+          <p className="text-xs text-gray-500">Категорий</p>
+          <p className="mt-1 text-2xl text-black">
+            {new Set(wardrobeItems.map((item) => item.category)).size}
+          </p>
         </div>
       </div>
 
-      {/* Wardrobe Grid */}
-      <div className="px-6 pb-6">
-        <div className="grid grid-cols-2 gap-4">
-          {wardrobeItems.map((item) => (
-            <div key={item.id} className="bg-gray-50 rounded-xl overflow-hidden">
-              <div className="aspect-[3/4] relative">
-                <ImageWithFallback
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                  fallbackText={item.name}
-                />
-              </div>
-              <div className="p-3">
-                <h3 className="text-sm text-black mb-1 truncate">{item.name}</h3>
-                <p className="text-xs text-gray-500">{item.brand}</p>
-              </div>
+      <div className="grid grid-cols-2 gap-4">
+        {filteredItems.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => setSelectedItem(item)}
+            className="overflow-hidden rounded-[24px] bg-white text-left shadow-[0_16px_36px_rgba(15,23,42,0.06)]"
+          >
+            <div className="aspect-[3/4] bg-gray-100">
+              <ImageWithFallback
+                src={item.image}
+                alt={item.name}
+                className="h-full w-full object-cover"
+              />
             </div>
-          ))}
-        </div>
+            <div className="p-3">
+              <Badge
+                variant="outline"
+                className="mb-2 rounded-full border-black/10 text-[11px] text-gray-500"
+              >
+                {item.category}
+              </Badge>
+              <p className="text-sm font-medium text-black">{item.name}</p>
+              <p className="mt-1 text-xs text-gray-500">{item.brand}</p>
+            </div>
+          </button>
+        ))}
       </div>
+
+      <Sheet open={Boolean(selectedItem)} onOpenChange={(open) => !open && setSelectedItem(null)}>
+        <SheetContent side="bottom" className="max-h-[92vh] rounded-t-[32px] border-0 px-0">
+          {selectedItem ? (
+            <>
+              <SheetHeader className="px-5 pt-6">
+                <SheetTitle>{selectedItem.name}</SheetTitle>
+                <SheetDescription>{selectedItem.brand}</SheetDescription>
+              </SheetHeader>
+
+              <div className="overflow-y-auto px-5 pb-6">
+                <div className="mb-4 overflow-hidden rounded-[28px] bg-[#f3f3f4]">
+                  <div className="aspect-[4/5]">
+                    <ImageWithFallback
+                      src={selectedItem.image}
+                      alt={selectedItem.name}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4 flex flex-wrap gap-2">
+                  {selectedItem.palette.map((color) => (
+                    <Badge
+                      key={color}
+                      variant="outline"
+                      className="rounded-full border-black/10 text-gray-600"
+                    >
+                      {color}
+                    </Badge>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="rounded-2xl bg-[#f7f7f8] p-4">
+                    <p className="text-xs text-gray-500">Материал</p>
+                    <p className="mt-1 text-sm text-black">{selectedItem.material}</p>
+                  </div>
+                  <div className="rounded-2xl bg-[#f7f7f8] p-4">
+                    <p className="text-xs text-gray-500">Посадка</p>
+                    <p className="mt-1 text-sm text-black">{selectedItem.fit}</p>
+                  </div>
+                  <div className="rounded-2xl bg-[#f7f7f8] p-4">
+                    <p className="text-xs text-gray-500">Теплота</p>
+                    <p className="mt-1 text-sm text-black">{selectedItem.warmth}/5</p>
+                  </div>
+                  <div className="rounded-2xl bg-[#f7f7f8] p-4">
+                    <p className="text-xs text-gray-500">AI confidence</p>
+                    <p className="mt-1 text-sm text-black">
+                      {Math.round(selectedItem.ai.confidence * 100)}%
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 rounded-2xl bg-[#111111] p-4 text-white">
+                  <p className="text-sm font-medium">Паспорт вещи</p>
+                  <p className="mt-2 text-sm text-white/75">{selectedItem.ai.summary}</p>
+                  <p className="mt-3 text-xs text-white/60">
+                    Силуэт: {selectedItem.ai.silhouette} · Модель: {selectedItem.ai.model}
+                  </p>
+                </div>
+              </div>
+            </>
+          ) : null}
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

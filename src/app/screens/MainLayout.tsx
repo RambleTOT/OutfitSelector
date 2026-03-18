@@ -14,37 +14,40 @@ export function MainLayout() {
   ];
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      <div className="flex-1 overflow-auto pb-20">
-        <Outlet />
+    <div className="min-h-screen bg-[#ececed]">
+      <div className="mx-auto flex min-h-screen max-w-[430px] flex-col bg-[#f7f7f8] shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
+        <div className="flex-1 overflow-auto pb-24">
+          <Outlet />
+        </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 safe-bottom">
-        <div className="flex items-center justify-around max-w-md mx-auto">
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                className="flex flex-col items-center gap-1 min-w-0 flex-1"
-              >
-                <item.icon
-                  size={24}
-                  className={isActive ? "text-[#FC7070]" : "text-gray-400"}
-                  strokeWidth={isActive ? 2.5 : 2}
-                />
-                <span
-                  className={`text-xs ${
-                    isActive ? "text-[#FC7070]" : "text-gray-500"
-                  }`}
+      <div className="fixed bottom-0 left-1/2 z-20 w-full max-w-[430px] -translate-x-1/2 px-3 pb-3">
+        <div className="safe-bottom rounded-[28px] border border-black/5 bg-white/95 px-4 py-3 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] backdrop-blur">
+          <div className="mx-auto flex max-w-md items-center justify-around">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <button
+                  key={item.path}
+                  onClick={() => navigate(item.path)}
+                  className="flex min-w-0 flex-1 flex-col items-center gap-1"
                 >
-                  {item.label}
-                </span>
-              </button>
-            );
-          })}
+                  <item.icon
+                    size={24}
+                    className={isActive ? "text-[#FC7070]" : "text-gray-400"}
+                    strokeWidth={isActive ? 2.5 : 2}
+                  />
+                  <span
+                    className={`text-xs ${
+                      isActive ? "text-[#FC7070]" : "text-gray-500"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

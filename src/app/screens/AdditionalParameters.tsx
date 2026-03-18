@@ -1,100 +1,113 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { useAppState } from "../state/AppState";
 
 export function AdditionalParameters() {
   const navigate = useNavigate();
+  const { userProfile, updateUserProfile } = useAppState();
   const [formData, setFormData] = useState({
-    height: "",
-    weight: "",
-    size: "",
-    style: "",
+    height: userProfile.height,
+    weight: userProfile.weight,
+    size: userProfile.size,
+    styleFocus: userProfile.styleFocus,
+    fitPreference: userProfile.fitPreference,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    navigate("/digitize");
-  };
-
-  const handleSkip = () => {
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    updateUserProfile(formData);
     navigate("/digitize");
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col px-6 py-8">
-      <div className="flex-1 flex flex-col">
-        <div className="mb-8">
-          <h1 className="text-3xl text-black mb-2">Дополнительные параметры</h1>
-          <p className="text-gray-500">
-            Эти данные помогут подобрать вам идеальный образ
-          </p>
-        </div>
+    <div className="mx-auto min-h-screen max-w-[430px] bg-[#f7f7f8] px-5 py-7">
+      <div className="mb-8">
+        <p className="text-sm text-gray-500">Шаг 3 из 3</p>
+        <h1 className="mt-1 text-[30px] leading-[1.15] text-black">Дополнительные параметры</h1>
+        <p className="mt-2 text-sm text-gray-500">
+          Эти данные помогут точнее подбирать посадку, многослойность и готовые образы.
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 flex flex-col">
-          <div className="flex-1 space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="rounded-[30px] bg-white p-5 shadow-[0_16px_40px_rgba(15,23,42,0.06)]">
+          <div className="space-y-4">
             <div>
-              <label className="block text-sm text-gray-700 mb-2">Рост (см)</label>
+              <label className="mb-2 block text-sm text-gray-700">Рост (см)</label>
               <Input
                 type="number"
                 value={formData.height}
-                onChange={(e) => setFormData({ ...formData, height: e.target.value })}
+                onChange={(event) =>
+                  setFormData({ ...formData, height: event.target.value })
+                }
                 placeholder="170"
-                className="w-full"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-2">Вес (кг)</label>
+              <label className="mb-2 block text-sm text-gray-700">Вес (кг)</label>
               <Input
                 type="number"
                 value={formData.weight}
-                onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                onChange={(event) =>
+                  setFormData({ ...formData, weight: event.target.value })
+                }
                 placeholder="65"
-                className="w-full"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-2">Размер одежды</label>
+              <label className="mb-2 block text-sm text-gray-700">Размер одежды</label>
               <Input
                 type="text"
                 value={formData.size}
-                onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                onChange={(event) =>
+                  setFormData({ ...formData, size: event.target.value })
+                }
                 placeholder="S / M / L"
-                className="w-full"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-2">
-                Предпочитаемый стиль
-              </label>
+              <label className="mb-2 block text-sm text-gray-700">Предпочитаемый стиль</label>
               <Input
                 type="text"
-                value={formData.style}
-                onChange={(e) => setFormData({ ...formData, style: e.target.value })}
-                placeholder="Casual, Business, Sport..."
-                className="w-full"
+                value={formData.styleFocus}
+                onChange={(event) =>
+                  setFormData({ ...formData, styleFocus: event.target.value })
+                }
+                placeholder="Минимализм, smart casual"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm text-gray-700">Посадка и пожелания</label>
+              <Input
+                type="text"
+                value={formData.fitPreference}
+                onChange={(event) =>
+                  setFormData({ ...formData, fitPreference: event.target.value })
+                }
+                placeholder="Например: люблю свободный верх и прямой низ"
               />
             </div>
           </div>
+        </div>
 
-          <div className="mt-8 space-y-3">
-            <Button type="submit" className="w-full bg-[#FC7070] hover:bg-[#fc5050] text-white">
-              Сохранить
-            </Button>
-            <Button
-              type="button"
-              onClick={handleSkip}
-              variant="outline"
-              className="w-full border-gray-300 text-gray-700"
-            >
-              Пропустить
-            </Button>
-          </div>
-        </form>
-      </div>
+        <Button type="submit" className="h-12 w-full rounded-2xl bg-[#FC7070] text-white hover:bg-[#f45d5d]">
+          Сохранить и продолжить
+        </Button>
+        <Button
+          type="button"
+          onClick={() => navigate("/digitize")}
+          variant="outline"
+          className="h-12 w-full rounded-2xl border-gray-200 bg-white"
+        >
+          Пропустить
+        </Button>
+      </form>
     </div>
   );
 }

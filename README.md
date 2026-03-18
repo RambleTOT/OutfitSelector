@@ -22,6 +22,26 @@ npm install
 npm run dev
 ```
 
+### Подключение реальных AI endpoint
+
+По умолчанию приложение работает в демо-режиме:
+- AI-стилист собирает образ локальным fallback-алгоритмом
+- AI-оцифровка вещей использует локальный vision fallback
+
+Чтобы подключить реальные сервисы, создайте `.env` на основе `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Доступные переменные:
+- `VITE_STYLIST_API_URL` — URL backend/edge endpoint для LLM-стилиста
+- `VITE_STYLIST_API_TOKEN` — bearer token для stylist endpoint
+- `VITE_VISION_API_URL` — URL endpoint для vision-модели оцифровки
+- `VITE_VISION_API_TOKEN` — bearer token для vision endpoint
+
+Оба endpoint ожидают JSON payload и могут быть OpenAI-compatible proxy или ваш собственный backend.
+
 3) Сборка:
 ```bash
 npm run build
