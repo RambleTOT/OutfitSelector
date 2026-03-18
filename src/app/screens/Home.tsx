@@ -205,7 +205,7 @@ export function Home() {
                       <ImageWithFallback
                         src={slot.item.image}
                         alt={slot.item.name}
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-contain p-2"
                       />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -233,7 +233,7 @@ export function Home() {
                     <ImageWithFallback
                       src={item.image}
                       alt={item.title}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain p-3"
                     />
                   </div>
                   <div className="p-3">
@@ -263,7 +263,10 @@ export function Home() {
           </Link>
         </Button>
 
-        <div className="rounded-[24px] bg-white p-4 shadow-[0_16px_32px_rgba(15,23,42,0.06)]">
+        <Link
+          to="/app/wardrobe"
+          className="block rounded-[24px] bg-white p-4 shadow-[0_16px_32px_rgba(15,23,42,0.06)]"
+        >
           <p className="text-sm font-medium text-black">Последняя AI-вещь</p>
           {lastDigitizedItem ? (
             <>
@@ -275,7 +278,7 @@ export function Home() {
               Пока нет новых сканов. Загрузи фото, и приложение выделит вещь отдельно.
             </p>
           )}
-        </div>
+        </Link>
       </div>
     </div>
   );

@@ -1,3 +1,4 @@
+import { createGarmentArt, createLookArt } from "../lib/wardrobeArt";
 import type {
   FavoriteLook,
   FeedItem,
@@ -6,24 +7,32 @@ import type {
   WardrobeItem,
 } from "../types";
 
+function createWardrobeItem(item: WardrobeItem) {
+  return item;
+}
+
 export const mockUserProfile: UserProfile = {
   name: "Анна Иванова",
   email: "anna.ivanova@mail.ru",
-  phone: "+7 (999) 123-45-67",
+  phone: "(999) 123 45-67",
   height: "170",
   weight: "65",
   size: "M",
-  styleFocus: "Минимализм, smart casual",
-  fitPreference: "Люблю полуприлегающий силуэт и многослойность",
+  styleFocus: "Классика, smart casual, минимализм",
+  fitPreference: "Люблю чистый силуэт, жакеты и прямой низ",
   city: "Москва",
 };
 
 export const mockWardrobeItems: WardrobeItem[] = [
-  {
-    id: "wardrobe-shirt-01",
-    image:
-      "https://images.unsplash.com/photo-1603252109303-2751441dd157?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    name: "Хлопковая белая рубашка",
+  createWardrobeItem({
+    id: "wardrobe-top-01",
+    image: createGarmentArt({
+      kind: "shirt",
+      primary: "белый",
+      secondary: "молочный",
+      background: "молочный",
+    }),
+    name: "Белая классическая рубашка",
     brand: "Massimo Dutti",
     category: "Верх",
     warmth: 1,
@@ -32,21 +41,54 @@ export const mockWardrobeItems: WardrobeItem[] = [
     palette: ["белый", "молочный"],
     material: "Хлопок",
     fit: "Straight fit",
-    note: "База для многослойных образов и офисных выходов.",
+    note: "Чистая офисная база и точка сборки для классических образов.",
     source: "mock",
     ai: {
       extractedAt: "2026-03-12T08:10:00.000Z",
       confidence: 0.98,
       silhouette: "Прямой",
       palette: ["белый", "молочный"],
-      summary: "Чистая база для офиса, города и фотообразов.",
+      summary: "Распознана как базовая рубашка для офиса и smart casual.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
+  }),
+  createWardrobeItem({
     id: "wardrobe-top-02",
-    image:
-      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "blouse",
+      primary: "пудровый",
+      secondary: "молочный",
+      accent: "золотой",
+      background: "молочный",
+    }),
+    name: "Пудровая блуза",
+    brand: "Zarina",
+    category: "Верх",
+    warmth: 1,
+    seasons: ["весна", "лето", "осень"],
+    styleTags: ["офис", "вечер", "акцент"],
+    palette: ["пудровый", "молочный"],
+    material: "Сатин",
+    fit: "Soft fit",
+    note: "Смягчает классический гардероб и хорошо работает под жакет.",
+    source: "mock",
+    ai: {
+      extractedAt: "2026-03-11T17:40:00.000Z",
+      confidence: 0.95,
+      silhouette: "Мягкий",
+      palette: ["пудровый", "молочный"],
+      summary: "Блуза с мягкой драпировкой и деликатным акцентом.",
+      model: "Vision Wardrobe v1",
+    },
+  }),
+  createWardrobeItem({
+    id: "wardrobe-top-03",
+    image: createGarmentArt({
+      kind: "longsleeve",
+      primary: "черный",
+      secondary: "графит",
+      background: "серый",
+    }),
     name: "Черный лонгслив",
     brand: "COS",
     category: "Верх",
@@ -66,12 +108,16 @@ export const mockWardrobeItems: WardrobeItem[] = [
       summary: "Универсальный слой для прохладного дня и многослойности.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
+  }),
+  createWardrobeItem({
     id: "wardrobe-bottom-01",
-    image:
-      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    name: "Широкие серые брюки",
+    image: createGarmentArt({
+      kind: "trousers",
+      primary: "серый",
+      secondary: "графит",
+      background: "молочный",
+    }),
+    name: "Серые костюмные брюки",
     brand: "Mango",
     category: "Низ",
     warmth: 2,
@@ -87,15 +133,47 @@ export const mockWardrobeItems: WardrobeItem[] = [
       confidence: 0.97,
       silhouette: "Wide leg",
       palette: ["серый", "графит"],
-      summary: "Держат форму, не перегружают образ, подходят к белому и черному.",
+      summary: "Держат форму, не перегружают образ и подходят к базовым верхам.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
+  }),
+  createWardrobeItem({
     id: "wardrobe-bottom-02",
-    image:
-      "https://images.unsplash.com/photo-1542272604-787c3835535d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    name: "Прямые синие джинсы",
+    image: createGarmentArt({
+      kind: "skirt",
+      primary: "бежевый",
+      secondary: "песочный",
+      background: "молочный",
+    }),
+    name: "Юбка миди A-line",
+    brand: "LIME",
+    category: "Низ",
+    warmth: 2,
+    seasons: ["весна", "лето", "осень"],
+    styleTags: ["офис", "вечер", "классика"],
+    palette: ["бежевый", "песочный"],
+    material: "Смесовая ткань",
+    fit: "A-line",
+    note: "Классический низ для спокойного женственного силуэта.",
+    source: "mock",
+    ai: {
+      extractedAt: "2026-03-10T13:55:00.000Z",
+      confidence: 0.96,
+      silhouette: "A-line",
+      palette: ["бежевый", "песочный"],
+      summary: "Добавляет в гардероб классическую юбочную капсулу.",
+      model: "Vision Wardrobe v1",
+    },
+  }),
+  createWardrobeItem({
+    id: "wardrobe-bottom-03",
+    image: createGarmentArt({
+      kind: "jeans",
+      primary: "деним",
+      secondary: "синий",
+      background: "серый",
+    }),
+    name: "Прямые темно-синие джинсы",
     brand: "Levi's",
     category: "Низ",
     warmth: 3,
@@ -104,21 +182,54 @@ export const mockWardrobeItems: WardrobeItem[] = [
     palette: ["синий", "деним"],
     material: "Деним",
     fit: "Straight fit",
-    note: "Стабильная база для прогулок и образов на каждый день.",
+    note: "Стабильная база для прогулок и повседневных образов.",
     source: "mock",
     ai: {
       extractedAt: "2026-03-10T13:55:00.000Z",
       confidence: 0.96,
       silhouette: "Прямой",
       palette: ["синий", "деним"],
-      summary: "Подходят под кроссовки, ботинки и тренч.",
+      summary: "Подходят под кроссовки, лоферы и тренч.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
+  }),
+  createWardrobeItem({
     id: "wardrobe-outerwear-01",
-    image:
-      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "blazer",
+      primary: "черный",
+      secondary: "графит",
+      background: "серый",
+    }),
+    name: "Черный жакет",
+    brand: "12 STOREEZ",
+    category: "Верхняя одежда",
+    warmth: 2,
+    seasons: ["весна", "лето", "осень"],
+    styleTags: ["офис", "город", "классика"],
+    palette: ["черный", "графит"],
+    material: "Шерсть с вискозой",
+    fit: "Tailored fit",
+    note: "Добавляет структуру и завершает классический образ.",
+    source: "mock",
+    ai: {
+      extractedAt: "2026-03-07T09:30:00.000Z",
+      confidence: 0.99,
+      silhouette: "Tailored",
+      palette: ["черный", "графит"],
+      summary: "Классический жакет для офиса, встреч и layered styling.",
+      model: "Vision Wardrobe v1",
+    },
+  }),
+  createWardrobeItem({
+    id: "wardrobe-outerwear-02",
+    image: createGarmentArt({
+      kind: "trench",
+      primary: "молочный",
+      secondary: "бежевый",
+      accent: "красный",
+      background: "молочный",
+    }),
     name: "Молочный тренч",
     brand: "LIME",
     category: "Верхняя одежда",
@@ -139,35 +250,15 @@ export const mockWardrobeItems: WardrobeItem[] = [
       summary: "Лучший внешний слой для межсезонья и дождливой погоды.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
-    id: "wardrobe-outerwear-02",
-    image:
-      "https://images.unsplash.com/photo-1711477270970-14340bee9000?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    name: "Джинсовая куртка",
-    brand: "Levi's",
-    category: "Верхняя одежда",
-    warmth: 2,
-    seasons: ["весна", "лето", "осень"],
-    styleTags: ["город", "street", "повседневный"],
-    palette: ["синий", "деним"],
-    material: "Деним",
-    fit: "Boxy fit",
-    note: "Добавляет фактуру и расслабленность.",
-    source: "mock",
-    ai: {
-      extractedAt: "2026-03-05T15:18:00.000Z",
-      confidence: 0.94,
-      silhouette: "Boxy",
-      palette: ["синий", "деним"],
-      summary: "Хороша для мягкой погоды и городского настроения.",
-      model: "Vision Wardrobe v1",
-    },
-  },
-  {
+  }),
+  createWardrobeItem({
     id: "wardrobe-outerwear-03",
-    image:
-      "https://images.unsplash.com/photo-1763742937367-e3481b64da81?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "coat",
+      primary: "черный",
+      secondary: "графит",
+      background: "серый",
+    }),
     name: "Черное шерстяное пальто",
     brand: "12 STOREEZ",
     category: "Верхняя одежда",
@@ -187,12 +278,46 @@ export const mockWardrobeItems: WardrobeItem[] = [
       summary: "Покрывает температуру около нуля и ветреные сценарии.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
+  }),
+  createWardrobeItem({
     id: "wardrobe-shoes-01",
-    image:
-      "https://images.unsplash.com/photo-1689357642277-65228ee23680?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    name: "Белые кроссовки",
+    image: createGarmentArt({
+      kind: "loafers",
+      primary: "черный",
+      secondary: "графит",
+      accent: "золотой",
+      background: "молочный",
+    }),
+    name: "Черные лоферы",
+    brand: "Ekonika",
+    category: "Обувь",
+    warmth: 2,
+    seasons: ["весна", "лето", "осень"],
+    styleTags: ["офис", "город", "классика"],
+    palette: ["черный"],
+    material: "Кожа",
+    fit: "Classic",
+    note: "Самая спокойная пара для офиса и умного casual.",
+    source: "mock",
+    ai: {
+      extractedAt: "2026-03-06T18:42:00.000Z",
+      confidence: 0.99,
+      silhouette: "Классический",
+      palette: ["черный"],
+      summary: "Лаконичная офисная обувь под брюки, юбку и деним.",
+      model: "Vision Wardrobe v1",
+    },
+  }),
+  createWardrobeItem({
+    id: "wardrobe-shoes-02",
+    image: createGarmentArt({
+      kind: "sneakers",
+      primary: "белый",
+      secondary: "серый",
+      accent: "молочный",
+      background: "серый",
+    }),
+    name: "Белые кеды",
     brand: "Nike",
     category: "Обувь",
     warmth: 2,
@@ -201,21 +326,25 @@ export const mockWardrobeItems: WardrobeItem[] = [
     palette: ["белый"],
     material: "Кожа",
     fit: "Low top",
-    note: "Самая универсальная пара для городского ритма.",
+    note: "Универсальная пара для города и мягких smart casual образов.",
     source: "mock",
     ai: {
       extractedAt: "2026-03-06T18:42:00.000Z",
       confidence: 0.99,
       silhouette: "Низкий профиль",
       palette: ["белый"],
-      summary: "Легкая, чистая и совместимая почти с любой капсулой.",
+      summary: "Легкая и чистая пара для спокойной капсулы.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
-    id: "wardrobe-shoes-02",
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+  }),
+  createWardrobeItem({
+    id: "wardrobe-shoes-03",
+    image: createGarmentArt({
+      kind: "boots",
+      primary: "черный",
+      secondary: "графит",
+      background: "серый",
+    }),
     name: "Черные кожаные ботинки",
     brand: "Ekonika",
     category: "Обувь",
@@ -236,11 +365,15 @@ export const mockWardrobeItems: WardrobeItem[] = [
       summary: "Закрывают погоду до промозглого ветра и мокрого асфальта.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
+  }),
+  createWardrobeItem({
     id: "wardrobe-accessory-01",
-    image:
-      "https://images.unsplash.com/photo-1575295912464-fcfd1186d11d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "bag",
+      primary: "черный",
+      secondary: "коричневый",
+      background: "молочный",
+    }),
     name: "Кожаная сумка-тоут",
     brand: "Michael Kors",
     category: "Аксессуары",
@@ -260,11 +393,15 @@ export const mockWardrobeItems: WardrobeItem[] = [
       summary: "Подходит для офиса, встреч и быстрых городских сценариев.",
       model: "Vision Wardrobe v1",
     },
-  },
-  {
+  }),
+  createWardrobeItem({
     id: "wardrobe-accessory-02",
-    image:
-      "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "scarf",
+      primary: "красный",
+      secondary: "молочный",
+      background: "молочный",
+    }),
     name: "Шелковый платок",
     brand: "2MOOD",
     category: "Аксессуары",
@@ -284,106 +421,200 @@ export const mockWardrobeItems: WardrobeItem[] = [
       summary: "Работает как тонкий цветовой акцент в минималистичной базе.",
       model: "Vision Wardrobe v1",
     },
-  },
+  }),
+  createWardrobeItem({
+    id: "wardrobe-accessory-03",
+    image: createGarmentArt({
+      kind: "earrings",
+      primary: "золотой",
+      secondary: "коричневый",
+      accent: "молочный",
+      background: "молочный",
+    }),
+    name: "Жемчужные серьги",
+    brand: "Poison Drop",
+    category: "Аксессуары",
+    warmth: 1,
+    seasons: ["весна", "лето", "осень", "зима"],
+    styleTags: ["офис", "вечер", "классика"],
+    palette: ["золотой", "молочный"],
+    material: "Металл и жемчуг",
+    fit: "Mini accent",
+    note: "Небольшой классический акцент для чистого силуэта.",
+    source: "mock",
+    ai: {
+      extractedAt: "2026-03-02T12:25:00.000Z",
+      confidence: 0.91,
+      silhouette: "Акцентный",
+      palette: ["золотой", "молочный"],
+      summary: "Деликатный аксессуар для офисного и вечернего стиля.",
+      model: "Vision Wardrobe v1",
+    },
+  }),
 ];
 
 export const mockFeedItems: FeedItem[] = [
   {
     id: "feed-01",
-    image:
-      "https://images.unsplash.com/photo-1620777888789-0ee95b57a277?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createLookArt({
+      background: "молочный",
+      pieces: [
+        { kind: "shirt", primary: "белый", secondary: "молочный", x: 36, y: 34, scale: 1.1 },
+        { kind: "trousers", primary: "серый", secondary: "графит", x: 178, y: 42, scale: 1.05 },
+        { kind: "loafers", primary: "черный", secondary: "графит", x: 120, y: 276, scale: 0.95 },
+      ],
+    }),
     title: "Чистый городской минимализм",
-    brand: "Gucci",
+    brand: "Capsule Edit",
     likes: 1243,
-    note: "Белый верх, графитовый низ и спокойные аксессуары.",
+    note: "Рубашка, серые брюки и лоферы как спокойная офисная база.",
   },
   {
     id: "feed-02",
-    image:
-      "https://images.unsplash.com/photo-1764698403474-de152b479d59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    title: "Уличный акцент с денимом",
-    brand: "Supreme",
+    image: createLookArt({
+      background: "серый",
+      pieces: [
+        { kind: "blazer", primary: "черный", secondary: "графит", x: 20, y: 24, scale: 1.08 },
+        { kind: "blouse", primary: "пудровый", secondary: "молочный", x: 170, y: 38, scale: 0.98 },
+        { kind: "skirt", primary: "бежевый", secondary: "песочный", x: 100, y: 236, scale: 0.98 },
+      ],
+    }),
+    title: "Классика с мягким акцентом",
+    brand: "Dior",
     likes: 2156,
-    note: "Деним, контрастные слои и удобная обувь.",
+    note: "Жакет, блуза и юбка миди для более женственной классики.",
   },
   {
     id: "feed-03",
-    image:
-      "https://images.unsplash.com/photo-1648065460033-5c59f2ef1d97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    title: "Деловой шик без перегруза",
-    brand: "Dior",
+    image: createLookArt({
+      background: "молочный",
+      pieces: [
+        { kind: "trench", primary: "молочный", secondary: "бежевый", accent: "красный", x: 30, y: 18, scale: 1.05 },
+        { kind: "jeans", primary: "деним", secondary: "синий", x: 196, y: 54, scale: 0.92 },
+        { kind: "sneakers", primary: "белый", secondary: "серый", x: 108, y: 286, scale: 0.9 },
+      ],
+    }),
+    title: "Smart casual в пути",
+    brand: "LIME",
     likes: 3421,
-    note: "Четкие линии, сумка-тоут и мягкий тренч.",
+    note: "Тренч, деним и белые кеды для мягкой городской динамики.",
   },
   {
     id: "feed-04",
-    image:
-      "https://images.unsplash.com/photo-1769072060333-12a09b124cb9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    title: "Спокойный casual на каждый день",
-    brand: "Uniqlo",
+    image: createLookArt({
+      background: "серый",
+      pieces: [
+        { kind: "coat", primary: "черный", secondary: "графит", x: 26, y: 16, scale: 1.08 },
+        { kind: "longsleeve", primary: "черный", secondary: "графит", x: 196, y: 52, scale: 0.9 },
+        { kind: "boots", primary: "черный", secondary: "графит", x: 102, y: 288, scale: 0.92 },
+      ],
+    }),
+    title: "Холодный день без перегруза",
+    brand: "COS",
     likes: 987,
-    note: "База для прогулок, кофе и быстрых встреч.",
+    note: "Пальто, темный трикотаж и ботинки для прохлады и ветра.",
   },
   {
     id: "feed-05",
-    image:
-      "https://images.unsplash.com/photo-1769107805465-bfd41863f1a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    title: "Графит и молочный",
-    brand: "COS",
+    image: createLookArt({
+      background: "молочный",
+      pieces: [
+        { kind: "shirt", primary: "белый", secondary: "молочный", x: 26, y: 26, scale: 0.98 },
+        { kind: "bag", primary: "черный", secondary: "коричневый", x: 206, y: 44, scale: 0.9 },
+        { kind: "scarf", primary: "красный", secondary: "молочный", x: 112, y: 258, scale: 0.9 },
+      ],
+    }),
+    title: "Аксессуары как акцент",
+    brand: "2MOOD",
     likes: 1876,
-    note: "Сдержанная палитра и мягкая фактура тканей.",
+    note: "Сумка и шелковый платок делают капсулу живой без перегруза.",
   },
   {
     id: "feed-06",
-    image:
-      "https://images.unsplash.com/photo-1718230875502-e3c12afddc49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    title: "Спорт-шик для города",
-    brand: "Nike",
+    image: createLookArt({
+      background: "серый",
+      pieces: [
+        { kind: "blazer", primary: "черный", secondary: "графит", x: 20, y: 28, scale: 1.0 },
+        { kind: "trousers", primary: "серый", secondary: "графит", x: 188, y: 34, scale: 0.98 },
+        { kind: "earrings", primary: "золотой", secondary: "коричневый", accent: "молочный", x: 122, y: 280, scale: 0.84 },
+      ],
+    }),
+    title: "Офисная капсула 3 вещи",
+    brand: "Capsule Edit",
     likes: 2543,
-    note: "Кроссовки, деним и плотный верхний слой.",
+    note: "Жакет, брюки и ювелирный акцент в чистой нейтральной палитре.",
   },
 ];
 
 export const mockFavoriteLooks: FavoriteLook[] = [
   {
     id: "favorite-01",
-    image:
-      "https://images.unsplash.com/photo-1620777888789-0ee95b57a277?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createLookArt({
+      background: "молочный",
+      pieces: [
+        { kind: "shirt", primary: "белый", secondary: "молочный", x: 34, y: 30, scale: 1.04 },
+        { kind: "trousers", primary: "серый", secondary: "графит", x: 190, y: 36, scale: 0.96 },
+        { kind: "trench", primary: "молочный", secondary: "бежевый", accent: "красный", x: 96, y: 214, scale: 0.9 },
+      ],
+    }),
     title: "Офисный баланс",
     brand: "Massimo Dutti",
     note: "Рубашка, серые брюки и молочный тренч.",
   },
   {
     id: "favorite-02",
-    image:
-      "https://images.unsplash.com/photo-1648065460033-5c59f2ef1d97?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createLookArt({
+      background: "серый",
+      pieces: [
+        { kind: "longsleeve", primary: "черный", secondary: "графит", x: 28, y: 34, scale: 1.0 },
+        { kind: "jeans", primary: "деним", secondary: "синий", x: 190, y: 34, scale: 0.94 },
+        { kind: "scarf", primary: "красный", secondary: "молочный", x: 118, y: 262, scale: 0.82 },
+      ],
+    }),
     title: "Smart casual на встречу",
-    brand: "Dior",
+    brand: "COS",
     note: "Черный верх, джинсы и акцентный платок.",
   },
   {
     id: "favorite-03",
-    image:
-      "https://images.unsplash.com/photo-1718230875502-e3c12afddc49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    title: "День в городе",
-    brand: "Nike",
-    note: "Кроссовки, деним и джинсовая куртка.",
+    image: createLookArt({
+      background: "молочный",
+      pieces: [
+        { kind: "blazer", primary: "черный", secondary: "графит", x: 20, y: 22, scale: 1.0 },
+        { kind: "skirt", primary: "бежевый", secondary: "песочный", x: 192, y: 36, scale: 0.9 },
+        { kind: "loafers", primary: "черный", secondary: "графит", x: 110, y: 286, scale: 0.88 },
+      ],
+    }),
+    title: "Классика на день",
+    brand: "LIME",
+    note: "Жакет, юбка и лоферы для спокойной деловой базы.",
   },
   {
     id: "favorite-04",
-    image:
-      "https://images.unsplash.com/photo-1761164920960-2d776a18998c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createLookArt({
+      background: "серый",
+      pieces: [
+        { kind: "coat", primary: "черный", secondary: "графит", x: 32, y: 18, scale: 1.0 },
+        { kind: "boots", primary: "черный", secondary: "графит", x: 202, y: 44, scale: 0.86 },
+        { kind: "bag", primary: "черный", secondary: "коричневый", x: 112, y: 276, scale: 0.84 },
+      ],
+    }),
     title: "Вечерняя капсула",
-    brand: "Versace",
-    note: "Темная база, пальто и аксессуар с красным акцентом.",
+    brand: "12 STOREEZ",
+    note: "Темная база, пальто и структурная сумка.",
   },
 ];
 
 export const mockShopCatalog: ShopRecommendation[] = [
   {
     id: "shop-01",
-    image:
-      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "trench",
+      primary: "молочный",
+      secondary: "бежевый",
+      accent: "красный",
+      background: "молочный",
+    }),
     title: "Тренч с поясом",
     brand: "LIME",
     price: "12 990 ₽",
@@ -395,8 +626,12 @@ export const mockShopCatalog: ShopRecommendation[] = [
   },
   {
     id: "shop-02",
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "boots",
+      primary: "черный",
+      secondary: "графит",
+      background: "серый",
+    }),
     title: "Кожаные ботинки",
     brand: "Ekonika",
     price: "15 490 ₽",
@@ -408,11 +643,15 @@ export const mockShopCatalog: ShopRecommendation[] = [
   },
   {
     id: "shop-03",
-    image:
-      "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
-    title: "Базовая хлопковая футболка",
+    image: createGarmentArt({
+      kind: "shirt",
+      primary: "белый",
+      secondary: "молочный",
+      background: "молочный",
+    }),
+    title: "Базовая рубашка",
     brand: "Uniqlo",
-    price: "1 990 ₽",
+    price: "3 990 ₽",
     category: "Верх",
     palette: ["белый", "черный"],
     weatherTags: ["clear", "clouds"],
@@ -421,8 +660,12 @@ export const mockShopCatalog: ShopRecommendation[] = [
   },
   {
     id: "shop-04",
-    image:
-      "https://images.unsplash.com/photo-1506629905607-d9fd8ef49d56?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "trousers",
+      primary: "серый",
+      secondary: "графит",
+      background: "молочный",
+    }),
     title: "Широкие костюмные брюки",
     brand: "12 STOREEZ",
     price: "9 990 ₽",
@@ -434,8 +677,12 @@ export const mockShopCatalog: ShopRecommendation[] = [
   },
   {
     id: "shop-05",
-    image:
-      "https://images.unsplash.com/photo-1571513722275-4b41940f54b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "scarf",
+      primary: "красный",
+      secondary: "молочный",
+      background: "молочный",
+    }),
     title: "Шелковая косынка",
     brand: "2MOOD",
     price: "2 790 ₽",
@@ -447,8 +694,13 @@ export const mockShopCatalog: ShopRecommendation[] = [
   },
   {
     id: "shop-06",
-    image:
-      "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    image: createGarmentArt({
+      kind: "loafers",
+      primary: "черный",
+      secondary: "графит",
+      accent: "золотой",
+      background: "молочный",
+    }),
     title: "Лоферы из мягкой кожи",
     brand: "Mango",
     price: "7 490 ₽",
@@ -458,11 +710,23 @@ export const mockShopCatalog: ShopRecommendation[] = [
     styleTags: ["офис", "город", "минимализм"],
     reason: "Более взрослый и спокойный вариант на сухую погоду.",
   },
+  {
+    id: "shop-07",
+    image: createGarmentArt({
+      kind: "blazer",
+      primary: "черный",
+      secondary: "графит",
+      background: "серый",
+    }),
+    title: "Классический жакет",
+    brand: "Massimo Dutti",
+    price: "16 990 ₽",
+    category: "Верхняя одежда",
+    palette: ["черный"],
+    weatherTags: ["clear", "clouds", "wind"],
+    styleTags: ["офис", "классика", "город"],
+    reason: "Усилит классическую часть гардероба и поможет собирать офисные образы.",
+  },
 ];
 
-export const outfitOccasions = [
-  "На каждый день",
-  "Офис",
-  "Встреча",
-  "Прогулка",
-];
+export const outfitOccasions = ["На каждый день", "Офис", "Встреча", "Прогулка"];

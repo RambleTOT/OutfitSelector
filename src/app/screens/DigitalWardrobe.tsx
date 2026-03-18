@@ -116,7 +116,7 @@ export function DigitalWardrobe() {
               <ImageWithFallback
                 src={item.image}
                 alt={item.name}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain p-3"
               />
             </div>
             <div className="p-3">
@@ -148,7 +148,7 @@ export function DigitalWardrobe() {
                     <ImageWithFallback
                       src={selectedItem.image}
                       alt={selectedItem.name}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain p-5"
                     />
                   </div>
                 </div>

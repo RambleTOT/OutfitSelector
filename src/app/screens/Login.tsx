@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { formatPhoneMask, isPhoneComplete } from "../lib/phone";
 import { useAppState } from "../state/AppState";
 
 export function Login() {
@@ -13,9 +14,15 @@ export function Login() {
     phone: userProfile.phone,
     password: "",
   });
+  const phoneIsComplete = isPhoneComplete(formData.phone);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!phoneIsComplete) {
+      return;
+    }
+
     updateUserProfile({ phone: formData.phone });
     navigate("/app/home");
   };
@@ -38,10 +45,20 @@ export function Login() {
               <Input
                 type="tel"
                 value={formData.phone}
-                onChange={(event) => setFormData({ ...formData, phone: event.target.value })}
-                placeholder="+7 (___) ___-__-__"
+                onChange={(event) =>
+                  setFormData({
+                    ...formData,
+                    phone: formatPhoneMask(event.target.value),
+                  })
+                }
+                placeholder="(999) 123 45-67"
                 required
               />
+              {!phoneIsComplete && formData.phone.length > 0 ? (
+                <p className="mt-2 text-xs text-[#FC7070]">
+                  Введите номер в формате (999) 123 45-67
+                </p>
+              ) : null}
             </div>
 
             <div>
@@ -67,13 +84,21 @@ export function Login() {
               </div>
             </div>
 
-            <button type="button" className="text-sm text-[#FC7070]">
+            <button
+              type="button"
+              onClick={() => navigate("/verify")}
+              className="text-sm text-[#FC7070]"
+            >
               Забыли пароль?
             </button>
           </div>
         </div>
 
-        <Button type="submit" className="h-12 w-full rounded-2xl bg-[#FC7070] text-white hover:bg-[#f45d5d]">
+        <Button
+          type="submit"
+          disabled={!phoneIsComplete}
+          className="h-12 w-full rounded-2xl bg-[#FC7070] text-white hover:bg-[#f45d5d]"
+        >
           Войти
         </Button>
         <button

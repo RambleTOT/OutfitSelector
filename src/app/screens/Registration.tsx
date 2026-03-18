@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { Eye, EyeOff, Sparkles } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { formatPhoneMask, isPhoneComplete } from "../lib/phone";
 import { useAppState } from "../state/AppState";
 
 export function Registration() {
@@ -17,9 +18,19 @@ export function Registration() {
     password: "",
     confirmPassword: "",
   });
+  const passwordsMatch =
+    formData.password.length > 0 &&
+    formData.confirmPassword.length > 0 &&
+    formData.password === formData.confirmPassword;
+  const phoneIsComplete = isPhoneComplete(formData.phone);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!phoneIsComplete || !passwordsMatch) {
+      return;
+    }
+
     updateUserProfile({
       name: formData.name,
       email: formData.email,
@@ -75,10 +86,20 @@ export function Registration() {
               <Input
                 type="tel"
                 value={formData.phone}
-                onChange={(event) => setFormData({ ...formData, phone: event.target.value })}
-                placeholder="+7 (___) ___-__-__"
+                onChange={(event) =>
+                  setFormData({
+                    ...formData,
+                    phone: formatPhoneMask(event.target.value),
+                  })
+                }
+                placeholder="(999) 123 45-67"
                 required
               />
+              {!phoneIsComplete && formData.phone.length > 0 ? (
+                <p className="mt-2 text-xs text-[#FC7070]">
+                  Введите номер в формате (999) 123 45-67
+                </p>
+              ) : null}
             </div>
 
             <div>
@@ -125,11 +146,18 @@ export function Registration() {
                   {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {formData.confirmPassword.length > 0 && !passwordsMatch ? (
+                <p className="mt-2 text-xs text-[#FC7070]">Пароли не совпадают</p>
+              ) : null}
             </div>
           </div>
         </div>
 
-        <Button type="submit" className="h-12 w-full rounded-2xl bg-[#FC7070] text-white hover:bg-[#f45d5d]">
+        <Button
+          type="submit"
+          disabled={!phoneIsComplete || (formData.confirmPassword.length > 0 && !passwordsMatch)}
+          className="h-12 w-full rounded-2xl bg-[#FC7070] text-white hover:bg-[#f45d5d]"
+        >
           Продолжить
         </Button>
 

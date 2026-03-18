@@ -1,9 +1,11 @@
 import { LogOut, Mail, MapPin, Phone, Ruler, Settings, Sparkles, Weight } from "lucide-react";
+import { useNavigate } from "react-router";
 import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { useAppState } from "../state/AppState";
 
 export function Profile() {
+  const navigate = useNavigate();
   const { userProfile, wardrobeItems, favoriteLooks, latestOutfit, weather } = useAppState();
 
   const stats = [
@@ -104,11 +106,19 @@ export function Profile() {
       </div>
 
       <div className="mt-5 space-y-3">
-        <Button variant="outline" className="h-12 w-full rounded-2xl border-gray-200 bg-white">
+        <Button
+          variant="outline"
+          onClick={() => navigate("/additional-params")}
+          className="h-12 w-full rounded-2xl border-gray-200 bg-white"
+        >
           <Settings size={18} />
           Настройки
         </Button>
-        <Button variant="outline" className="h-12 w-full rounded-2xl border-[#FC7070] bg-white text-[#FC7070]">
+        <Button
+          variant="outline"
+          onClick={() => navigate("/login")}
+          className="h-12 w-full rounded-2xl border-[#FC7070] bg-white text-[#FC7070]"
+        >
           <LogOut size={18} />
           Выйти
         </Button>

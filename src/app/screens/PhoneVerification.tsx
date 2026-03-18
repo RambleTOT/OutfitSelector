@@ -7,6 +7,7 @@ import { Input } from "../components/ui/input";
 export function PhoneVerification() {
   const navigate = useNavigate();
   const [code, setCode] = useState(["", "", "", "", "", ""]);
+  const [statusMessage, setStatusMessage] = useState("");
 
   const handleCodeChange = (index: number, value: string) => {
     if (value.length <= 1 && /^\d*$/.test(value)) {
@@ -23,6 +24,12 @@ export function PhoneVerification() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     navigate("/additional-params");
+  };
+
+  const handleResend = () => {
+    const nextCode = String(Math.floor(100000 + Math.random() * 900000)).split("");
+    setCode(nextCode);
+    setStatusMessage(`Новый код отправлен: ${nextCode.join("")}`);
   };
 
   return (
@@ -59,9 +66,16 @@ export function PhoneVerification() {
             ))}
           </div>
 
-          <button type="button" className="mt-5 w-full text-sm text-gray-500">
+          <button
+            type="button"
+            onClick={handleResend}
+            className="mt-5 w-full text-sm text-gray-500"
+          >
             Не пришел звонок? <span className="text-[#FC7070]">Запросить повторно</span>
           </button>
+          {statusMessage ? (
+            <p className="mt-3 text-center text-xs text-[#FC7070]">{statusMessage}</p>
+          ) : null}
         </div>
 
         <div className="mt-auto pt-4">

@@ -10,7 +10,8 @@ import type { WardrobeItem } from "../types";
 export function WardrobeDigitization() {
   const navigate = useNavigate();
   const { digitizeItem, isDigitizing, lastDigitizedItem } = useAppState();
-  const [currentItem, setCurrentItem] = useState<WardrobeItem | null>(lastDigitizedItem);
+  const [currentItem, setCurrentItem] = useState<WardrobeItem | null>(null);
+  const [isPreparingNewScan, setIsPreparingNewScan] = useState(false);
   const cameraInputRef = useRef<HTMLInputElement | null>(null);
   const galleryInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -19,11 +20,18 @@ export function WardrobeDigitization() {
       return;
     }
 
-    const item = await digitizeItem(file);
-    setCurrentItem(item);
+    setIsPreparingNewScan(true);
+    setCurrentItem(null);
+
+    try {
+      const item = await digitizeItem(file);
+      setCurrentItem(item);
+    } finally {
+      setIsPreparingNewScan(false);
+    }
   };
 
-  const activeItem = currentItem ?? lastDigitizedItem;
+  const activeItem = isPreparingNewScan ? null : currentItem ?? lastDigitizedItem;
 
   return (
     <div className="mx-auto min-h-screen max-w-[430px] bg-[#f7f7f8] px-5 py-7">
@@ -41,7 +49,7 @@ export function WardrobeDigitization() {
             <ImageWithFallback
               src={activeItem.image}
               alt={activeItem.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain p-5"
             />
           ) : (
             <div className="flex h-full flex-col items-center justify-center px-6 text-center">
@@ -60,7 +68,7 @@ export function WardrobeDigitization() {
               <LoaderCircle className="mb-3 animate-spin" size={28} />
               <p className="text-lg">AI анализирует фото</p>
               <p className="mt-2 text-sm text-white/75">
-                Выделяем вещь, определяем категорию, материал и палитру.
+                Очищаем фон, выделяем контур вещи, улучшаем подачу и строим clean item-модель.
               </p>
             </div>
           ) : null}
@@ -91,14 +99,20 @@ export function WardrobeDigitization() {
             accept="image/*"
             capture="environment"
             className="hidden"
-            onChange={(event) => void handleFileSelection(event.target.files?.[0])}
+            onChange={(event) => {
+              void handleFileSelection(event.target.files?.[0]);
+              event.target.value = "";
+            }}
           />
           <input
             ref={galleryInputRef}
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(event) => void handleFileSelection(event.target.files?.[0])}
+            onChange={(event) => {
+              void handleFileSelection(event.target.files?.[0]);
+              event.target.value = "";
+            }}
           />
 
           {activeItem ? (
@@ -128,7 +142,7 @@ export function WardrobeDigitization() {
                 <p className="text-sm font-medium">Как это работает</p>
               </div>
               <p className="text-sm text-white/75">
-                1. Загружаешь фото. 2. Vision-модель выделяет вещь и строит цифровую карточку. 3. AI-стилист использует ее при сборке образа.
+                1. Загружаешь фото. 2. Vision-модель выделяет вещь, убирает лишний фон и создает чистую fashion-модель. 3. AI-стилист использует ее при сборке образа.
               </p>
             </div>
           )}
