@@ -68,6 +68,7 @@ export interface SavedOutfit {
   name: string
   occasion: OccasionId
   items: string[]
+  snap?: Item[] // копии вещей на момент сохранения: если вещь удалят, образ останется
   createdAt: number
   note?: string
   explanation?: string

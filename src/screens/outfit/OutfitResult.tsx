@@ -7,6 +7,8 @@ import { toast, useUi } from '../../store/ui'
 import { occasionById, temp } from '../../lib/format'
 import type { Item } from '../../data/types'
 import { PaywallSheet } from '../paywall/PaywallSheet'
+import { useSaveOutfit } from '../favorites/useSaveOutfit'
+import { snapshotOf } from '../../lib/outfit'
 import { ReplaceItemSheet } from './ReplaceItemSheet'
 import { Waiting } from './Waiting'
 
@@ -42,10 +44,10 @@ function ErrorView() {
 function ResultView() {
   const navigate = useNavigate()
   const items = useApp((s) => s.items)
-  const saveOutfit = useApp((s) => s.saveOutfit)
   const lim = useLimits()
   const flow = useOutfitFlow()
   const { result, liked, worn } = flow
+  const { save: saveFav, sheets: favSheets } = useSaveOutfit()
   const [replace, setReplace] = useState(false)
   const [paywall, setPaywall] = useState(false)
   if (!result) return <Navigate to="/outfit" replace />
@@ -62,15 +64,10 @@ function ResultView() {
     else if (r === 'offline') toast('Нет интернета', 'offline')
   }
 
-  const save = () => {
-    const r = saveOutfit({ name: occ.label, occasion: result.occasion, items: result.itemIds, explanation: result.explanation, worn })
-    if (r === 'saved') {
-      flow.setSaved(useApp.getState().saved[0].id)
-      toast('Образ сохранён')
-    } else {
-      toast('Избранное заполнено', 'neutral') // шторка замены FAV-02 и FAV-05 появятся в P6
-    }
-  }
+  const save = () => saveFav(
+    { name: occ.label, occasion: result.occasion, items: result.itemIds, snap: snapshotOf(outfitItems), explanation: result.explanation, worn },
+    (id) => flow.setSaved(id),
+  )
 
   return (
     <>
@@ -104,6 +101,7 @@ function ResultView() {
           <Button icon={saved ? 'check' : 'bookmark-simple'} disabled={saved} onClick={save}>{saved ? 'Сохранено' : 'Сохранить'}</Button>
         </div>
       </CtaPlate>
+      {favSheets}
       <ReplaceItemSheet
         open={replace} onClose={() => setReplace(false)} outfitItems={outfitItems} wardrobe={items}
         onReplace={(o, n) => flow.replaceItem(o, n)}

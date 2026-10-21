@@ -74,13 +74,15 @@ const SLOTS_WITH_DRESS: Partial<Record<Category, Slot>> = {
 }
 
 export function OutfitCard({
-  items, explanation, liked = null, onLike, onDislike, loading = false, hint, aspect = '1 / 1.05', header, footer, ghostSlots, style,
+  items, explanation, liked = null, onLike, onDislike, loading = false, hint, aspect = '1 / 1.05', header, footer, ghostSlots, style, deletedIds,
 }: {
   items: Item[]; explanation?: string; liked?: boolean | null; onLike?: () => void; onDislike?: () => void; loading?: boolean
   hint?: ReactNode; aspect?: string; header?: ReactNode; footer?: ReactNode
   /** для ожидания AI: пустые слоты по категориям вместо реальных вещей */
   ghostSlots?: Category[]
   style?: CSSProperties
+  /** вещи, удалённые из гардероба: рисуются бледно, внизу пометка «вещь удалена» */
+  deletedIds?: string[]
 }) {
   const hasDress = items.some((i) => i.category === 'dress')
   const seen = new Set<Category>()
@@ -95,7 +97,8 @@ export function OutfitCard({
             left: s.left, top: s.top, width: s.width, height: s.height, zIndex: s.z, transform: `rotate(${s.rotate}deg)`,
             animation: loading ? `at-shuffle 2.4s ${i * 0.2}s ease-in-out infinite` : `at-fly-in var(--dur-spring) ${i * 60}ms var(--ease-spring) both`,
           }
-          return <div key={it.id} className="outfit__item" style={style}><ItemArt item={it} shadow /></div>
+          const gone = deletedIds?.includes(it.id)
+          return <div key={it.id} className="outfit__item" style={{ ...style, opacity: gone ? 0.35 : undefined }}><ItemArt item={it} shadow /></div>
         })}
         {ghostSlots?.map((c, i) => {
           const s = SLOTS[c]
@@ -107,6 +110,7 @@ export function OutfitCard({
             </div>
           )
         })}
+        {deletedIds && deletedIds.length > 0 && <span className="tile__badge" style={{ zIndex: 12 }}>вещь удалена</span>}
         {!loading && (onLike || onDislike) && (
           <div className="outfit__rate">
             <span className={liked === true ? 'pop-on' : ''}><IconButton icon="thumbs-up" label="Нравится" selected={liked === true} pop={liked === true} onClick={onLike} /></span>
@@ -157,5 +161,18 @@ export function SettingsRow({ icon, label, value, trailing = 'caret', danger, ra
       {trailing === 'check' && radio && <Icon name="check" size={22} color="var(--accent)" />}
       {typeof trailing === 'object' && trailing}
     </button>
+  )
+}
+
+const MINI_ORDER: Category[] = ['dress', 'outer', 'top', 'bottom', 'shoes', 'bag', 'accessory']
+
+/** Мини-коллаж 2×2 для карточек избранного и шторки замены */
+export function MiniCollage({ items, size }: { items: Item[]; size?: number }) {
+  const pick = [...items].sort((a, b) => MINI_ORDER.indexOf(a.category) - MINI_ORDER.indexOf(b.category)).slice(0, 4)
+  const pad = size ? Math.round(size / 10) : 14
+  return (
+    <div style={{ width: size ?? '100%', height: size ?? '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: size ? 2 : 4, padding: pad, boxSizing: 'border-box' }}>
+      {pick.map((it) => <div key={it.id} style={{ minWidth: 0, minHeight: 0 }}><ItemArt item={it} shadow={!size} /></div>)}
+    </div>
   )
 }

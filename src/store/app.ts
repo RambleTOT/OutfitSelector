@@ -80,12 +80,22 @@ interface Actions {
   setQuiz: (q: Partial<Quiz>) => void
   finishQuiz: () => void
   finishOnboarding: (skipped: boolean) => void
+  deleteSaved: (id: string) => void
+  updateSaved: (id: string, patch: Partial<SavedOutfit>) => void
+  replaceSaved: (oldId: string, o: Omit<SavedOutfit, 'id' | 'createdAt'>) => void
   addItem: (i: Item) => void
   updateItem: (i: Item) => void
   deleteItem: (id: string) => void
 }
 
 export type AppState = Data & Actions
+
+const DAY = 86400000
+/** Два сохранённых образа для демо: избранное не пустое, а место для новых ещё есть */
+const seedSaved = (): SavedOutfit[] => [
+  { id: 'seed1', name: 'Офис в среду', occasion: 'work', items: ['i09', 'i02', 'i13', 'i19', 'i21'], createdAt: Date.now() - 7 * DAY, explanation: 'Пиджак и светлая рубашка держат деловой тон, лоферы собирают образ' },
+  { id: 'seed2', name: 'Парк и кофе', occasion: 'walk', items: ['i04', 'i12', 'i18', 'i24'], createdAt: Date.now() - 19 * DAY, explanation: 'Худи и широкие джинсы для долгой прогулки, кепка на случай солнца' },
+]
 
 const freshUsage = (): Usage => ({
   weekKey: weekKey(),
@@ -170,6 +180,7 @@ export const useApp = create<AppState>()(
           quizDone: true,
           onboarded: true,
           items: s.items.length >= MOCK_ITEMS.length ? s.items : MOCK_ITEMS.map((i) => ({ ...i })),
+          saved: s.saved.length ? s.saved : seedSaved(),
           seen: { ...s.seen },
         })),
 
@@ -194,6 +205,11 @@ export const useApp = create<AppState>()(
         set({ saved: [{ ...o, id: 'o' + Date.now().toString(36), createdAt: Date.now() }, ...s.saved] })
         return 'saved'
       },
+
+      deleteSaved: (id) => set((s) => ({ saved: s.saved.filter((o) => o.id !== id) })),
+      updateSaved: (id, patch) => set((s) => ({ saved: s.saved.map((o) => (o.id === id ? { ...o, ...patch } : o)) })),
+      // шторка заполненного избранного: новый образ встаёт на место выбранного
+      replaceSaved: (oldId, o) => set((s) => ({ saved: [{ ...o, id: 'o' + Date.now().toString(36), createdAt: Date.now() }, ...s.saved.filter((x) => x.id !== oldId)] })),
 
       // имитация оплаты: тариф включается сразу
       activatePlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndsAt: plan === 'free' ? null : Date.now() + 30 * 86400000 }),

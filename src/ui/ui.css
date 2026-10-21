@@ -535,3 +535,10 @@
 .proc-hero[data-error="true"] { box-shadow: inset 0 0 0 2px var(--error); }
 .proc-hero__art { width: 72%; height: 72%; animation: at-reveal 600ms var(--ease-out); }
 .proc-hero__raw { width: 72%; height: 72%; object-fit: contain; opacity: 0.45; filter: grayscale(0.4); }
+
+/* ---------- Избранное ---------- */
+.saved-card { display: flex; flex-direction: column; gap: 8px; min-width: 0; border: none; background: transparent; padding: 0; cursor: pointer; text-align: left; color: var(--ink-primary); transition: transform var(--dur-fast) var(--ease-spring); }
+.saved-card:active { transform: scale(0.97); }
+.saved-card__mat { position: relative; aspect-ratio: 3 / 4; border-radius: var(--radius-tile); background: var(--item-mat); overflow: hidden; }
+.saved-card__text { display: flex; flex-direction: column; gap: 2px; padding: 0 2px; min-width: 0; }
+.saved-card__name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

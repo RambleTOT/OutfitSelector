@@ -20,7 +20,8 @@ import { PhotoCard } from '../screens/add/PhotoCard'
 import { useApp } from '../store/app'
 import { Wardrobe } from '../screens/wardrobe/Wardrobe'
 import { ItemDetail } from '../screens/wardrobe/ItemDetail'
-import { Favorites } from '../screens/Favorites'
+import { Favorites } from '../screens/favorites/Favorites'
+import { SavedOutfitDetail } from '../screens/favorites/SavedOutfitDetail'
 import { Profile } from '../screens/Profile'
 import { Kit } from '../screens/Kit'
 
@@ -78,6 +79,7 @@ export function AppShell() {
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>
+              <Route path="/favorites/:id" element={<SavedOutfitDetail />} />
               <Route path="/outfit/result" element={<OutfitResult />} />
               <Route path="/outfit/share" element={<ShareStory />} />
               <Route path="/constructor" element={<Constructor />} />
