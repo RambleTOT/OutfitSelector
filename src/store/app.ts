@@ -72,6 +72,9 @@ interface Actions {
   resetDemo: () => void
   markSeen: (key: string) => void
   refreshUsage: () => void
+  spendGeneration: () => void
+  saveOutfit: (o: Omit<SavedOutfit, 'id' | 'createdAt'>) => 'saved' | 'full' | 'over'
+  activatePlan: (p: Plan) => void
 }
 
 export type AppState = Data & Actions
@@ -164,6 +167,22 @@ export const useApp = create<AppState>()(
         }
         set({ ...initial() })
       },
+
+      // успешная генерация тратит образ (замена вещи и неудачная генерация не тратят)
+      spendGeneration: () =>
+        set((s) => ({ usage: { ...s.usage, outfitsWeek: s.usage.outfitsWeek + 1, outfitsMonth: s.usage.outfitsMonth + 1 } })),
+
+      // сохранение в избранное: при заполненном избранном (FAV-02) или превышении после окончания подписки (FAV-05) не сохраняет
+      saveOutfit: (o) => {
+        const s = get()
+        const limit = LIMITS[effectivePlan(s)].favorites
+        if (limit !== null && s.saved.length >= limit) return s.saved.length > limit ? 'over' : 'full'
+        set({ saved: [{ ...o, id: 'o' + Date.now().toString(36), createdAt: Date.now() }, ...s.saved] })
+        return 'saved'
+      },
+
+      // имитация оплаты: тариф включается сразу
+      activatePlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndsAt: plan === 'free' ? null : Date.now() + 30 * 86400000 }),
 
       markSeen: (key) => set((s) => (s.seen[key] ? s : { seen: { ...s.seen, [key]: true } })),
 

@@ -139,3 +139,14 @@ export function CodeInput({ value, onChange, error, length = 4 }: { value: strin
     </div>
   )
 }
+
+export function Checkbox({ checked, onChange, children }: { checked: boolean; onChange: (v: boolean) => void; children: ReactNode }) {
+  return (
+    <button type="button" role="checkbox" aria-checked={checked} className="check" onClick={() => onChange(!checked)}>
+      <span className="check__box">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M3 8.5l3.2 3.2L13 4.8" /></svg>
+      </span>
+      <span className="t-caption check__text">{children}</span>
+    </button>
+  )
+}

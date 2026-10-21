@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Icon, PlanBadge, SegmentedControl } from '../ui'
 import { effectivePlan, useApp, type Plan } from '../store/app'
 import { toast } from '../store/ui'
+import { useOutfitFlow } from '../store/outfit'
 import { useTheme } from './hooks'
 
 /** Панель демо справа от рамки, только на десктопе */
@@ -57,7 +58,7 @@ export function DemoPanel() {
 
       <div className="demo__card">
         <div className="demo__btns">
-          <Button variant="secondary" size="sm" icon="arrow-clockwise" onClick={() => { resetDemo(); navigate('/'); }}>Сбросить демо</Button>
+          <Button variant="secondary" size="sm" icon="arrow-clockwise" onClick={() => { useOutfitFlow.getState().back(); resetDemo(); navigate('/') }}>Сбросить демо</Button>
           <Button variant="secondary" size="sm" icon="caret-right" onClick={() => { skipOnboarding(); navigate('/outfit') }}>Пропустить онбординг</Button>
         </div>
       </div>

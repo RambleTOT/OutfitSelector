@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { OverlayContext, TabBar, ToastHost } from '../ui'
-import { OutfitHome } from '../screens/OutfitHome'
+import { OutfitHome } from '../screens/outfit/OutfitHome'
+import { OutfitResult } from '../screens/outfit/OutfitResult'
+import { ShareStory } from '../screens/outfit/ShareStory'
+import { Constructor } from '../screens/Constructor'
 import { Wardrobe } from '../screens/Wardrobe'
 import { Favorites } from '../screens/Favorites'
 import { Profile } from '../screens/Profile'
@@ -33,6 +36,9 @@ export function AppShell() {
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
+          <Route path="/outfit/result" element={<OutfitResult />} />
+          <Route path="/outfit/share" element={<ShareStory />} />
+          <Route path="/constructor" element={<Constructor />} />
           <Route path="/kit" element={<Kit />} />
           <Route path="*" element={<Navigate to="/outfit" replace />} />
         </Routes>

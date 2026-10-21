@@ -74,18 +74,19 @@ const SLOTS_WITH_DRESS: Partial<Record<Category, Slot>> = {
 }
 
 export function OutfitCard({
-  items, explanation, liked = null, onLike, onDislike, loading = false, hint, aspect = '1 / 1.05', header, footer, ghostSlots,
+  items, explanation, liked = null, onLike, onDislike, loading = false, hint, aspect = '1 / 1.05', header, footer, ghostSlots, style,
 }: {
   items: Item[]; explanation?: string; liked?: boolean | null; onLike?: () => void; onDislike?: () => void; loading?: boolean
   hint?: ReactNode; aspect?: string; header?: ReactNode; footer?: ReactNode
   /** для ожидания AI: пустые слоты по категориям вместо реальных вещей */
   ghostSlots?: Category[]
+  style?: CSSProperties
 }) {
   const hasDress = items.some((i) => i.category === 'dress')
   const seen = new Set<Category>()
   const placed = items.filter((i) => (seen.has(i.category) ? false : (seen.add(i.category), true)))
   return (
-    <div className="outfit">
+    <div className="outfit" style={style}>
       {header}
       <div className="outfit__mat" style={{ aspectRatio: aspect }}>
         {placed.map((it, i) => {
