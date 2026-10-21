@@ -19,6 +19,7 @@ export const ICONS_EXTRA: Record<string, string> = {
     `<path ${s} d="M96 72l12-24h40l12 24"/>` +
     `<path ${s} d="M156 128a28 28 0 1 1-8-20"/>` +
     `<path ${s} d="M156 98v14h-14"/>`,
+  moon: `<path ${s} d="M216 140a88 88 0 0 1-100-100 88 88 0 1 0 100 100z"/>`,
   sun:
     `<circle ${s} cx="128" cy="128" r="48"/>` +
     `<path ${s} d="M128 24v24M128 208v24M24 128h24M208 128h24M54 54l17 17M185 185l17 17M54 202l17-17M185 71l17-17"/>`,

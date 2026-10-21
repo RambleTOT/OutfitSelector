@@ -22,7 +22,13 @@ import { Wardrobe } from '../screens/wardrobe/Wardrobe'
 import { ItemDetail } from '../screens/wardrobe/ItemDetail'
 import { Favorites } from '../screens/favorites/Favorites'
 import { SavedOutfitDetail } from '../screens/favorites/SavedOutfitDetail'
-import { Profile } from '../screens/Profile'
+import { Profile } from '../screens/profile/Profile'
+import { EditProfile } from '../screens/profile/EditProfile'
+import { Documents } from '../screens/profile/Documents'
+import { Subscription } from '../screens/profile/Subscription'
+import { DeleteAccount } from '../screens/profile/DeleteAccount'
+import { Paywall } from '../screens/paywall/Paywall'
+import { PaymentError, PaymentSuccess } from '../screens/paywall/PaymentResult'
 import { Kit } from '../screens/Kit'
 
 /** Без входа пускаем только на сплеш */
@@ -80,13 +86,20 @@ export function AppShell() {
                 <Route path="/profile" element={<Profile />} />
               </Route>
               <Route path="/favorites/:id" element={<SavedOutfitDetail />} />
+              <Route path="/profile/data" element={<EditProfile />} />
+              <Route path="/profile/docs" element={<Documents />} />
+              <Route path="/profile/subscription" element={<Subscription />} />
+              <Route path="/profile/delete" element={<DeleteAccount />} />
+              <Route path="/paywall" element={<Paywall />} />
+              <Route path="/paywall/success" element={<PaymentSuccess />} />
+              <Route path="/paywall/error" element={<PaymentError />} />
               <Route path="/outfit/result" element={<OutfitResult />} />
               <Route path="/outfit/share" element={<ShareStory />} />
               <Route path="/constructor" element={<Constructor />} />
             </Route>
           </Route>
           <Route path="/kit" element={<Kit />} />
-          <Route path="*" element={<Navigate to="/splash" replace />} />
+          <Route path="*" element={<Navigate to="/outfit" replace />} />
         </Routes>
         <AddItemSheet />
         <div className="overlay-root" ref={setOverlay} />

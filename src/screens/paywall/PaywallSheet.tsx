@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { BottomSheet, Button, Checkbox, PlanBadge } from '../../ui'
+import { payNow } from './pay'
 import { LIMITS, PLAN_PRICE } from '../../store/limits'
 import { effectivePlan, useApp, type Plan } from '../../store/app'
 
@@ -14,16 +16,18 @@ export function PaywallSheet({
   open, onClose, title, subtitle, onPaid,
 }: { open: boolean; onClose: () => void; title: string; subtitle?: string; onPaid?: (plan: Plan) => void }) {
   const current = useApp((s) => effectivePlan(s))
-  const activatePlan = useApp((s) => s.activatePlan)
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
   const suggested: Plan = current === 'free' ? 'sub' : 'plus'
   const [plan, setPlan] = useState<Plan>(suggested)
   const [agree, setAgree] = useState(false)
   useEffect(() => { if (open) { setPlan(suggested); setAgree(false) } }, [open, suggested])
   const isCurrent = plan === current
   const pay = () => {
-    activatePlan(plan)
-    onPaid?.(plan)
+    const willFail = useApp.getState().payFail
     onClose()
+    if (!willFail) onPaid?.(plan)
+    payNow(plan, navigate, pathname)
   }
   return (
     <BottomSheet open={open} onClose={onClose} title={title} subtitle={subtitle}>

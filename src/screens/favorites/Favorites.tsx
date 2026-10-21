@@ -4,7 +4,6 @@ import { Button, EmptyState, Icon, MiniCollage, PlanBadge } from '../../ui'
 import { useApp, useLimits } from '../../store/app'
 import { resolveSaved } from '../../lib/outfit'
 import { occasionById, plural, shortDate } from '../../lib/format'
-import { toast } from '../../store/ui'
 import type { SavedOutfit } from '../../data/types'
 import { PaywallSheet } from '../paywall/PaywallSheet'
 
@@ -67,7 +66,6 @@ export function Favorites() {
       <PaywallSheet
         open={pay} onClose={() => setPay(false)}
         title="Больше мест в избранном" subtitle="Образы останутся на месте, ничего не удаляется"
-        onPaid={() => toast('Подписка подключена', 'success')}
       />
     </div>
   )

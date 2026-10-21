@@ -98,7 +98,6 @@ function Idle() {
         open={sheet} onClose={() => setSheet(false)}
         title="Образы закончились"
         subtitle={`Новые ${total} появятся в понедельник`}
-        onPaid={() => toast('Подписка подключена', 'success')}
       />
     </>
   )

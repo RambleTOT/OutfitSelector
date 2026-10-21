@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnswerCard, BottomSheet, Button } from '../../ui'
 import { useLimits } from '../../store/app'
-import { toast, useUi } from '../../store/ui'
+import { useUi } from '../../store/ui'
 import { PaywallSheet } from '../paywall/PaywallSheet'
 
 /** ADD-01 AddItemSheet: сфоткать или выбрать из шаблона. Монтируется один раз в AppShell, открывается из любого экрана.
@@ -46,7 +46,6 @@ export function AddItemSheet() {
       <PaywallSheet
         open={pay} onClose={() => setPay(false)}
         title="Фото закончились" subtitle="Шаблоном можно добавлять без лимита"
-        onPaid={() => toast('Подписка подключена', 'success')}
       />
     </>
   )

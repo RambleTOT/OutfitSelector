@@ -23,6 +23,7 @@ export interface Notif {
   comeback: boolean
   forgotten: boolean
   limit: boolean
+  payments: boolean
   telegramBot: boolean
 }
 
@@ -40,6 +41,8 @@ interface Data {
   subEnded: boolean // подписка закончилась: лимиты как у Free, ничего не удаляется
   subCancelled: boolean // отменена, действует до subEndsAt
   subEndsAt: number | null
+  subEndedAt: number | null
+  payFail: boolean // демо: следующая оплата вернётся с ошибкой (PAY-03)
   theme: ThemePref
   offline: boolean
 
@@ -47,6 +50,7 @@ interface Data {
   via: 'email' | 'telegram' | null
   email: string
   name: string
+  avatar: string
   height: string
   size: string
   quiz: Quiz
@@ -80,6 +84,7 @@ interface Actions {
   setQuiz: (q: Partial<Quiz>) => void
   finishQuiz: () => void
   finishOnboarding: (skipped: boolean) => void
+  signOut: () => void
   deleteSaved: (id: string) => void
   updateSaved: (id: string, patch: Partial<SavedOutfit>) => void
   replaceSaved: (oldId: string, o: Omit<SavedOutfit, 'id' | 'createdAt'>) => void
@@ -111,6 +116,8 @@ const initial = (): Data => ({
   subEnded: false,
   subCancelled: false,
   subEndsAt: null,
+  subEndedAt: null,
+  payFail: false,
   theme: 'system',
   offline: false,
 
@@ -118,6 +125,7 @@ const initial = (): Data => ({
   via: null,
   email: '',
   name: '',
+  avatar: '',
   height: '',
   size: '',
   quiz: { who: null, city: 'Москва', occasions: [], styles: [], nogo: [] },
@@ -138,6 +146,7 @@ const initial = (): Data => ({
     comeback: true,
     forgotten: true,
     limit: true,
+    payments: true,
     telegramBot: false,
   },
 })
@@ -151,7 +160,7 @@ export const useApp = create<AppState>()(
 
       patch: (p) => set(p),
 
-      setPlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndsAt: null }),
+      setPlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndsAt: plan === 'free' ? null : Date.now() + 30 * 86400000 }),
       setTheme: (theme) => set({ theme }),
       toggleOffline: () => {
         const nowOnline = get().offline
@@ -159,7 +168,7 @@ export const useApp = create<AppState>()(
         if (nowOnline) setTimeout(() => import('./photo').then((m) => m.processQueued()), 600)
       },
       endSubscription: () =>
-        set((s) => ({ plan: s.plan === 'free' ? 'sub' : s.plan, subEnded: true, subCancelled: false, subEndsAt: null })),
+        set((s) => ({ plan: s.plan === 'free' ? 'sub' : s.plan, subEnded: true, subCancelled: false, subEndsAt: null, subEndedAt: Date.now() })),
 
       // «Лимит закончился»: недельный лимит выбран (на Подписке+ срабатывает потолок 300 в месяц)
       exhaustLimit: () => {
@@ -212,7 +221,7 @@ export const useApp = create<AppState>()(
       replaceSaved: (oldId, o) => set((s) => ({ saved: [{ ...o, id: 'o' + Date.now().toString(36), createdAt: Date.now() }, ...s.saved.filter((x) => x.id !== oldId)] })),
 
       // имитация оплаты: тариф включается сразу
-      activatePlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndsAt: plan === 'free' ? null : Date.now() + 30 * 86400000 }),
+      activatePlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndedAt: null, subEndsAt: plan === 'free' ? null : Date.now() + 30 * 86400000 }),
 
       // вход: любая почта и код 1111, Telegram пускает сразу. Возвращающийся пользователь сразу попадает в Образ
       signIn: (email, via) => {
@@ -229,6 +238,7 @@ export const useApp = create<AppState>()(
       },
       setQuiz: (q) => set((s) => ({ quiz: { ...s.quiz, ...q } })),
       finishQuiz: () => set({ quizDone: true }),
+      signOut: () => set({ signedIn: false }),
       finishOnboarding: (skipped) => set({ onboarded: true, firstItemsSkipped: skipped }),
 
       addItem: (item) => set((s) => ({ items: [{ ...item, addedAt: item.addedAt ?? Date.now() }, ...s.items] })),

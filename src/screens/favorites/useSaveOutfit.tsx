@@ -51,7 +51,6 @@ export function useSaveOutfit(): { save: (d: Draft, onSaved?: (id: string) => vo
         title={pay === 'over' ? 'Избранное переполнено' : 'Больше мест в избранном'}
         subtitle={pay === 'over' ? `Новые образы не сохранятся, пока их больше ${lim.favLimit}. Удали лишние или продли подписку` : 'Образы останутся на месте, ничего не удаляется'}
         onPaid={() => {
-          toast('Подписка подключена', 'success')
           // после оплаты лимит снят: сохраняем отложенный образ
           const p = pending
           if (p) { const r = saveOutfit(p.draft); if (r === 'saved') { p.done?.(useApp.getState().saved[0].id); setPending(null) } }

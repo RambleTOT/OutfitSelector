@@ -43,3 +43,6 @@ export const OCCASION_FOR: Record<OccasionId, string> = {
   walk: 'Образ на прогулку',
   party: 'Образ на вечеринку',
 }
+
+/** «21 ноября» */
+export const dateLong = (ts: number) => new Date(ts).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })

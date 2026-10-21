@@ -8,7 +8,8 @@ import { useTheme } from './hooks'
 /** Панель демо справа от рамки, только на десктопе */
 export function DemoPanel() {
   const navigate = useNavigate()
-  const { plan, subEnded, offline } = useApp()
+  const { plan, subEnded, offline, payFail } = useApp()
+  const patch = useApp((s) => s.patch)
   const setPlan = useApp((s) => s.setPlan)
   const setTheme = useApp((s) => s.setTheme)
   const toggleOffline = useApp((s) => s.toggleOffline)
@@ -53,6 +54,7 @@ export function DemoPanel() {
           <Button variant="secondary" size="sm" icon="sparkle" onClick={() => { exhaustLimit(); toast('Лимит образов закончился', 'neutral') }}>Лимит закончился</Button>
           <Button variant="secondary" size="sm" icon="wifi-slash" onClick={() => { toggleOffline(); toast(offline ? 'Интернет вернулся' : 'Нет интернета', offline ? 'success' : 'offline') }}>{offline ? 'Вернуть интернет' : 'Нет интернета'}</Button>
           <Button variant="secondary" size="sm" icon="crown-simple" onClick={() => { endSubscription(); navigate('/profile') }}>Подписка закончилась</Button>
+          <Button variant="secondary" size="sm" icon="credit-card" onClick={() => { patch({ payFail: !payFail }); toast(payFail ? 'Оплата снова проходит' : 'Следующая оплата вернётся с ошибкой', 'neutral') }}>{payFail ? 'Оплата пройдёт' : 'Ошибка оплаты'}</Button>
         </div>
       </div>
 

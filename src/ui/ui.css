@@ -542,3 +542,28 @@
 .saved-card__mat { position: relative; aspect-ratio: 3 / 4; border-radius: var(--radius-tile); background: var(--item-mat); overflow: hidden; }
 .saved-card__text { display: flex; flex-direction: column; gap: 2px; padding: 0 2px; min-width: 0; }
 .saved-card__name { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- Профиль ---------- */
+.avatar { flex-shrink: 0; border-radius: 999px; overflow: hidden; background: var(--gradient-sunset-soft), var(--bg-sunken); display: flex; align-items: center; justify-content: center; font-weight: 800; line-height: 1; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.time-chip { height: 44px; padding: 0 16px; border: none; border-radius: 999px; background: var(--bg-sunken); color: var(--ink-primary); cursor: pointer; font: 800 var(--type-headline-size)/1 var(--font-ui); transition: transform var(--dur-fast) var(--ease-spring); }
+.time-chip:active { transform: scale(0.95); }
+
+/* ---------- Пейвол ---------- */
+.pay-glow { position: absolute; left: 50%; top: -80px; width: 360px; height: 260px; margin-left: -180px; border-radius: 50%; background: var(--gradient-sunset); filter: blur(80px); opacity: 0.35; pointer-events: none; }
+.plans3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; align-items: stretch; }
+.pcol {
+  position: relative; border: none; cursor: pointer; padding: 30px 8px 12px; border-radius: var(--radius-tile); background: var(--bg-elevated);
+  box-shadow: inset 0 0 0 0 var(--accent), var(--shadow-card); display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; color: var(--ink-primary);
+  transition: box-shadow var(--dur-fast), transform var(--dur-fast) var(--ease-spring);
+}
+.pcol:active { transform: scale(0.97); }
+.pcol[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--accent), var(--shadow-card); }
+.pcol__rec { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); height: 22px; padding: 0 10px; border-radius: 999px; background: var(--accent); color: var(--ink-on-accent-solid); display: inline-flex; align-items: center; white-space: nowrap; }
+.pcol__sep { align-self: stretch; height: 1px; background: var(--line); margin: 8px 0 4px; }
+.pcol__cell { display: flex; flex-direction: column; gap: 1px; padding: 5px 0; }
+.pcol__cell b { font: 800 var(--type-callout-size)/18px var(--font-ui); }
+.pcol__cell span { font: 600 var(--type-micro-size)/var(--type-micro-lh) var(--font-ui); color: var(--ink-secondary); }
+.pay-btn { transition: opacity var(--dur-fast) var(--ease-out); }
+.pay-btn:not(:disabled) { opacity: 1; }
+.pay-btn:disabled { opacity: 0.6; }

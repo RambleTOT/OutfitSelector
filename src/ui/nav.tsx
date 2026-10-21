@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Icon } from './Icon'
+import { IconButton } from './buttons'
 
 export interface TabDef { id: string; label: string; icon: string }
 
@@ -29,6 +30,17 @@ export function TopBar({ left, title, right, glass = true }: { left?: ReactNode;
       <div className="topbar__side">{left}</div>
       <div className="topbar__title t-headline">{title}</div>
       <div className="topbar__side topbar__side--r">{right}</div>
+    </div>
+  )
+}
+
+/** Строка шапки внутренних экранов: назад · заголовок · пустое место */
+export function NavHeader({ title, onBack, right }: { title?: string; onBack: () => void; right?: ReactNode }) {
+  return (
+    <div className="nav-row">
+      <IconButton icon="caret-left" label="Назад" variant="solid" onClick={onBack} />
+      {title && <span className="t-headline">{title}</span>}
+      {right ?? <span style={{ width: 44 }} />}
     </div>
   )
 }

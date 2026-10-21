@@ -109,7 +109,6 @@ function ResultView() {
       <PaywallSheet
         open={paywall} onClose={() => setPaywall(false)}
         title="Образы закончились" subtitle={`Новые ${lim.outfitsLimit ?? ''} появятся в понедельник`}
-        onPaid={() => toast('Подписка подключена', 'success')}
       />
     </>
   )
