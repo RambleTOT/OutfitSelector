@@ -75,6 +75,9 @@ interface Actions {
   spendGeneration: () => void
   saveOutfit: (o: Omit<SavedOutfit, 'id' | 'createdAt'>) => 'saved' | 'full' | 'over'
   activatePlan: (p: Plan) => void
+  addItem: (i: Item) => void
+  updateItem: (i: Item) => void
+  deleteItem: (id: string) => void
 }
 
 export type AppState = Data & Actions
@@ -183,6 +186,11 @@ export const useApp = create<AppState>()(
 
       // имитация оплаты: тариф включается сразу
       activatePlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndsAt: plan === 'free' ? null : Date.now() + 30 * 86400000 }),
+
+      addItem: (item) => set((s) => ({ items: [{ ...item, addedAt: item.addedAt ?? Date.now() }, ...s.items] })),
+      updateItem: (item) => set((s) => ({ items: s.items.map((i) => (i.id === item.id ? item : i)) })),
+      // удаление не возвращает слот фото; сохранённые образы помечают вещь как удалённую (P6)
+      deleteItem: (id) => set((s) => ({ items: s.items.filter((i) => i.id !== id) })),
 
       markSeen: (key) => set((s) => (s.seen[key] ? s : { seen: { ...s.seen, [key]: true } })),
 

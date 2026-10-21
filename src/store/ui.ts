@@ -13,6 +13,8 @@ export interface ToastData {
 
 interface UiState {
   toast: ToastData | null
+  tabBarHidden: boolean
+  setTabBarHidden: (v: boolean) => void
   showToast: (t: Omit<ToastData, 'id'>) => void
   hideToast: () => void
 }
@@ -22,6 +24,8 @@ let seq = 0
 /** Несохраняемое состояние интерфейса */
 export const useUi = create<UiState>((set) => ({
   toast: null,
+  tabBarHidden: false,
+  setTabBarHidden: (tabBarHidden) => set({ tabBarHidden }),
   showToast: (t) => set({ toast: { ...t, id: ++seq } }),
   hideToast: () => set({ toast: null }),
 }))

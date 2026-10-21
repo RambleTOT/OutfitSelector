@@ -33,6 +33,7 @@ export interface Item {
   source: 'template' | 'photo'
   photo?: string // dataURL вырезанной вещи (после «обработки»)
   queued?: boolean // ждёт сеть
+  addedAt?: number
 }
 
 export type OccasionId = 'every' | 'work' | 'study' | 'date' | 'walk' | 'party'

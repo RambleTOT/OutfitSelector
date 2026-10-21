@@ -10,21 +10,9 @@ import { useOutfitFlow } from '../../store/outfit'
 import { toast } from '../../store/ui'
 import { todayLabel, temp } from '../../lib/format'
 import { PaywallSheet } from '../paywall/PaywallSheet'
+import { goalReached, setupHint } from '../../lib/setup'
 import { MonthlyCap } from './MonthlyCap'
 import { Waiting } from './Waiting'
-import type { Item } from '../../data/types'
-
-/** Подсказка баннера «Первые вещи» по тому, чего не хватает */
-export function setupHint(items: Item[]): string {
-  const has = (c: string) => items.some((i) => i.category === c)
-  const base = has('dress') || (has('top') && has('bottom'))
-  if (base) return has('shoes') ? `Добавь ещё ${Math.max(1, 5 - items.length)} вещи для точных образов` : 'Добавь обувь, чтобы образы были полными'
-  if (has('top')) return 'Добавь низ или платье, чтобы собрать первый образ'
-  if (has('bottom')) return 'Добавь верх или платье, чтобы собрать первый образ'
-  return 'Добавь верх и низ или платье, чтобы собрать первый образ'
-}
-
-export const goalReached = (items: Item[]) => items.length >= 5 && items.some((i) => i.category === 'shoes')
 
 /** OUT-01 OutfitHome: до нажатия. Ожидание (OUT-02) и результат на маршруте /outfit/result */
 export function OutfitHome() {
