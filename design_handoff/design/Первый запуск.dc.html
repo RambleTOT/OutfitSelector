@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/icons.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/colors.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/typography.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/effects.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/base.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/styles.css">
+<script src="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/_ds_bundle.js"></script>
+<style>body{margin:0;background:#E2E2E8}body.theme-dark{background:#1A1A1D;--surface-page:var(--bg-base);--surface-card:var(--bg-elevated);--surface-item:var(--bg-sunken);--surface-input:var(--bg-sunken);--text-body:var(--ink-primary);--text-muted:var(--ink-secondary);--text-hint:var(--ink-tertiary);--text-link:var(--accent);--border-default:var(--line);--border-selected:var(--accent);--chip-bg:var(--bg-sunken);--chip-bg-selected:var(--ink-primary);--chip-fg-selected:var(--bg-base)}a{color:#F2665E}a:hover{color:#D9544D}textarea{font-family:inherit}</style>
+</helmet>
+<section style="padding:80px;display:flex;flex-direction:column;gap:40px;font-family:var(--font-ui);color:var(--ink-primary)">
+<div style="display:flex;flex-direction:column;gap:8px;max-width:720px">
+<span style="font:800 11px/13px var(--font-ui);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-secondary)">Atelier · первый запуск · светлая и тёмная тема</span>
+<h1 style="margin:0;font:800 40px/44px var(--font-ui);letter-spacing:-.01em">Сплеш, вход, анкета, первые вещи, обработка фото, карточка вещи</h1>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start">
+
+<!-- 01 Splash -->
+<div id="s1" data-screen-label="01 Сплеш" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">01 Сплеш</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">G5</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;left:50%;top:42%;width:340px;height:340px;margin:-170px 0 0 -170px;border-radius:50%;background:var(--gradient-sunset);filter:blur(70px);opacity:.55"></div>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:0 40px;text-align:center">
+<span style="font-family:var(--font-serif);font-weight:500;font-size:76px;line-height:1;letter-spacing:-.01em;color:var(--ink-primary)">Atelier</span>
+<span style="font:600 17px/24px var(--font-ui);color:var(--ink-primary);text-wrap:pretty">Новые образы из твоих вещей</span>
+</div>
+</div>
+</div>
+
+<!-- 02a Login email -->
+<div id="s2a" data-screen-label="02a Вход" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">02a Вход</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">по UI-системе</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;inset:0;padding:64px 20px 32px;display:flex;flex-direction:column;gap:32px">
+<span style="font-family:var(--font-serif);font-weight:500;font-size:32px;line-height:1">Atelier</span>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h2 style="margin:0;font:800 1.75rem/2.125rem var(--font-ui);letter-spacing:-.01em;text-wrap:pretty">Войди, чтобы сохранить свой гардероб</h2>
+<p style="margin:0;font:400 1.0625rem/1.5rem var(--font-ui);color:var(--ink-secondary)">Пришлём код на почту</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.TextInput" label="Почта" placeholder="name@mail.ru" type="email" icon="envelope-simple" value="{{ email }}" on-change="{{ setEmail }}" hint-size="100%,80px"></x-import>
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" full-width="{{ true }}" disabled="{{ emailEmpty }}" hint-size="100%,56px">Получить код</x-import>
+</div>
+<div style="display:flex;align-items:center;gap:12px;color:var(--ink-secondary);font:600 13px/16px var(--font-ui)"><span style="flex:1;height:1px;background:var(--line)"></span>или<span style="flex:1;height:1px;background:var(--line)"></span></div>
+<div style="display:flex;flex-direction:column;gap:10px;align-items:center">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" variant="secondary" icon="telegram-logo" full-width="{{ true }}" hint-size="100%,56px">Войти через Telegram</x-import>
+<span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary);text-align:center">Сразу подключим бота для уведомлений</span>
+</div>
+<span style="margin-top:auto;font:600 13px/18px var(--font-ui);color:var(--ink-secondary);text-align:center;text-wrap:pretty">Продолжая, ты принимаешь <a href="#">оферту</a> и <a href="#">политику обработки данных</a></span>
+</div>
+</div>
+</div>
+
+<!-- 02b Login code -->
+<div id="s2b" data-screen-label="02b Код" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">02b Код из письма</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">по UI-системе</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;inset:0;padding:56px 20px 32px;display:flex;flex-direction:column;gap:28px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.IconButton" icon="caret-left" label="Назад" variant="solid" hint-size="44px,44px"></x-import>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h2 style="margin:0;font:800 1.75rem/2.125rem var(--font-ui);letter-spacing:-.01em">Введи код из письма</h2>
+<p style="margin:0;font:400 1.0625rem/1.5rem var(--font-ui);color:var(--ink-secondary)">Отправили на kira@mail.ru</p>
+</div>
+<div style="display:flex;gap:10px">
+<sc-for list="{{ codeDigits }}" as="d" hint-placeholder-count="4">
+<div style="flex:1;height:72px;border-radius:16px;background:var(--bg-sunken);box-shadow:inset 0 0 0 {{ d.ring }} var(--accent);display:flex;align-items:center;justify-content:center;font:800 32px/1 var(--font-ui)">{{ d.v }}</div>
+</sc-for>
+</div>
+<span style="font:600 15px/20px var(--font-ui);color:var(--ink-secondary)">Отправить ещё раз через 0:42</span>
+<div style="margin-top:auto">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" full-width="{{ true }}" disabled="{{ true }}" hint-size="100%,56px">Войти</x-import>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 03a Quiz style -->
+<div id="s3a" data-screen-label="03a Анкета стиль" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">03a Анкета: стиль</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">N1</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;inset:0;overflow:auto;scrollbar-width:none;padding:48px 20px 128px;display:flex;flex-direction:column;gap:24px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.QuestionProgress" step="4" total="5" on-back="{{ noop }}" on-skip="{{ noop }}" hint-size="100%,44px" style="margin:0 -4px 0 -12px"></x-import>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h2 style="margin:0;font:800 1.75rem/2.125rem var(--font-ui);letter-spacing:-.01em">Какой стиль тебе ближе</h2>
+<p style="margin:0;font:400 1.0625rem/1.5rem var(--font-ui);color:var(--ink-secondary)">{{ styleHint }}</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+<sc-for list="{{ styles }}" as="s" hint-placeholder-count="6">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.AnswerCard" layout="tile" title="{{ s.title }}" subtitle="{{ s.sub }}" icon="{{ s.icon }}" selected="{{ s.selected }}" on-click="{{ s.toggle }}" hint-size="100%,220px"></x-import>
+</sc-for>
+</div>
+</div>
+<div style="position:absolute;left:12px;right:12px;bottom:12px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.CtaPlate" hint-size="100%,80px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" full-width="{{ true }}" disabled="{{ styleNone }}" hint-size="100%,56px">Дальше</x-import>
+</x-import>
+</div>
+</div>
+</div>
+
+<!-- 03b Quiz city -->
+<div id="s3b" data-screen-label="03b Анкета город" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">03b Анкета: город</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">N1, N2</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;inset:0;padding:48px 20px 128px;display:flex;flex-direction:column;gap:24px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.QuestionProgress" step="2" total="5" on-back="{{ noop }}" on-skip="{{ noop }}" hint-size="100%,44px" style="margin:0 -4px 0 -12px"></x-import>
+<div style="display:flex;flex-direction:column;gap:8px">
+<h2 style="margin:0;font:800 1.75rem/2.125rem var(--font-ui);letter-spacing:-.01em">В каком ты городе</h2>
+<p style="margin:0;font:400 1.0625rem/1.5rem var(--font-ui);color:var(--ink-secondary)">Чтобы подбирать образ по погоде</p>
+</div>
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.BigTextField" placeholder="Например, Казань" value="{{ city }}" on-change="{{ setCity }}" on-suggestion="{{ setCity }}" suggestions="{{ citySuggestions }}" hint-size="100%,110px"></x-import>
+<sc-if value="{{ cityHas }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;align-items:center;gap:12px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.WeatherPill" icon="cloud-sun" temp="+12°" city="{{ city }}" hint-size="140px,44px"></x-import>
+<span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">Сейчас там так</span>
+</div>
+</sc-if>
+</div>
+<div style="position:absolute;left:12px;right:12px;bottom:12px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.CtaPlate" hint-size="100%,80px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" full-width="{{ true }}" disabled="{{ cityEmpty }}" hint-size="100%,56px">Дальше</x-import>
+</x-import>
+</div>
+</div>
+</div>
+
+<!-- 04 First items -->
+<div id="s4" data-screen-label="04 Первые вещи" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">04 Первые вещи</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">W2, G4</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;inset:0;padding:64px 20px 128px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<h2 style="margin:0;font:800 1.75rem/2.125rem var(--font-ui);letter-spacing:-.01em">Добавь первые вещи</h2>
+<p style="margin:0;font:400 1.0625rem/1.5rem var(--font-ui);color:var(--ink-secondary);text-wrap:pretty">Для образа нужны верх и низ или платье. Лучше 5 вещей вместе с обувью</p>
+</div>
+<div style="background:var(--bg-elevated);border-radius:32px;padding:20px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow-card)">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:12px">
+<div style="display:flex;align-items:baseline;gap:6px;flex-shrink:0"><span style="font:900 56px/1 var(--font-ui);letter-spacing:-.02em">3</span><span style="font:800 22px/1 var(--font-ui);color:var(--ink-secondary);white-space:nowrap">из 5</span></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+<sc-for list="{{ musts }}" as="m" hint-placeholder-count="3">
+<span style="height:28px;padding:0 10px;border-radius:999px;background:var(--success-soft);color:var(--ink-primary);display:inline-flex;align-items:center;gap:4px;font:600 13px/1 var(--font-ui)"><x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="check" color="var(--success)" size="{{ 14 }}" hint-size="14px,14px"></x-import>{{ m }}</span>
+</sc-for>
+</div>
+</div>
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.TickBars" value="{{ 3 }}" max="{{ 5 }}" count="{{ 5 }}" height="{{ 28 }}" hint-size="100%,28px"></x-import>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+<sc-for list="{{ firstItems }}" as="it" hint-placeholder-count="3">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.ItemTile" category="{{ it.cat }}" label="{{ it.label }}" hint-size="100%,130px"></x-import>
+</sc-for>
+<sc-for list="{{ emptySlots }}" as="e" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="aspect-ratio:1/1;border-radius:24px;border:2px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-tertiary)"><x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="plus" size="{{ 28 }}" hint-size="28px,28px"></x-import></div>
+<span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary);padding-left:2px">Любая вещь</span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="position:absolute;left:12px;right:12px;bottom:12px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.CtaPlate" hint-size="100%,80px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" full-width="{{ true }}" icon="plus" on-click="{{ openSheet }}" hint-size="100%,56px">Добавить вещь</x-import>
+</x-import>
+</div>
+<sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ true }}">
+<div onClick="{{ closeSheet }}" style="position:absolute;inset:0;background:rgba(15,15,17,.32)"></div>
+<div style="position:absolute;left:0;right:0;bottom:0">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.BottomSheet" title="Как добавим вещь" subtitle="Вещь появится в гардеробе через пару секунд" hint-size="100%,320px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.AnswerCard" title="Сфоткать" subtitle="Фон уберём сами · осталось 1 из 3 фото" icon="camera" hint-size="100%,72px"></x-import>
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.AnswerCard" title="Выбрать из шаблона" subtitle="Категория, тип и цвет · без лимита" icon="shapes" hint-size="100%,72px"></x-import>
+</div>
+</x-import>
+</div>
+</sc-if>
+</div>
+</div>
+
+<!-- 05a Processing -->
+<div id="s5a" data-screen-label="05a Обработка фото" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">05a Обработка фото</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">W2</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;inset:0;padding:56px 20px 128px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.IconButton" icon="x" label="Закрыть" variant="solid" hint-size="44px,44px"></x-import>
+<span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">Осталось 0 из 3 фото</span>
+</div>
+<h2 style="margin:0;font:800 1.75rem/2.125rem var(--font-ui);letter-spacing:-.01em">{{ procTitle }}</h2>
+{{ procHero }}
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ procSteps }}" as="st" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:12px;font:600 15px/20px var(--font-ui);color:{{ st.text }}">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="{{ st.icon }}" fill="{{ st.fill }}" color="{{ st.color }}" size="{{ 22 }}" hint-size="22px,22px"></x-import>{{ st.label }}
+</div>
+</sc-for>
+</div>
+</div>
+<div style="position:absolute;left:12px;right:12px;bottom:12px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.CtaPlate" hint-size="100%,120px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" full-width="{{ true }}" icon="camera" hint-size="100%,56px">Снять следующую</x-import>
+<span style="text-align:center;font:600 13px/16px var(--font-ui);color:var(--ink-secondary);padding:4px 0 2px">Можно не ждать, доделаем в фоне</span>
+</x-import>
+</div>
+</div>
+</div>
+
+<!-- 05b Error -->
+<div id="s5b" data-screen-label="05b Ошибка фото" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">05b Не одежда</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">W2</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;inset:0;padding:56px 20px 128px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.IconButton" icon="x" label="Закрыть" variant="solid" hint-size="44px,44px"></x-import>
+</div>
+<h2 style="margin:0;font:800 1.75rem/2.125rem var(--font-ui);letter-spacing:-.01em;text-wrap:pretty">Не похоже на одежду, попробуй ещё раз</h2>
+<div style="position:relative;width:100%;aspect-ratio:1/1;border-radius:32px;background:var(--item-mat);box-shadow:inset 0 0 0 2px var(--error);display:flex;align-items:center;justify-content:center">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="coffee" size="{{ 150 }}" color="#C9C9D1" hint-size="150px,150px"></x-import>
+<span style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:999px;background:var(--error);color:#fff;display:flex;align-items:center;justify-content:center"><x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="exclamation-mark" size="{{ 18 }}" hint-size="18px,18px"></x-import></span>
+</div>
+<div style="display:flex;gap:12px;align-items:flex-start;padding:16px;border-radius:24px;background:var(--bg-elevated);box-shadow:var(--shadow-card)">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="coat-hanger" size="{{ 24 }}" color="var(--accent)" hint-size="24px,24px"></x-import>
+<span style="font:400 15px/20px var(--font-ui);color:var(--ink-primary);text-wrap:pretty">Положи вещь на ровную поверхность или повесь на плечики. Фото не списалось</span>
+</div>
+</div>
+<div style="position:absolute;left:12px;right:12px;bottom:12px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.CtaPlate" hint-size="100%,120px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" full-width="{{ true }}" icon="camera" hint-size="100%,56px">Переснять</x-import>
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" variant="text" full-width="{{ true }}" hint-size="100%,44px">Выбрать другое фото</x-import>
+</x-import>
+</div>
+</div>
+</div>
+
+<!-- 06 Item card -->
+<div id="s6" data-screen-label="06 Карточка вещи" style="display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:10px;align-items:baseline"><span style="font:800 15px/20px var(--font-ui)">06 Карточка вещи</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">W3, N3</span></div>
+<div style="width:390px;height:844px;border-radius:44px;overflow:hidden;position:relative;background:var(--bg-base);box-shadow:0 30px 80px rgba(17,17,20,.12)">
+<div style="position:absolute;inset:0;overflow:auto;scrollbar-width:none;padding:56px 20px 128px;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.IconButton" icon="caret-left" label="Назад" variant="solid" hint-size="44px,44px"></x-import>
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.IconButton" icon="trash" label="Удалить" variant="solid" hint-size="44px,44px"></x-import>
+</div>
+<div style="position:relative;width:100%;aspect-ratio:1/1;flex-shrink:0;border-radius:32px;background:var(--item-mat);display:flex;align-items:center;justify-content:center;opacity:{{ photoOpacity }}">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="t-shirt" size="{{ 160 }}" color="#B4B4BD" hint-size="160px,160px" style="filter:drop-shadow(0 6px 16px rgba(23,23,26,0.10))"></x-import>
+<sc-if value="{{ unavailable }}" hint-placeholder-val="{{ false }}">
+<span style="position:absolute;left:16px;bottom:16px;height:28px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.85);color:#6B6B74;display:inline-flex;align-items:center;gap:6px;font:600 13px/1 var(--font-ui)"><x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="drop" size="{{ 14 }}" hint-size="14px,14px"></x-import>в стирке</span>
+</sc-if>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px;padding:8px 0 0">
+<h2 style="margin:0;font:800 1.75rem/2.125rem var(--font-ui);letter-spacing:-.01em">{{ itemTitle }}</h2>
+<span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">Ещё не надевал · добавлено сегодня</span>
+</div>
+<div style="background:var(--bg-elevated);border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow-card)">
+<span style="display:flex;align-items:center;gap:6px;font:800 11px/13px var(--font-ui);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-secondary)"><x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="sparkle" size="{{ 14 }}" color="var(--accent)" hint-size="14px,14px"></x-import>Описание заполнено само</span>
+<textarea value="{{ desc }}" onChange="{{ onDesc }}" rows="3" style="border:none;outline:none;resize:none;background:transparent;padding:0;font:400 1.0625rem/1.5rem var(--font-ui);color:var(--ink-primary)"></textarea>
+</div>
+<sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="font:800 11px/13px var(--font-ui);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-secondary);padding:8px 4px 0">{{ g.title }}</span>
+<div style="background:var(--bg-elevated);border-radius:24px;box-shadow:var(--shadow-card);overflow:hidden">
+<sc-for list="{{ g.fields }}" as="f" hint-placeholder-count="3">
+<div style="border-top:{{ f.border }}">
+<button type="button" onClick="{{ f.toggle }}" style="width:100%;min-height:56px;padding:0 16px;border:none;background:transparent;display:flex;align-items:center;gap:12px;cursor:pointer;font-family:var(--font-ui);color:var(--ink-primary)">
+<span style="font:600 15px/20px var(--font-ui);color:var(--ink-secondary);flex:1;text-align:left">{{ f.label }}</span>
+<sc-if value="{{ f.swatch }}" hint-placeholder-val="{{ false }}"><span style="width:16px;height:16px;border-radius:999px;background:{{ f.swatch }};box-shadow:inset 0 0 0 1px rgba(17,17,20,.12)"></span></sc-if>
+<span style="font:700 1.0625rem/1.375rem var(--font-ui)">{{ f.value }}</span>
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Icon" name="{{ f.caret }}" size="{{ 18 }}" color="var(--ink-tertiary)" hint-size="18px,18px"></x-import>
+</button>
+<sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 16px">
+<sc-for list="{{ f.options }}" as="o" hint-placeholder-count="4">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Chip" label="{{ o.label }}" selected="{{ o.selected }}" on-click="{{ o.pick }}" hint-size="90px,40px"></x-import>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div style="background:var(--bg-elevated);border-radius:24px;padding:8px 16px;box-shadow:var(--shadow-card)">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Switch" label="Недоступна сейчас" description="Например, в стирке. Не попадёт в образы" checked="{{ unavailable }}" on-change="{{ setUnavailable }}" hint-size="100%,64px"></x-import>
+</div>
+</div>
+<div style="position:absolute;left:12px;right:12px;bottom:12px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.CtaPlate" hint-size="100%,80px">
+<x-import component-from-global-scope="AtelierDesignSystem_2d481a.Button" full-width="{{ true }}" hint-size="100%,56px">Сохранить</x-import>
+</x-import>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Светлая&quot;,&quot;Тёмная&quot;],&quot;default&quot;:&quot;Светлая&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Тема&quot;},&quot;quizMulti&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Анкета&quot;},&quot;processingState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Цикл&quot;,&quot;Заглушка&quot;,&quot;Готово&quot;],&quot;default&quot;:&quot;Цикл&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Обработка фото&quot;},&quot;addSheetOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Первые вещи&quot;}}">
+const STYLES = [
+  ['Минимализм', 'Чисто и спокойно', 'square'],
+  ['Кэжуал', 'Удобно каждый день', 't-shirt'],
+  ['Классика', 'Строго и точно', 'briefcase'],
+  ['Спорт-шик', 'Кроссовки ко всему', 'sneaker'],
+  ['Романтика', 'Мягко и легко', 'flower'],
+  ['Стритстайл', 'Объём и смелость', 'baseball-cap'],
+];
+const SW = { 'Белый': '#FFFFFF', 'Чёрный': '#17171A', 'Серый': '#9A9AA3', 'Бежевый': '#D9C7AE', 'Синий': '#3D5A99', 'Красный': '#D2463F', 'Зелёный': '#5E8C61' };
+const FIELDS = [
+  { g: 'Основное', key: 'cat', label: 'Категория', opts: ['Верх', 'Низ', 'Платье', 'Верхняя одежда', 'Обувь', 'Аксессуар', 'Сумка'] },
+  { g: 'Основное', key: 'type', label: 'Тип', opts: ['Футболка', 'Рубашка', 'Лонгслив', 'Свитер', 'Топ'] },
+  { g: 'Основное', key: 'color', label: 'Цвет', opts: ['Белый', 'Чёрный', 'Серый', 'Бежевый', 'Синий', 'Красный'], swatch: true },
+  { g: 'Основное', key: 'color2', label: 'Доп. цвет', opts: ['Нет', 'Чёрный', 'Серый', 'Синий', 'Красный', 'Зелёный'], swatch: true },
+  { g: 'Подробнее', key: 'pattern', label: 'Узор', opts: ['Однотон', 'Полоска', 'Клетка', 'Принт'] },
+  { g: 'Подробнее', key: 'material', label: 'Материал', opts: ['Хлопок', 'Деним', 'Шерсть', 'Кожа', 'Лён'] },
+  { g: 'Подробнее', key: 'fit', label: 'Посадка', opts: ['Оверсайз', 'Прямой', 'Приталенный'] },
+  { g: 'Подробнее', key: 'warmth', label: 'Теплота', opts: ['Лёгкая', 'Демисезон', 'Тёплая'] },
+  { g: 'Подробнее', key: 'formality', label: 'Формальность', opts: ['Спорт', 'Кэжуал', 'Смарт-кэжуал', 'Деловой', 'Вечерний'] },
+];
+
+class Component extends DCLogic {
+  state = {
+    email: 'kira@mail.ru', styleSel: ['Минимализм', 'Кэжуал'], city: 'Москва', sheet: null, tick: 0,
+    item: { cat: 'Верх', type: 'Футболка', color: 'Белый', color2: 'Нет', pattern: 'Однотон', material: 'Хлопок', fit: 'Оверсайз', warmth: 'Лёгкая', formality: 'Кэжуал' },
+    openKey: 'fit', unavailable: false,
+    desc: 'Белая хлопковая футболка свободного кроя. Подойдёт к джинсам и брюкам на каждый день',
+  };
+  componentDidMount() { this.applyTheme(); this.t = setInterval(() => this.setState(s => ({ tick: (s.tick + 1) % 6 })), 1100); }
+  componentWillUnmount() { clearInterval(this.t); }
+  componentDidUpdate() { this.applyTheme(); }
+  applyTheme() { document.body.classList.toggle('theme-dark', this.props.theme === 'Тёмная'); }
+
+  renderVals() {
+    const s = this.state, p = this.props;
+    const multi = p.quizMulti ?? true;
+    const mode = p.processingState ?? 'Цикл';
+    const phase = mode === 'Заглушка' ? 1 : mode === 'Готово' ? 4 : s.tick;
+    const loading = phase < 3;
+    const toggleStyle = t => this.setState(st => {
+      const has = st.styleSel.includes(t);
+      if (!multi) return { styleSel: has ? [] : [t] };
+      return { styleSel: has ? st.styleSel.filter(x => x !== t) : [...st.styleSel, t] };
+    });
+    const sel = multi ? s.styleSel : s.styleSel.slice(0, 1);
+
+    const stepNames = ['Убираю фон', 'Выравниваю свет и цвет', 'Заполняю описание'];
+    const procSteps = stepNames.map((label, i) => {
+      const done = phase > i, active = phase === i;
+      return { label, icon: done ? 'check-circle' : active ? 'circle-dashed' : 'circle', fill: done, color: done ? 'var(--success)' : active ? 'var(--accent)' : 'var(--ink-tertiary)', text: done || active ? 'var(--ink-primary)' : 'var(--ink-tertiary)' };
+    });
+    const procHero = React.createElement('div', {
+      key: loading ? 'load' : 'done',
+      style: { position: 'relative', width: '100%', aspectRatio: '1 / 1', borderRadius: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden',
+        background: loading ? 'linear-gradient(90deg,var(--item-mat) 0%,#FAFAFC 50%,var(--item-mat) 100%)' : 'var(--item-mat)', backgroundSize: '200% 100%',
+        animation: loading ? 'at-shimmer 1.4s linear infinite' : 'none' },
+    }, React.createElement('i', {
+      className: 'ph ph-t-shirt',
+      style: loading
+        ? { fontSize: 160, color: '#B4B4BD', opacity: 0.22, filter: 'blur(10px)' }
+        : { fontSize: 160, color: '#B4B4BD', filter: 'drop-shadow(0 6px 16px rgba(23,23,26,0.10))', animation: 'at-reveal 650ms var(--ease-out)' },
+    }));
+
+    const fieldVM = f => {
+      const v = s.item[f.key], open = s.openKey === f.key;
+      return {
+        label: f.label, value: v, open, caret: open ? 'caret-up' : 'caret-down',
+        swatch: f.swatch && SW[v] ? SW[v] : false,
+        toggle: () => this.setState(st => ({ openKey: st.openKey === f.key ? null : f.key })),
+        options: f.opts.map(o => ({ label: o, selected: o === v, pick: () => this.setState(st => ({ item: { ...st.item, [f.key]: o } })) })),
+      };
+    };
+    const groups = ['Основное', 'Подробнее'].map(g => ({
+      title: g,
+      fields: FIELDS.filter(f => f.g === g).map((f, i) => ({ ...fieldVM(f), border: i ? '1px solid var(--line)' : 'none' })),
+    }));
+
+    return {
+      noop: () => {},
+      email: s.email, setEmail: v => this.setState({ email: v }), emailEmpty: !s.email,
+      codeDigits: ['4', '8', '2', ''].map((v, i) => ({ v, ring: i === 3 ? '2px' : '0px' })),
+      styles: STYLES.map(([title, sub, icon]) => ({ title, sub, icon, selected: sel.includes(title), toggle: () => toggleStyle(title) })),
+      styleHint: multi ? 'Можно выбрать несколько' : 'Выбери один, потом можно поменять',
+      styleNone: sel.length === 0,
+      city: s.city, setCity: v => this.setState({ city: v }), cityHas: !!s.city.trim(), cityEmpty: !s.city.trim(),
+      citySuggestions: ['Москва', 'Санкт-Петербург', 'Казань', 'Екатеринбург'],
+      musts: ['Верх', 'Низ', 'Обувь'],
+      firstItems: [{ cat: 'top', label: 'Футболка' }, { cat: 'bottom', label: 'Джинсы' }, { cat: 'shoes', label: 'Кеды' }],
+      emptySlots: [1, 2],
+      sheetOpen: s.sheet ?? (p.addSheetOpen ?? true),
+      openSheet: () => this.setState({ sheet: true }), closeSheet: () => this.setState({ sheet: false }),
+      procTitle: loading ? 'Обрабатываю фото' : 'Готово, это футболка',
+      procHero, procSteps,
+      itemTitle: s.item.type, groups,
+      desc: s.desc, onDesc: e => this.setState({ desc: e.target.value }),
+      unavailable: s.unavailable, setUnavailable: v => this.setState({ unavailable: v }),
+      photoOpacity: s.unavailable ? 0.5 : 1,
+    };
+  }
+}
+</script>
+</body>
+</html>

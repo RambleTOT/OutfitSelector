@@ -1,0 +1,14 @@
+:root{
+--font-ui:'Onest',system-ui,-apple-system,'Segoe UI',sans-serif;
+--font-serif:'Cormorant Garamond','Cormorant',Georgia,serif;
+/* size / line-height / weight — rem so system text zoom works */
+--type-display-size:3rem;--type-display-lh:3.25rem;--type-display-weight:900;
+--type-title1-size:1.75rem;--type-title1-lh:2.125rem;--type-title1-weight:800;
+--type-title2-size:1.375rem;--type-title2-lh:1.75rem;--type-title2-weight:800;
+--type-headline-size:1.0625rem;--type-headline-lh:1.375rem;--type-headline-weight:700;
+--type-body-size:1.0625rem;--type-body-lh:1.5rem;--type-body-weight:400;
+--type-callout-size:0.9375rem;--type-callout-lh:1.25rem;--type-callout-weight:600;
+--type-caption-size:0.8125rem;--type-caption-lh:1rem;--type-caption-weight:600;
+--type-micro-size:0.6875rem;--type-micro-lh:0.8125rem;--type-micro-weight:800;--type-micro-tracking:0.04em;
+--type-field-size:1.375rem;
+}

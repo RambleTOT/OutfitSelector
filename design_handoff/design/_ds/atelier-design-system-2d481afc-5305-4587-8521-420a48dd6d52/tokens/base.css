@@ -1,0 +1,22 @@
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:var(--font-ui);font-size:var(--type-body-size);line-height:var(--type-body-lh);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}a:hover{color:var(--accent-pressed)}
+.t-display{font:var(--type-display-weight) var(--type-display-size)/var(--type-display-lh) var(--font-ui);letter-spacing:-0.02em}
+.t-title1{font:var(--type-title1-weight) var(--type-title1-size)/var(--type-title1-lh) var(--font-ui);letter-spacing:-0.01em}
+.t-title2{font:var(--type-title2-weight) var(--type-title2-size)/var(--type-title2-lh) var(--font-ui)}
+.t-headline{font:var(--type-headline-weight) var(--type-headline-size)/var(--type-headline-lh) var(--font-ui)}
+.t-body{font:var(--type-body-weight) var(--type-body-size)/var(--type-body-lh) var(--font-ui)}
+.t-callout{font:var(--type-callout-weight) var(--type-callout-size)/var(--type-callout-lh) var(--font-ui)}
+.t-caption{font:var(--type-caption-weight) var(--type-caption-size)/var(--type-caption-lh) var(--font-ui)}
+.t-micro{font:var(--type-micro-weight) var(--type-micro-size)/var(--type-micro-lh) var(--font-ui);letter-spacing:var(--type-micro-tracking);text-transform:uppercase}
+.t-serif{font-family:var(--font-serif);font-weight:500}
+.glass{background:var(--glass-bg);border:var(--glass-border);box-shadow:var(--glass-shadow);-webkit-backdrop-filter:var(--glass-blur);backdrop-filter:var(--glass-blur)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.glass{background:var(--glass-fallback)}}
+@keyframes at-shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes at-reveal{0%{opacity:0;filter:blur(8px);transform:scale(.96)}100%{opacity:1;filter:none;transform:none}}
+@keyframes at-fly-in{0%{opacity:0;transform:translateY(24px) scale(.9)}100%{opacity:1;transform:none}}
+@keyframes at-shuffle{0%,100%{transform:translate(0,0) rotate(0)}33%{transform:translate(6px,-8px) rotate(4deg)}66%{transform:translate(-6px,4px) rotate(-3deg)}}
+@keyframes at-sheet-up{0%{transform:translateY(100%)}100%{transform:none}}
+@keyframes at-toast-in{0%{opacity:0;transform:translateY(-16px)}100%{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:200ms!important;animation-name:at-fade!important;transition-duration:200ms!important}}
+@keyframes at-fade{0%{opacity:0}100%{opacity:1}}

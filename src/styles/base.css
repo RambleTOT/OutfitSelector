@@ -1,0 +1,59 @@
+/* Базовые стили, типографика, ключевые кадры. Значения только из tokens.css */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--ink-primary);
+  font-family: var(--font-ui);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+button { font-family: inherit; color: inherit; -webkit-tap-highlight-color: transparent; }
+input, textarea { font-family: inherit; color: inherit; }
+a { color: var(--accent-text); text-decoration: none; }
+h1, h2, h3, h4, p { margin: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.scroll-hide { scrollbar-width: none; }
+.scroll-hide::-webkit-scrollbar { display: none; }
+
+.t-display { font: var(--type-display-weight) var(--type-display-size)/var(--type-display-lh) var(--font-ui); letter-spacing: -0.02em; }
+.t-title1 { font: var(--type-title1-weight) var(--type-title1-size)/var(--type-title1-lh) var(--font-ui); letter-spacing: -0.01em; }
+.t-title2 { font: var(--type-title2-weight) var(--type-title2-size)/var(--type-title2-lh) var(--font-ui); }
+.t-headline { font: var(--type-headline-weight) var(--type-headline-size)/var(--type-headline-lh) var(--font-ui); }
+.t-body { font: var(--type-body-weight) var(--type-body-size)/var(--type-body-lh) var(--font-ui); }
+.t-callout { font: var(--type-callout-weight) var(--type-callout-size)/var(--type-callout-lh) var(--font-ui); }
+.t-caption { font: var(--type-caption-weight) var(--type-caption-size)/var(--type-caption-lh) var(--font-ui); }
+.t-micro { font: var(--type-micro-weight) var(--type-micro-size)/var(--type-micro-lh) var(--font-ui); letter-spacing: var(--type-micro-tracking); text-transform: uppercase; }
+.t-serif { font-family: var(--font-serif); font-weight: 500; }
+.muted { color: var(--ink-secondary); }
+
+@keyframes at-shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes at-reveal { 0% { opacity: 0; filter: blur(10px); transform: scale(.92); } 100% { opacity: 1; filter: none; transform: none; } }
+@keyframes at-fly-in { 0% { opacity: 0; transform: translateY(24px) scale(.9); } 100% { opacity: 1; transform: none; } }
+@keyframes at-shuffle { 0%, 100% { transform: translate(0, 0) rotate(0); } 33% { transform: translate(8px, -8px) rotate(4deg); } 66% { transform: translate(-8px, 6px) rotate(-4deg); } }
+@keyframes at-sheet-up { 0% { transform: translateY(100%); } 100% { transform: none; } }
+@keyframes at-sheet-down { 0% { transform: none; } 100% { transform: translateY(100%); } }
+@keyframes at-scrim-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes at-scrim-out { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes at-toast-in { 0% { opacity: 0; transform: translateY(-16px); } 100% { opacity: 1; transform: none; } }
+@keyframes at-toast-out { 0% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-16px); } }
+@keyframes at-push { 0% { opacity: 0; transform: translateX(24px); } 100% { opacity: 1; transform: none; } }
+@keyframes at-rise { 0% { opacity: 0; transform: translateY(12px); } 100% { opacity: 1; transform: none; } }
+@keyframes at-fade { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes at-spin { to { transform: rotate(360deg); } }
+@keyframes at-pop { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }
+
+/* Reduced motion: любое движение заменяется на fade 150 мс */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-name: at-fade !important;
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+  }
+}

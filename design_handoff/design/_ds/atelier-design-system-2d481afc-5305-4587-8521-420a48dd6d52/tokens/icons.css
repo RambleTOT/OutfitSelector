@@ -1,0 +1,3 @@
+/* Phosphor Icons: regular (default) + fill (active tab). Use <i class="ph ph-t-shirt"></i> / <i class="ph-fill ph-t-shirt"></i> */
+@import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css');
+@import url('https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css');

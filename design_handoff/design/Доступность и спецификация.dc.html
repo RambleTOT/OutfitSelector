@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/icons.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/colors.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/typography.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/effects.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/tokens/base.css">
+<link rel="stylesheet" href="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/styles.css">
+<script src="_ds/atelier-design-system-2d481afc-5305-4587-8521-420a48dd6d52/_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--bg-base)}a{color:#BF3D37}a:hover{color:#9E4F6B}</style>
+</helmet>
+<div style="max-width:1120px;margin:0 auto;padding:56px 24px 96px;box-sizing:border-box;display:flex;flex-direction:column;gap:56px;font-family:var(--font-ui);color:var(--ink-primary)">
+
+<header style="display:flex;flex-direction:column;gap:10px">
+<span style="font:800 11px/13px var(--font-ui);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-secondary)">Atelier · для разработки · октябрь 2026</span>
+<h1 style="margin:0;font:800 40px/44px var(--font-ui);letter-spacing:-.01em">Доступность, компоненты и токены</h1>
+<p style="margin:0;max-width:720px;font:400 17px/24px var(--font-ui);color:var(--ink-secondary);text-wrap:pretty">Проверены все экраны: первый запуск, Образ, Гардероб, Конструктор, Избранное, Профиль, Пейвол, установка, сквозные элементы. Нормы: текст 4.5:1, крупный текст и значки 3:1, зона нажатия от 44 px, текст от 11 px, размеры в rem.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:6px">
+<sc-for list="{{ legend }}" as="l" hint-placeholder-count="3">
+<span style="height:28px;padding:0 12px;border-radius:999px;background:{{ l.bg }};color:var(--ink-primary);display:inline-flex;align-items:center;gap:6px;font:600 13px/1 var(--font-ui)"><span style="width:8px;height:8px;border-radius:999px;background:{{ l.dot }}"></span>{{ l.label }}</span>
+</sc-for>
+</div>
+</header>
+
+<section style="display:flex;flex-direction:column;gap:28px">
+<h2 style="margin:0;font:800 28px/34px var(--font-ui)">1. Доступность</h2>
+
+<sc-for list="{{ audits }}" as="a" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<h3 style="margin:0;font:800 20px/26px var(--font-ui)">{{ a.title }}</h3>
+<span style="font:400 15px/20px var(--font-ui);color:var(--ink-secondary)">{{ a.note }}</span>
+</div>
+<div style="background:var(--bg-elevated);border-radius:24px;box-shadow:var(--shadow-card);overflow:hidden">
+<sc-for list="{{ a.rows }}" as="r" hint-placeholder-count="5">
+<div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr) minmax(0,1.6fr);gap:16px;padding:14px 20px;border-top:{{ r.border }};align-items:start">
+<div style="display:flex;gap:10px;align-items:flex-start;min-width:0">
+<span style="width:8px;height:8px;margin-top:6px;flex-shrink:0;border-radius:999px;background:{{ r.dot }}"></span>
+<span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:700 15px/20px var(--font-ui)">{{ r.what }}</span><span style="font:600 13px/16px var(--font-ui);color:var(--ink-secondary)">{{ r.where }}</span></span>
+</div>
+<span style="font:800 15px/20px var(--font-ui);font-variant-numeric:tabular-nums">{{ r.value }}</span>
+<span style="font:400 15px/20px var(--font-ui);color:var(--ink-primary);text-wrap:pretty">{{ r.fix }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<h2 style="margin:0;font:800 28px/34px var(--font-ui)">2. Компоненты</h2>
+<span style="font:400 15px/20px var(--font-ui);color:var(--ink-secondary)">Пространство имён AtelierDesignSystem. Ниже размеры, варианты и состояния, которые используются в макетах</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">
+<sc-for list="{{ comps }}" as="c" hint-placeholder-count="12">
+<div style="background:var(--bg-elevated);border-radius:24px;padding:18px 20px;box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+<span style="font:800 17px/22px var(--font-ui)">{{ c.name }}</span>
+<span style="font:800 11px/13px var(--font-ui);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-secondary)">{{ c.group }}</span>
+</div>
+<span style="font:400 15px/20px var(--font-ui);color:var(--ink-secondary);text-wrap:pretty">{{ c.desc }}</span>
+<div style="display:grid;grid-template-columns:84px minmax(0,1fr);gap:6px 10px;font:600 13px/18px var(--font-ui)">
+<span style="color:var(--ink-secondary)">Размер</span><span>{{ c.size }}</span>
+<span style="color:var(--ink-secondary)">Варианты</span><span>{{ c.variants }}</span>
+<span style="color:var(--ink-secondary)">Состояния</span><span>{{ c.states }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:28px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<h2 style="margin:0;font:800 28px/34px var(--font-ui)">3. Токены</h2>
+<span style="font:400 15px/20px var(--font-ui);color:var(--ink-secondary)">CSS-переменные из tokens/. Тёмная тема включается атрибутом data-theme="dark" или классом theme-dark</span>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font:800 20px/26px var(--font-ui)">Цвета</h3>
+<div style="background:var(--bg-elevated);border-radius:24px;box-shadow:var(--shadow-card);overflow:hidden">
+<div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.6fr);gap:16px;padding:12px 20px;font:800 11px/13px var(--font-ui);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-secondary)"><span>Токен</span><span>Светлая</span><span>Тёмная</span><span>Где</span></div>
+<sc-for list="{{ colors }}" as="t" hint-placeholder-count="12">
+<div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1.6fr);gap:16px;padding:10px 20px;border-top:1px solid var(--line);align-items:center;font:600 13px/18px var(--font-ui)">
+<span style="display:flex;align-items:center;gap:8px;font-weight:700;min-width:0;overflow-wrap:anywhere">{{ t.name }}<sc-if value="{{ t.isNew }}" hint-placeholder-val="{{ false }}"><span style="height:20px;padding:0 8px;border-radius:999px;background:var(--warning-soft);display:inline-flex;align-items:center;font:800 10px/1 var(--font-ui);letter-spacing:.04em;text-transform:uppercase">новый</span></sc-if></span>
+<span style="display:flex;align-items:center;gap:8px"><span style="width:22px;height:22px;flex-shrink:0;border-radius:8px;background:{{ t.light }};box-shadow:inset 0 0 0 1px rgba(17,17,20,.12)"></span>{{ t.light }}</span>
+<span style="display:flex;align-items:center;gap:8px"><span style="width:22px;height:22px;flex-shrink:0;border-radius:8px;background:{{ t.dark }};box-shadow:inset 0 0 0 1px rgba(17,17,20,.12)"></span>{{ t.dark }}</span>
+<span style="color:var(--ink-secondary)">{{ t.use }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px">
+<sc-for list="{{ tokenGroups }}" as="g" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;gap:12px">
+<h3 style="margin:0;font:800 20px/26px var(--font-ui)">{{ g.title }}</h3>
+<div style="background:var(--bg-elevated);border-radius:24px;box-shadow:var(--shadow-card);overflow:hidden">
+<sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="6">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:12px;padding:10px 20px;border-top:{{ r.border }};font:600 13px/18px var(--font-ui)">
+<span style="font-weight:700;overflow-wrap:anywhere">{{ r.k }}</span><span style="color:var(--ink-secondary)">{{ r.v }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const OK = 'var(--success)', FIXED = '#3D5A99', DS = 'var(--warning)';
+const rows = list => list.map(([st, what, where, value, fix], i) => ({ dot: st === 'ok' ? OK : st === 'fixed' ? FIXED : DS, what, where, value, fix, border: i ? '1px solid var(--line)' : 'none' }));
+const kv = list => list.map(([k, v], i) => ({ k, v, border: i ? '1px solid var(--line)' : 'none' }));
+
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      legend: [
+        { label: 'Проходит', dot: OK, bg: 'var(--success-soft)' },
+        { label: 'Исправлено в макетах', dot: FIXED, bg: 'var(--bg-sunken)' },
+        { label: 'Нужно поправить в дизайн-системе', dot: DS, bg: 'var(--warning-soft)' },
+      ],
+      audits: [
+        { title: 'Контраст текста', note: 'Светлая / тёмная тема. Для текста нужно 4.5:1, для заголовков от 24 px и значков 3:1', rows: rows([
+          ['ok', 'ink-primary на фонах', 'Заголовки, основной текст', '16–19 / 14–17', 'Без изменений'],
+          ['ok', 'ink-secondary на фонах', 'Подписи, описания', '4.5–5.3 / 6.2–7.6', 'На bg-sunken в светлой 4.48, держать подписи на bg-base или bg-elevated'],
+          ['fixed', 'ink-tertiary как текст', 'Подписи под полосами, «или», оферта, заметки на плитках, время в боте', '2.2–2.6 / 2.9–3.6', 'Заменено на ink-secondary. ink-tertiary оставить только для отключённых состояний и декоративных линий'],
+          ['ds', 'ink-tertiary в LimitCounter', 'Подпись «из 5» рядом с числом', '2.36 / 3.58', 'В компоненте заменить на ink-secondary'],
+          ['ds', 'accent как текст в светлой', 'Кнопки-ссылки: Не сейчас, Сбросить, Вернуть, Попробовать', '2.8–3.1 / 6.2–7.5', 'Новый токен accent-text #BF3D37 для текста в светлой теме: 4.85 на bg-base, 5.33 на белом. В тёмной оставить accent'],
+          ['ds', 'Белый текст на градиенте Закат', 'Главная кнопка, кнопка оплаты', '1.75 у светлого края', 'Варианты: 1) градиент кнопок #C9443D → #9E4F6B, белый даёт 4.8–5.6; 2) тёмный текст ink-primary на текущем градиенте, 4.5–10.8. Решение за брендом'],
+          ['ds', 'Белый на accent в тёмной', 'Метка Советуем, активный шаг', '2.54', 'В тёмной теме текст на accent ставить ink-on-dark #111114, контраст 7.4'],
+          ['fixed', 'success на success-soft', 'Отметки Верх, Низ, Обувь на первых вещах', '2.71', 'Текст стал ink-primary, зелёная только галочка'],
+          ['ds', 'error как текст в светлой', 'Отменить подписку, Удалить аккаунт', '3.6–3.9', 'Новый токен error-text #C8303A: 4.85 на bg-base'],
+          ['fixed', 'Белый текст на ink-primary в тёмной', 'Номера шагов, активные фильтры', '1.0', 'Текст переведён на bg-base, работает в обеих темах'],
+          ['ok', 'Глифы-заглушки на подложке', 'Иконки вещей #B4B4BD на item-mat', '1.78', 'Временные заглушки, в продукте их заменят фото вещей'],
+        ]) },
+        { title: 'Зоны нажатия', note: 'Минимум 44 × 44 px. Видимый размер может быть меньше, если вокруг есть невидимая зона', rows: rows([
+          ['ok', 'Button, IconButton, TabBar, AnswerCard, строки полей', 'Все экраны', '56 / 44 / 68 / 64+ / 56', 'Без изменений'],
+          ['ds', 'Chip', 'Поводы, категории, анкета, шаблон', '40 px', 'Оставить визуальную высоту 40, добавить невидимую зону 44 через padding или ::before'],
+          ['fixed', 'Кнопки фильтров', 'Гардероб: Цвет, Сезон, Формальность', '36 → 44 px', 'Высота поднята до 44'],
+          ['fixed', 'Цвета фона холста', 'Конструктор', '28 → 44 px', 'Кружок 28 px внутри кнопки 44 px'],
+          ['fixed', 'Время напоминания', 'Профиль', '40 → 44 px', 'Высота поднята до 44'],
+          ['ds', 'Ручки рамки в конструкторе', 'Поворот и размер', '14–24 px', 'Невидимая зона 44 px вокруг каждой ручки. Двумя пальцами работает по всей вещи'],
+          ['ok', 'Цвета в шаблоне вещи', 'Прототип, шаблон', '44 px', 'Кружок 32 px в кнопке 44 px'],
+          ['ok', 'Галочка автоплатежа', 'Пейвол', 'Вся строка', 'Нажимается вся строка с текстом, не только квадрат 24 px'],
+        ]) },
+        { title: 'Размер текста', note: 'Все размеры в rem, текст увеличивается вместе с системной настройкой. Проверить вёрстку при 200%', rows: rows([
+          ['ok', 'Основной текст и поля', 'Body 17, Callout 15, Field 22', '15–22 px', 'Без изменений'],
+          ['ok', 'Micro 11 px капсом', 'Подписи разделов, метки тарифов', '11 px, 800', 'Минимум для служебных подписей, не использовать для смысловых фраз'],
+          ['ok', 'Заметки 11 px', 'Плитки Другой вариант, ячейки тарифов, метка в стирке', '11 px, 600', 'Короткие пояснения рядом с крупным значением. Ниже 11 не опускать'],
+          ['fixed', 'Подписи 9–10 px', 'Схемы Safari на экране установки', '9–10 px', 'Это часть картинки. В продукте заменить на настоящие скриншоты, а смысл продублирован текстом шага'],
+          ['ds', 'Фиксированные px в макетах', 'Числа 56 px, 88 px на экране блокировки', 'px', 'В коде задавать в rem через токены Display и BigStat'],
+        ]) },
+      ],
+      comps: [
+        ['Button', 'actions', 'Главная кнопка экрана и вторичные действия', '56 px, pill; sm 44 px', 'primary (Закат) · secondary (белая, обводка) · text', 'обычное · нажато scale .97 · отключено · с иконкой · на всю ширину'],
+        ['IconButton', 'actions', 'Назад, закрыть, лайк, поделиться', '44 × 44, иконка 24', 'glass · solid · plain', 'обычное · выбрано (accent-soft) · отключено · нажато'],
+        ['TabBar', 'navigation', 'Нижняя навигация: Образ, Гардероб, Избранное, Профиль', '68 px, отступы 16, стекло', '4 вкладки', 'активная: иконка fill + accent-soft'],
+        ['TopBar', 'navigation', 'Плавающая верхняя панель', '56 px, pill, стекло', 'left · title · right', 'стекло при прокрутке или без'],
+        ['Chip', 'forms', 'Поводы, категории, подсказки', '40 px (зона 44), pill', 'occasion · suggestion · с эмодзи или иконкой', 'обычное · выбрано (ink) · отключено'],
+        ['AnswerCard', 'forms', 'Ответ анкеты, пункт шторки', 'list от 64 px; tile 1:1 + подпись', 'list · tile', 'обычное · выбрано (обводка accent + галочка) · отключено'],
+        ['BigTextField', 'forms', 'Крупное поле: город, пожелание', 'текст 22 px, подсказки-чипы', 'с подсказками или без', 'пусто · ввод · фокус'],
+        ['TextInput', 'forms', 'Почта, поиск, поля вещи', '52 px, r16', 'с подписью · с иконкой', 'пусто · фокус · ошибка · подсказка'],
+        ['Switch', 'forms', 'Недоступна сейчас, типы уведомлений', 'строка 56 px, тумблер 51 × 31', 'с описанием или без', 'вкл · выкл · отключено'],
+        ['QuestionProgress', 'forms', 'Шапка анкеты', '44 px: назад · полоса · Пропустить', 'шаг из N', 'первый шаг · середина · последний'],
+        ['WeatherPill', 'status', 'Погода на экране Образ', '44 px, pill', 'иконка · температура · город', 'одно'],
+        ['LimitCounter', 'status', 'Осталось N из M на этой неделе', 'полоса из M сегментов', 'обычный · последний (warning) · пусто · безлимит', 'с кнопкой Ещё или без'],
+        ['PlanBadge', 'status', 'Метка тарифа', '22 px, micro капсом', 'free · sub · plus (Закат)', 'одно'],
+        ['Toast', 'status', 'Короткое сообщение сверху', '48 px, pill, стекло, 3 с', 'success · error · offline · neutral', 'с действием или без'],
+        ['ItemTile', 'wardrobe', 'Плитка вещи на светлой подложке', '1:1, r24, подпись 13 px', 'фото · заглушка категории', 'загрузка · недоступна · выбрана · ошибка · нажата'],
+        ['OutfitHero', 'wardrobe', 'Коллаж образа, как на кровати', 'r32, 4–6 вещей', 'с объяснением · с подсказкой', 'ожидание (перемешивание) · готово · лайк · дизлайк'],
+        ['CanvasItem', 'wardrobe', 'Вещь на холсте конструктора', 'свободный', 'x, y, размер, поворот', 'обычное · выбрано (рамка, ручки)'],
+        ['BottomSheet', 'overlays', 'Шторка: добавление, пейвол, замена', 'r36 сверху, стекло', 'заголовок · подзаголовок · футер', 'выезд снизу 350 мс'],
+        ['CtaPlate', 'overlays', 'Плашка с главной кнопкой внизу', 'отступ 12, стекло', '1 или 2 кнопки', 'одно'],
+        ['Coachmark', 'overlays', 'Подсказка с затемнением', 'затемнение 60%, карточка стекло', 'над или под целью', 'по одной на раздел'],
+        ['EmptyState', 'overlays', 'Пустой экран', 'круг 132, заголовок, текст, кнопка', 'иконка или иллюстрация', 'одно'],
+        ['StatTile', 'stats', 'Число с подписью', 'sm · md · lg', 'elevated · soft · sunken · ink · plain', 'одно'],
+        ['TickBars', 'stats', 'Деления вместо графиков', 'высота от 10 px', 'rising · lines', 'заполнено N из M'],
+        ['SegmentedControl', 'stats', 'Переключатель режимов', '44 px, pill', 'стекло или плоский', 'активный сегмент'],
+        ['Icon', 'core', 'Phosphor', '24 px', 'regular · fill', 'fill для активной вкладки и выбранного'],
+      ].map(([name, group, desc, size, variants, states]) => ({ name, group, desc, size, variants, states })),
+      colors: [
+        ['bg-base', '#F4F4F6', '#0F0F11', 'Фон экрана'], ['bg-elevated', '#FFFFFF', '#1B1B1F', 'Карточки'], ['bg-sunken', '#ECECF0', '#232328', 'Поля, чипы'],
+        ['ink-primary', '#111114', '#F5F2EE', 'Основной текст'], ['ink-secondary', '#6B6B74', '#A8A29C', 'Подписи'], ['ink-tertiary', '#A0A0A9', '#6F6A65', 'Только отключённое и декор'],
+        ['line', '#E2E2E8', '#2C2C31', 'Разделители, обводки'], ['accent', '#F2665E', '#FF7A6E', 'Выбор, кольца, значки'], ['accent-soft', '#FCE3DF', '#3A2220', 'Фон выбранного'],
+        ['accent-text', '#BF3D37', '#FF7A6E', 'Текст-ссылка, кнопка text', true],
+        ['success', '#2FA36B', '#2FA36B', 'Готово, галочки'], ['success-soft', '#DDF1E6', '#16301F', 'Фон успеха'],
+        ['warning', '#F2A93B', '#F2A93B', 'Последний образ'], ['error', '#E5484D', '#E5484D', 'Ошибки, рамки'], ['error-text', '#C8303A', '#E5484D', 'Текст опасных действий', true],
+        ['item-mat', '#EEEEF2', '#EEEEF2', 'Подложка вещей, всегда светлая'],
+        ['scrim', 'rgba(15,15,17,.6)', 'rgba(0,0,0,.6)', 'Затемнение под шторкой'],
+      ].map(([name, light, dark, use, isNew]) => ({ name, light, dark, use, isNew: !!isNew })),
+      tokenGroups: [
+        { title: 'Типографика', rows: kv([['font-ui', 'Onest'], ['font-serif', 'Cormorant Garamond: логотип, сплеш, пейвол'], ['display', '3rem / 3.25rem · 900'], ['title1', '1.75rem / 2.125rem · 800'], ['title2', '1.375rem / 1.75rem · 800'], ['headline', '1.0625rem / 1.375rem · 700'], ['body', '1.0625rem / 1.5rem · 400'], ['callout', '0.9375rem / 1.25rem · 600'], ['caption', '0.8125rem / 1rem · 600'], ['micro', '0.6875rem / 0.8125rem · 800 · капс · 0.04em'], ['field', '1.375rem']]) },
+        { title: 'Отступы и размеры', rows: kv([['space-1…14', '4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 56'], ['screen-padding', '20 px'], ['screen', '390 × 844, минимум 360 × 780'], ['hit-min', '44 px'], ['h-button', '56 px'], ['h-chip', '40 px'], ['h-answer-min', '64 px'], ['size-icon-button', '44 px'], ['size-icon', '24 px']]) },
+        { title: 'Скругления', rows: kv([['radius-chip / full', '999 px'], ['radius-input', '16 px'], ['radius-tile', '24 px'], ['radius-card', '32 px'], ['radius-sheet', '36 px']]) },
+        { title: 'Эффекты и движение', rows: kv([['glass светлая', 'rgba(255,255,255,.55), blur 24 + saturate 180%, обводка 1 px белый 70%'], ['glass тёмная', 'rgba(30,30,34,.55), обводка 1 px белый 12%, тень 0 8 32 / 40%'], ['glass-fallback', 'elevated 92%'], ['shadow-item', '0 6 16 / 10%'], ['shadow-card', 'светлая 0 1 2 / 4% · тёмная обводка 1 px белый 4%'], ['shadow-cta', '0 10 24 accent / 28%'], ['gradient-sunset', '135° #FFB199 → #F2665E → #B5627F'], ['ease-spring', 'cubic-bezier(.34,1.4,.64,1) · 350 мс'], ['ease-out', 'cubic-bezier(.22,1,.36,1)'], ['dur-fast / toast', '180 мс / 3000 мс'], ['stagger-collage', '60 мс']]) },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
