@@ -91,7 +91,7 @@ function ResultView() {
           <div className="tools">
             <Tool icon="arrows-clockwise" label="Другой вариант" note={unlimited ? 'без лимита' : 'минус 1 образ'} onClick={another} />
             <Tool icon="swap" label="Заменить вещь" note="бесплатно" onClick={() => setReplace(true)} />
-            <Tool icon="pencil-simple" label="Редактировать" note="в конструкторе" onClick={() => navigate('/constructor', { state: { itemIds: result.itemIds } })} />
+            <Tool icon="pencil-simple" label="Редактировать" note="в конструкторе" onClick={() => navigate('/constructor', { state: { itemIds: result.itemIds, occasion: result.occasion, explanation: result.explanation, savedId: flow.savedId ?? undefined } })} />
           </div>
         )}
       </div>

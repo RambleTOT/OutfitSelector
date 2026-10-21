@@ -6,6 +6,7 @@ import { toast } from '../../store/ui'
 import { resolveSaved } from '../../lib/outfit'
 import { occasionById, temp } from '../../lib/format'
 import { useOutfitFlow } from '../../store/outfit'
+import { LayoutView } from '../constructor/LayoutView'
 
 /** FAV-04 SavedOutfitDetail: коллаж, название и заметка, Надеваю сегодня, редактировать, удалить */
 export function SavedOutfitDetail() {
@@ -43,7 +44,9 @@ export function SavedOutfitDetail() {
             <IconButton icon="dots-three" label="Ещё" variant="solid" onClick={() => setMenu(true)} />
           </div>
         </div>
-        <OutfitCard items={res.map((r) => r.item)} deletedIds={res.filter((r) => r.deleted).map((r) => r.item.id)} />
+        {outfit.layout
+          ? <LayoutView layout={outfit.layout} items={res.map((r) => r.item)} bg={outfit.bg} deletedIds={res.filter((r) => r.deleted).map((r) => r.item.id)} />
+          : <OutfitCard items={res.map((r) => r.item)} deletedIds={res.filter((r) => r.deleted).map((r) => r.item.id)} />}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <h2 className="t-title2" style={{ flex: 1, minWidth: 0 }}>{outfit.name}</h2>
