@@ -158,7 +158,7 @@ export function Wardrobe() {
         ) : (
           <div className="grid3">
             {visible.map((i) => (
-              <ItemTile key={i.id} item={i} unavailable={!i.available} queued={i.queued} onClick={() => open(i)} onLongPress={() => startSelect(i)} />
+              <ItemTile key={i.id} item={i} label={i.processing ? 'Обрабатываю' : undefined} unavailable={!i.available} queued={i.queued} loading={i.processing} onClick={() => open(i)} onLongPress={() => startSelect(i)} />
             ))}
           </div>
         )}

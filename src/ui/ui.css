@@ -512,3 +512,26 @@
 .swatch-lg span { width: 32px; height: 32px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgba(128, 128, 134, 0.5), 0 0 0 0 var(--bg-base), 0 0 0 0 var(--accent); transition: box-shadow var(--dur-fast) var(--ease-out); }
 .swatch-lg[aria-pressed="true"] span { box-shadow: inset 0 0 0 1px rgba(128, 128, 134, 0.5), 0 0 0 2px var(--bg-base), 0 0 0 4px var(--accent); }
 .tpl-preview { width: 180px; align-self: center; }
+
+/* ---------- Камера (всегда тёмная) ---------- */
+.cam { position: absolute; inset: 0; color: #F5F2EE; background: radial-gradient(120% 70% at 50% 45%, #3A3733 0%, #151413 70%); animation: at-fade var(--dur-spring) var(--ease-out); overflow: hidden; }
+.cam__top { position: absolute; left: 20px; right: 20px; top: max(56px, calc(var(--safe-top) + 12px)); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.cam__btn { width: 44px; height: 44px; border-radius: 999px; border: none; background: rgba(255, 255, 255, 0.14); color: #F5F2EE; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast); }
+.cam__btn:active { transform: scale(0.92); }
+.cam__btn[aria-pressed="true"] { background: #F5F2EE; color: #151413; }
+.cam__pill { height: 32px; padding: 0 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.14); display: inline-flex; align-items: center; white-space: nowrap; font: var(--type-caption-weight) var(--type-caption-size)/1 var(--font-ui); }
+.cam__frame { position: absolute; left: 36px; right: 36px; top: 140px; bottom: 290px; border-radius: 32px; border: 2px dashed rgba(255, 255, 255, 0.7); display: flex; align-items: center; justify-content: center; color: rgba(255, 255, 255, 0.35); }
+.cam__hint { position: absolute; left: 20px; right: 20px; bottom: 196px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.cam__hint .sub { color: #CFC9C2; text-wrap: pretty; }
+.cam__bar { position: absolute; left: 32px; right: 32px; bottom: calc(64px + var(--safe-bottom)); display: flex; align-items: center; justify-content: space-between; }
+.cam__side { width: 52px; height: 52px; border-radius: 16px; border: none; background: rgba(255, 255, 255, 0.14); color: #F5F2EE; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform var(--dur-fast) var(--ease-spring); }
+.cam__side:active { transform: scale(0.92); }
+.cam__shutter { width: 80px; height: 80px; border-radius: 999px; border: 4px solid #F5F2EE; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.cam__shutter span { width: 62px; height: 62px; border-radius: 999px; background: #F5F2EE; transition: transform var(--dur-fast) var(--ease-spring); }
+.cam__shutter:active span { transform: scale(0.88); }
+.proc-step { display: flex; align-items: center; gap: var(--space-3); }
+.proc-hero { position: relative; width: 100%; aspect-ratio: 1 / 1; border-radius: var(--radius-card); background: var(--item-mat); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.proc-hero[data-loading="true"] { background: linear-gradient(90deg, var(--item-mat) 0%, #F7F7FA 50%, var(--item-mat) 100%); background-size: 200% 100%; animation: at-shimmer 1.4s linear infinite; }
+.proc-hero[data-error="true"] { box-shadow: inset 0 0 0 2px var(--error); }
+.proc-hero__art { width: 72%; height: 72%; animation: at-reveal 600ms var(--ease-out); }
+.proc-hero__raw { width: 72%; height: 72%; object-fit: contain; opacity: 0.45; filter: grayscale(0.4); }

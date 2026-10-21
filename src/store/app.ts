@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import { MOCK_ITEMS } from '../data/items'
 import type { Item, SavedOutfit } from '../data/types'
 import { LIMITS, MONTHLY_CAP, monthKey, weekKey } from './limits'
@@ -143,7 +143,11 @@ export const useApp = create<AppState>()(
 
       setPlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndsAt: null }),
       setTheme: (theme) => set({ theme }),
-      toggleOffline: () => set((s) => ({ offline: !s.offline })),
+      toggleOffline: () => {
+        const nowOnline = get().offline
+        set({ offline: !nowOnline })
+        if (nowOnline) setTimeout(() => import('./photo').then((m) => m.processQueued()), 600)
+      },
       endSubscription: () =>
         set((s) => ({ plan: s.plan === 'free' ? 'sub' : s.plan, subEnded: true, subCancelled: false, subEndsAt: null })),
 
@@ -239,11 +243,19 @@ export const useApp = create<AppState>()(
     {
       name: STORAGE_KEY,
       version: 1,
+      // переполнение localStorage (много фото) не должно ломать приложение
+      storage: createJSONStorage(() => ({
+        getItem: (k) => { try { return localStorage.getItem(k) } catch { return null } },
+        setItem: (k, v) => { try { localStorage.setItem(k, v) } catch { /* квота */ } },
+        removeItem: (k) => { try { localStorage.removeItem(k) } catch { /* нет доступа */ } },
+      })),
       // новые поля из initial() не теряются при старых сохранениях
       merge: (persisted, current) => {
         const p = (persisted ?? {}) as Partial<AppState>
         // сохранения до появления quizDone: уже прошедший онбординг считается прошедшим анкету
-        return { ...current, ...p, quizDone: p.quizDone ?? !!p.onboarded }
+        // фото, которые «обрабатывались» в момент перезагрузки, считаем готовыми
+        const items = (p.items ?? current.items).map((i) => (i.processing ? { ...i, processing: undefined } : i))
+        return { ...current, ...p, items, quizDone: p.quizDone ?? !!p.onboarded }
       },
       onRehydrateStorage: () => (state) => state?.refreshUsage(),
     },
