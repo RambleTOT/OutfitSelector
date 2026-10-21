@@ -1,3 +1,4 @@
+import { typeDef } from './catalog'
 import { MISSING_HINT, OUTFIT_TEMPLATES, WEATHER } from './items'
 import type { Category, Item, MissingSlot, OccasionId, OutfitTemplate } from './types'
 
@@ -57,20 +58,21 @@ function candidates(items: Item[], category: Category, prefer: string[], occasio
 
 export function explain(chosen: Item[]): string {
   const by = (c: Category) => chosen.find((i) => i.category === c)
-  const lower = (i: Item) => i.title
+  const plural = (i: Item) => typeDef(i.category, i.type).gender === 'p'
+  const verb = (i: Item, one: string, many: string) => (plural(i) ? many : one)
   const clauses: string[] = []
   const outer = by('outer')
   const dress = by('dress')
   const top = by('top')
   const bottom = by('bottom')
   const shoes = by('shoes')
-  if (outer) clauses.push(`${lower(outer)} закроет от ветра`)
-  if (dress) clauses.push(`${lower(dress)} задаёт настроение`)
-  else if (top) clauses.push(`${lower(top)} ${top.warmth === 'лёгкая' ? 'освежит' : 'согреет'}`)
-  if (bottom) clauses.push(`${lower(bottom)} собирает образ`)
-  if (shoes) clauses.push(`${lower(shoes)} держат образ удобным`)
-  const text = clauses.slice(0, 3).join(', ')
-  return text.charAt(0).toUpperCase() + text.slice(1)
+  if (outer) clauses.push(`${outer.title} ${verb(outer, 'закроет', 'закроют')} от ветра`)
+  if (dress) clauses.push(`${dress.title} ${verb(dress, 'задаёт', 'задают')} настроение`)
+  else if (top) clauses.push(`${top.title} ${top.warmth === 'тёплая' ? verb(top, 'согреет', 'согреют') : verb(top, 'освежит', 'освежат')}`)
+  if (bottom) clauses.push(`${bottom.title} ${verb(bottom, 'собирает', 'собирают')} образ`)
+  if (shoes) clauses.push(`${shoes.title} ${verb(shoes, 'держит', 'держат')} образ удобным`)
+  const text = clauses.slice(0, 3).map((c, i) => (i === 0 ? c : c.charAt(0).toLowerCase() + c.slice(1))).join(', ')
+  return text
 }
 
 /**

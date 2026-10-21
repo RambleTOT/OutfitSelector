@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { MOCK_ITEMS } from '../data/items'
-import type { Item, OccasionId, SavedOutfit } from '../data/types'
+import type { Item, SavedOutfit } from '../data/types'
 import { LIMITS, MONTHLY_CAP, monthKey, weekKey } from './limits'
 
 export type Plan = 'free' | 'sub' | 'plus'
@@ -10,7 +10,7 @@ export type ThemePref = 'system' | 'light' | 'dark'
 export interface Quiz {
   who: string | null // для кого одежда
   city: string
-  occasions: OccasionId[]
+  occasions: string[]
   styles: string[]
   nogo: string[]
 }
@@ -50,6 +50,7 @@ interface Data {
   height: string
   size: string
   quiz: Quiz
+  quizDone: boolean
   onboarded: boolean
   firstItemsSkipped: boolean
   installed: boolean
@@ -75,6 +76,10 @@ interface Actions {
   spendGeneration: () => void
   saveOutfit: (o: Omit<SavedOutfit, 'id' | 'createdAt'>) => 'saved' | 'full' | 'over'
   activatePlan: (p: Plan) => void
+  signIn: (email: string, via: 'email' | 'telegram') => 'new' | 'returning'
+  setQuiz: (q: Partial<Quiz>) => void
+  finishQuiz: () => void
+  finishOnboarding: (skipped: boolean) => void
   addItem: (i: Item) => void
   updateItem: (i: Item) => void
   deleteItem: (id: string) => void
@@ -106,6 +111,7 @@ const initial = (): Data => ({
   height: '',
   size: '',
   quiz: { who: null, city: 'Москва', occasions: [], styles: [], nogo: [] },
+  quizDone: false,
   onboarded: false,
   firstItemsSkipped: false,
   installed: false,
@@ -157,6 +163,7 @@ export const useApp = create<AppState>()(
           via: s.via ?? 'email',
           email: s.email || 'anna@example.com',
           name: s.name || 'Анна',
+          quizDone: true,
           onboarded: true,
           items: s.items.length >= MOCK_ITEMS.length ? s.items : MOCK_ITEMS.map((i) => ({ ...i })),
           seen: { ...s.seen },
@@ -168,7 +175,7 @@ export const useApp = create<AppState>()(
         } catch {
           /* localStorage недоступен */
         }
-        set({ ...initial() })
+        set({ ...initial(), theme: get().theme }) // тема переживает сброс, чтобы не мигала на показе
       },
 
       // успешная генерация тратит образ (замена вещи и неудачная генерация не тратят)
@@ -186,6 +193,23 @@ export const useApp = create<AppState>()(
 
       // имитация оплаты: тариф включается сразу
       activatePlan: (plan) => set({ plan, subEnded: false, subCancelled: false, subEndsAt: plan === 'free' ? null : Date.now() + 30 * 86400000 }),
+
+      // вход: любая почта и код 1111, Telegram пускает сразу. Возвращающийся пользователь сразу попадает в Образ
+      signIn: (email, via) => {
+        const s = get()
+        const returning = via === 'email' && s.onboarded && s.email === email
+        set({
+          signedIn: true,
+          via,
+          email: via === 'email' ? email : s.email,
+          name: s.name || (via === 'email' ? email.split('@')[0].replace(/^./, (c) => c.toUpperCase()) : 'Анна'),
+          notif: via === 'telegram' ? { ...s.notif, telegramBot: true } : s.notif,
+        })
+        return returning ? 'returning' : 'new'
+      },
+      setQuiz: (q) => set((s) => ({ quiz: { ...s.quiz, ...q } })),
+      finishQuiz: () => set({ quizDone: true }),
+      finishOnboarding: (skipped) => set({ onboarded: true, firstItemsSkipped: skipped }),
 
       addItem: (item) => set((s) => ({ items: [{ ...item, addedAt: item.addedAt ?? Date.now() }, ...s.items] })),
       updateItem: (item) => set((s) => ({ items: s.items.map((i) => (i.id === item.id ? item : i)) })),
@@ -216,7 +240,11 @@ export const useApp = create<AppState>()(
       name: STORAGE_KEY,
       version: 1,
       // новые поля из initial() не теряются при старых сохранениях
-      merge: (persisted, current) => ({ ...current, ...(persisted as Partial<AppState>) }),
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<AppState>
+        // сохранения до появления quizDone: уже прошедший онбординг считается прошедшим анкету
+        return { ...current, ...p, quizDone: p.quizDone ?? !!p.onboarded }
+      },
       onRehydrateStorage: () => (state) => state?.refreshUsage(),
     },
   ),

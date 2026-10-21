@@ -25,6 +25,7 @@ export function Wardrobe() {
   const onboarded = useApp((s) => s.onboarded)
   const lim = useLimits()
   const setTabBarHidden = useUi((s) => s.setTabBarHidden)
+  const openAddSheet = useUi((s) => s.openAddSheet)
 
   const [loading, setLoading] = useState(!loadedOnce)
   const [cat, setCat] = useState<Category | 'all'>('all')
@@ -119,7 +120,7 @@ export function Wardrobe() {
         <div className="screen screen--fade" style={{ gap: 16 }}>
           {header}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <EmptyState icon="coat-hanger" title="Здесь пока пусто" text="Добавь пару вещей, и я начну собирать из них образы" actionLabel="Добавить вещь" onAction={() => navigate('/add')} />
+            <EmptyState icon="coat-hanger" title="Здесь пока пусто" text="Добавь пару вещей, и я начну собирать из них образы" actionLabel="Добавить вещь" onAction={() => openAddSheet('/wardrobe')} />
           </div>
           <span className="t-caption muted" style={{ textAlign: 'center', textWrap: 'pretty' }}>Шаблоном можно добавлять без лимита</span>
         </div>
@@ -169,7 +170,7 @@ export function Wardrobe() {
         )}
         <div style={{ height: 96 }} />
       </div>
-      <button type="button" className="fab" aria-label="Добавить вещь" onClick={() => navigate('/add')}><Icon name="plus" size={28} /></button>
+      <button type="button" className="fab" aria-label="Добавить вещь" onClick={() => openAddSheet('/wardrobe')}><Icon name="plus" size={28} /></button>
       <FilterSheet open={sheet} onClose={() => setSheet(false)} value={filters} onChange={setFilters} count={shownTotal} />
     </>
   )

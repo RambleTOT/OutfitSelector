@@ -58,7 +58,7 @@ export function DemoPanel() {
 
       <div className="demo__card">
         <div className="demo__btns">
-          <Button variant="secondary" size="sm" icon="arrow-clockwise" onClick={() => { useOutfitFlow.getState().back(); resetDemo(); navigate('/') }}>Сбросить демо</Button>
+          <Button variant="secondary" size="sm" icon="arrow-clockwise" onClick={() => { useOutfitFlow.getState().back(); resetDemo(); navigate('/splash') }}>Сбросить демо</Button>
           <Button variant="secondary" size="sm" icon="caret-right" onClick={() => { skipOnboarding(); navigate('/outfit') }}>Пропустить онбординг</Button>
         </div>
       </div>

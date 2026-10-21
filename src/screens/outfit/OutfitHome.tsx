@@ -26,6 +26,7 @@ function Idle() {
   const navigate = useNavigate()
   const items = useApp((s) => s.items)
   const offline = useApp((s) => s.offline)
+  const quizCity = useApp((s) => s.quiz.city) || WEATHER.city
   const onboarded = useApp((s) => s.onboarded)
   const markSeen = useApp((s) => s.markSeen)
   const lim = useLimits()
@@ -62,7 +63,7 @@ function Idle() {
     <>
       <div className="screen screen--fade" style={{ paddingBottom: 250 }}>
         <div className="nav-row">
-          <WeatherPill icon={WEATHER.icon} temp={temp()} city={WEATHER.city} offline={offline} />
+          <WeatherPill icon={WEATHER.icon} temp={temp()} city={quizCity} offline={offline} />
           <IconButton icon="bell" label="Уведомления" variant="solid" onClick={() => toast('Новых уведомлений нет', 'neutral')} />
         </div>
         <div className="screen-title">

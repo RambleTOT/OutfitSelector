@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import { Button, CtaPlate, EmptyState, Icon, IconButton, OutfitCard } from '../../ui'
 import { useApp, useLimits } from '../../store/app'
 import { useOutfitFlow } from '../../store/outfit'
-import { toast } from '../../store/ui'
+import { toast, useUi } from '../../store/ui'
 import { occasionById, temp } from '../../lib/format'
 import type { Item } from '../../data/types'
 import { PaywallSheet } from '../paywall/PaywallSheet'
@@ -89,7 +89,7 @@ function ResultView() {
           hint={missingShoes ? 'Добавь обувь, чтобы образ был полным' : undefined}
         />
         {missingShoes ? (
-          <Button variant="text" full icon="plus" onClick={() => navigate('/add')}>Добавить обувь</Button>
+          <Button variant="text" full icon="plus" onClick={() => useUi.getState().openAddSheet('/outfit/result')}>Добавить обувь</Button>
         ) : (
           <div className="tools">
             <Tool icon="arrows-clockwise" label="Другой вариант" note={unlimited ? 'без лимита' : 'минус 1 образ'} onClick={another} />

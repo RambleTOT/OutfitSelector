@@ -14,6 +14,9 @@ export interface ToastData {
 interface UiState {
   toast: ToastData | null
   tabBarHidden: boolean
+  addSheet: { open: boolean; returnTo: string }
+  openAddSheet: (returnTo: string) => void
+  closeAddSheet: () => void
   setTabBarHidden: (v: boolean) => void
   showToast: (t: Omit<ToastData, 'id'>) => void
   hideToast: () => void
@@ -25,6 +28,9 @@ let seq = 0
 export const useUi = create<UiState>((set) => ({
   toast: null,
   tabBarHidden: false,
+  addSheet: { open: false, returnTo: '/wardrobe' },
+  openAddSheet: (returnTo) => set({ addSheet: { open: true, returnTo } }),
+  closeAddSheet: () => set((s) => ({ addSheet: { ...s.addSheet, open: false } })),
   setTabBarHidden: (tabBarHidden) => set({ tabBarHidden }),
   showToast: (t) => set({ toast: { ...t, id: ++seq } }),
   hideToast: () => set({ toast: null }),
