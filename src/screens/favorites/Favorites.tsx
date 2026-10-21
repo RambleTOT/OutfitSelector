@@ -24,7 +24,7 @@ export function Favorites() {
       <h2 className="t-title1" style={{ fontSize: '2rem', lineHeight: '2.25rem' }}>Избранное</h2>
       {over
         ? <span className="photo-pill" style={{ background: 'var(--warning-soft)', boxShadow: 'none' }}>{counter}</span>
-        : <span className="t-callout" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontWeight: 700 }}>{counter}<PlanBadge plan={lim.plan} /></span>}
+        : <span className="t-callout" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontWeight: 700, whiteSpace: 'nowrap' }}>{counter}<span className="hide-narrow"><PlanBadge plan={lim.plan} /></span></span>}
     </div>
   )
 
@@ -53,7 +53,7 @@ export function Favorites() {
         </div>
       )}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '16px 12px' }}>
-        {saved.map((o) => <SavedOutfitCard key={o.id} outfit={o} onClick={() => navigate(`/favorites/${o.id}`)} />)}
+        {saved.map((o, i) => <SavedOutfitCard key={o.id} outfit={o} coach={i === 0} onClick={() => navigate(`/favorites/${o.id}`)} />)}
         {full && !over && lim.plan !== 'plus' && (
           <button type="button" onClick={() => setPay(true)} style={{ aspectRatio: '3 / 4', borderRadius: 24, border: '2px dashed var(--line)', background: 'transparent', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, padding: 16, textAlign: 'center', color: 'var(--ink-secondary)', cursor: 'pointer' }}>
             <Icon name="lock-simple" size={28} />
@@ -72,14 +72,14 @@ export function Favorites() {
 }
 
 /** SavedOutfitCard: 3:4 на подложке, мини-коллаж, название, «эмодзи · повод · дата» */
-export function SavedOutfitCard({ outfit, onClick }: { outfit: SavedOutfit; onClick: () => void }) {
+export function SavedOutfitCard({ outfit, onClick, coach }: { outfit: SavedOutfit; onClick: () => void; coach?: boolean }) {
   const items = useApp((s) => s.items)
   const res = resolveSaved(outfit, items)
   const occ = occasionById(outfit.occasion)
   const hasDeleted = res.some((r) => r.deleted)
   return (
     <button type="button" onClick={onClick} className="saved-card" aria-label={outfit.name}>
-      <span className="saved-card__mat">
+      <span className="saved-card__mat" data-coach={coach ? 'favorites' : undefined}>
         <MiniCollage items={res.map((r) => r.item)} />
         {hasDeleted && <span className="tile__badge">вещь удалена</span>}
       </span>

@@ -18,6 +18,9 @@ import { Processing } from '../screens/add/Processing'
 import { NotClothing } from '../screens/add/NotClothing'
 import { PhotoCard } from '../screens/add/PhotoCard'
 import { useApp } from '../store/app'
+import { CoachHost } from './CoachHost'
+import { Install } from '../screens/install/Install'
+import { Notify } from '../screens/install/Notify'
 import { Wardrobe } from '../screens/wardrobe/Wardrobe'
 import { ItemDetail } from '../screens/wardrobe/ItemDetail'
 import { Favorites } from '../screens/favorites/Favorites'
@@ -53,6 +56,7 @@ function TabLayout() {
   return (
     <>
       <Outlet />
+      {!hidden && <CoachHost key={active} tab={active} />}
       {!hidden && <TabBar active={active} onChange={(id) => navigate('/' + id, { replace: true })} />}
     </>
   )
@@ -78,6 +82,8 @@ export function AppShell() {
             <Route path="/add/notclothing" element={<NotClothing />} />
             <Route path="/add/card" element={<PhotoCard />} />
             <Route path="/item/:id" element={<ItemDetail />} />
+            <Route path="/install" element={<Install />} />
+            <Route path="/install/notify" element={<Notify />} />
             <Route element={<RequireOnboarded />}>
               <Route element={<TabLayout />}>
                 <Route path="/outfit" element={<OutfitHome />} />

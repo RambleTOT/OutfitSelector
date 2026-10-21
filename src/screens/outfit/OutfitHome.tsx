@@ -91,7 +91,7 @@ function Idle() {
         )}
       </div>
       <div className="bottom-actions">
-        <Button full icon="sparkle" disabled={disabled} onClick={build}>Собрать образ</Button>
+        <div data-coach="outfit" style={{ borderRadius: 999 }}><Button full icon="sparkle" disabled={disabled} onClick={build}>Собрать образ</Button></div>
         <Button variant="secondary" full icon="hand-pointing" onClick={() => navigate('/constructor')}>Собрать самому</Button>
       </div>
       <PaywallSheet

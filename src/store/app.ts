@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { MOCK_ITEMS } from '../data/items'
 import type { Item, SavedOutfit } from '../data/types'
+import type { PlatformPref } from '../lib/platform'
 import { LIMITS, MONTHLY_CAP, monthKey, weekKey } from './limits'
 
 export type Plan = 'free' | 'sub' | 'plus'
@@ -58,6 +59,7 @@ interface Data {
   onboarded: boolean
   firstItemsSkipped: boolean
   installed: boolean
+  platform: PlatformPref // где открыт сайт (демо: переключается в панели)
 
   items: Item[]
   saved: SavedOutfit[]
@@ -133,6 +135,7 @@ const initial = (): Data => ({
   onboarded: false,
   firstItemsSkipped: false,
   installed: false,
+  platform: 'auto',
 
   items: [],
   saved: [],
@@ -239,7 +242,7 @@ export const useApp = create<AppState>()(
       setQuiz: (q) => set((s) => ({ quiz: { ...s.quiz, ...q } })),
       finishQuiz: () => set({ quizDone: true }),
       signOut: () => set({ signedIn: false }),
-      finishOnboarding: (skipped) => set({ onboarded: true, firstItemsSkipped: skipped }),
+      finishOnboarding: (skipped) => set((s) => ({ onboarded: true, firstItemsSkipped: skipped, seen: skipped ? s.seen : { ...s.seen, firstOutfit: true } })),
 
       addItem: (item) => set((s) => ({ items: [{ ...item, addedAt: item.addedAt ?? Date.now() }, ...s.items] })),
       updateItem: (item) => set((s) => ({ items: s.items.map((i) => (i.id === item.id ? item : i)) })),

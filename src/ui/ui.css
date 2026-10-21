@@ -596,3 +596,9 @@
 .dock__grid .dock__tile { touch-action: none; }
 .cv__ghost { position: absolute; z-index: 60; width: 84px; height: 84px; margin: -42px 0 0 -42px; pointer-events: none; animation: at-pop var(--dur-spring) var(--ease-spring); filter: drop-shadow(0 10px 20px rgba(17, 17, 20, 0.25)); }
 @keyframes at-drop { 0% { transform: translate(-50%, -50%) scale(1.05) rotate(var(--rot, 0deg)); } 100% { transform: translate(-50%, -50%) scale(1) rotate(var(--rot, 0deg)); } }
+
+/* На самых узких экранах (360 px) второстепенное прячем, чтобы ничего не переносилось */
+@media (max-width: 380px) {
+  .hide-narrow { display: none; }
+  .tabbar { left: 12px; right: 12px; }
+}

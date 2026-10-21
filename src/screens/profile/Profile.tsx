@@ -55,7 +55,7 @@ export function Profile() {
           <Button full onClick={() => navigate('/paywall')}>Продлить за {PLAN_PRICE[app.plan === 'free' ? 'sub' : app.plan]} ₽</Button>
         </div>
       ) : (
-        <div className="card" style={{ borderRadius: 'var(--radius-card)', padding: 20, display: 'flex', flexDirection: 'column', gap: 18 }}>
+        <div className="card" data-coach="profile" style={{ borderRadius: 'var(--radius-card)', padding: 20, display: 'flex', flexDirection: 'column', gap: 18 }}>
           <div className="nav-row"><span className="t-headline" style={{ fontWeight: 800 }}>Осталось</span><PlanBadge plan={lim.plan} /></div>
           {quotas.map((q) => (
             <div key={q.label} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

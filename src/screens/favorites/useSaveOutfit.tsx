@@ -1,4 +1,6 @@
 import { useState, type ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { isStandalone } from '../../lib/platform'
 import { useApp, useLimits } from '../../store/app'
 import { toast } from '../../store/ui'
 import type { SavedOutfit } from '../../data/types'
@@ -16,6 +18,8 @@ export function useSaveOutfit(): { save: (d: Draft, onSaved?: (id: string) => vo
   const saveOutfit = useApp((s) => s.saveOutfit)
   const replaceSaved = useApp((s) => s.replaceSaved)
   const lim = useLimits()
+  const navigate = useNavigate()
+  const markSeen = useApp((s) => s.markSeen)
   const [pending, setPending] = useState<{ draft: Draft; done?: (id: string) => void } | null>(null)
   const [full, setFull] = useState(false)
   const [pay, setPay] = useState<'full' | 'over' | null>(null)
@@ -25,6 +29,11 @@ export function useSaveOutfit(): { save: (d: Draft, onSaved?: (id: string) => vo
     if (r === 'saved') {
       done?.(useApp.getState().saved[0].id)
       toast('Образ сохранён', 'success', { icon: 'heart' })
+      // после первого сохранения предлагаем поставить Atelier на экран (ON-10…ON-12), затем уведомления
+      if (!useApp.getState().seen['install-offered'] && !isStandalone()) {
+        markSeen('install-offered')
+        setTimeout(() => navigate('/install', { state: { flow: 'first' } }), 1500)
+      }
     } else {
       setPending({ draft, done })
       if (r === 'full') setFull(true)

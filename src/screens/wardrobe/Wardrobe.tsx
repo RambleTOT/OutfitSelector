@@ -170,7 +170,7 @@ export function Wardrobe() {
         )}
         <div style={{ height: 96 }} />
       </div>
-      <button type="button" className="fab" aria-label="Добавить вещь" onClick={() => openAddSheet('/wardrobe')}><Icon name="plus" size={28} /></button>
+      <button type="button" className="fab" data-coach="wardrobe" aria-label="Добавить вещь" onClick={() => openAddSheet('/wardrobe')}><Icon name="plus" size={28} /></button>
       <FilterSheet open={sheet} onClose={() => setSheet(false)} value={filters} onChange={setFilters} count={shownTotal} />
     </>
   )

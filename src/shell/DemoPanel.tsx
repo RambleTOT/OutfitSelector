@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { Button, Icon, PlanBadge, SegmentedControl } from '../ui'
+import { Button, Chip, Icon, PlanBadge, SegmentedControl } from '../ui'
+import type { PlatformPref } from '../lib/platform'
 import { effectivePlan, useApp, type Plan } from '../store/app'
 import { toast } from '../store/ui'
 import { useOutfitFlow } from '../store/outfit'
@@ -8,7 +9,7 @@ import { useTheme } from './hooks'
 /** Панель демо справа от рамки, только на десктопе */
 export function DemoPanel() {
   const navigate = useNavigate()
-  const { plan, subEnded, offline, payFail } = useApp()
+  const { plan, subEnded, offline, payFail, platform } = useApp()
   const patch = useApp((s) => s.patch)
   const setPlan = useApp((s) => s.setPlan)
   const setTheme = useApp((s) => s.setTheme)
@@ -56,6 +57,16 @@ export function DemoPanel() {
           <Button variant="secondary" size="sm" icon="crown-simple" onClick={() => { endSubscription(); navigate('/profile') }}>Подписка закончилась</Button>
           <Button variant="secondary" size="sm" icon="credit-card" onClick={() => { patch({ payFail: !payFail }); toast(payFail ? 'Оплата снова проходит' : 'Следующая оплата вернётся с ошибкой', 'neutral') }}>{payFail ? 'Оплата пройдёт' : 'Ошибка оплаты'}</Button>
         </div>
+      </div>
+
+      <div className="demo__card">
+        <span className="t-micro demo__hint">Где открыт сайт</span>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {([['auto', 'Авто'], ['ios', 'iPhone'], ['android', 'Android'], ['telegram', 'Telegram'], ['instagram', 'Instagram'], ['vk', 'VK'], ['tiktok', 'TikTok']] as [PlatformPref, string][]).map(([v, label]) => (
+            <Chip key={v} label={label} selected={platform === v} onClick={() => patch({ platform: v })} />
+          ))}
+        </div>
+        <span className="t-caption demo__hint">Влияет на экраны установки и уведомлений после первого сохранения образа. Открыть вручную: Профиль → Как установить на экран</span>
       </div>
 
       <div className="demo__card">
