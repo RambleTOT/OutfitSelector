@@ -30,7 +30,7 @@ export function Camera() {
         return
       }
       const { dataUrl, colorName } = await cutOutPhoto(f)
-      usePhotoFlow.getState().start(guessItem(dataUrl, colorName))
+      usePhotoFlow.getState().start(guessItem(dataUrl, colorName, f.name))
       navigate('/add/processing', { replace: true })
     } catch {
       toast('Не получилось открыть фото', 'error')

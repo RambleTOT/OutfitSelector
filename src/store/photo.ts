@@ -28,10 +28,21 @@ export const PROCESS_MS = 2000
 
 const ORDER: [Category, string][] = [['top', 'футболка'], ['bottom', 'джинсы'], ['shoes', 'кеды'], ['outer', 'тренч'], ['bag', 'сумка']]
 
-/** ИИ-имитация: что за вещь на фото. Берём первую категорию, которой нет в гардеробе, иначе по кругу */
-export function guessItem(photo: string, colorName: string): Item {
+/** Если в имени файла есть подсказка (sneakers, куртка, сумка), берём её: так демо угадывает вещь точнее */
+const NAME_HINTS: [RegExp, Category, string][] = [
+  [/sneaker|кроссов|кед|shoe|обув/i, 'shoes', 'кроссовки'],
+  [/boot|ботин/i, 'shoes', 'ботинки'],
+  [/bag|сумк/i, 'bag', 'сумка'],
+  [/jacket|coat|куртк|пальто|тренч/i, 'outer', 'куртка'],
+  [/jeans|pants|trouser|брюк|джинс/i, 'bottom', 'джинсы'],
+  [/shirt|tee|hoodie|sweater|рубаш|футбол|свитер|худи/i, 'top', 'рубашка'],
+]
+
+/** ИИ-имитация: что за вещь на фото. Сначала подсказка из имени файла, иначе первая категория, которой нет в гардеробе, иначе по кругу */
+export function guessItem(photo: string, colorName: string, fileName = ''): Item {
   const items = useApp.getState().items
-  const pick = ORDER.find(([c]) => !items.some((i) => i.category === c)) ?? ORDER[items.length % ORDER.length]
+  const hint = NAME_HINTS.find(([re]) => re.test(fileName))
+  const pick: [Category, string] = hint ? [hint[1], hint[2]] : (ORDER.find(([c]) => !items.some((i) => i.category === c)) ?? ORDER[items.length % ORDER.length])
   const [category, type] = pick
   const d = typeDef(category, type)
   const base = buildTemplateItem(category, TYPES[category].find((t) => t.type === type)?.type ?? d.type, colorName)

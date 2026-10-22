@@ -9,7 +9,11 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "icons": "node scripts/build-icons.mjs",
-    "pwa-icons": "node scripts/build-pwa-icons.mjs"
+    "pwa-icons": "node scripts/build-pwa-icons.mjs",
+    "video:stage": "npm run build && node tools/build-stage.mjs",
+    "video:record": "node tools/record-video.mjs video/out",
+    "video:audio": "python3 tools/make-audio.py video/stage/music.wav 60.5",
+    "video:encode": "tools/encode-video.sh video/out video/stage/music.wav video/atelier-demo.mp4"
   },
   "dependencies": {
     "framer-motion": "^14.5.0",
