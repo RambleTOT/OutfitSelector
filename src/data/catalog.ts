@@ -34,6 +34,7 @@ export const TYPES: Record<Category, TypeDef[]> = {
     t('свитер', 'sweater', 'm', 'шерсть', 'прямой', 'тёплая', 'кэжуал'),
     t('худи', 'hoodie', 'n', 'хлопок', 'оверсайз', 'демисезон', 'спорт'),
     t('лонгслив', 'sweater', 'm', 'хлопок', 'прямой', 'демисезон', 'кэжуал'),
+    t('свитшот', 'sweater', 'm', 'хлопок', 'прямой', 'демисезон', 'кэжуал'),
   ],
   outer: [
     t('тренч', 'trench', 'm', 'хлопок', 'прямой', 'демисезон', 'смарт-кэжуал'),
@@ -50,6 +51,7 @@ export const TYPES: Record<Category, TypeDef[]> = {
   dress: [t('платье', 'dress', 'n', 'вискоза', 'приталенный', 'демисезон', 'вечерний')],
   shoes: [
     t('кеды', 'sneakers', 'p', 'кожа', 'прямой', 'демисезон', 'кэжуал'),
+    t('кроссовки', 'sneakers', 'p', 'текстиль', 'прямой', 'демисезон', 'спорт'),
     t('лоферы', 'loafers', 'p', 'кожа', 'прямой', 'демисезон', 'деловой'),
     t('ботинки', 'boots', 'p', 'кожа', 'прямой', 'тёплая', 'смарт-кэжуал'),
   ],
@@ -57,6 +59,7 @@ export const TYPES: Record<Category, TypeDef[]> = {
   accessory: [
     t('шарф', 'scarf', 'm', 'шерсть', 'прямой', 'тёплая', 'кэжуал'),
     t('кепка', 'cap', 'f', 'хлопок', 'прямой', 'лёгкая', 'спорт'),
+    t('шляпа', 'cap', 'f', 'солома', 'прямой', 'лёгкая', 'кэжуал'),
   ],
 }
 
@@ -69,6 +72,7 @@ export const COLORS: { name: string; hex: string }[] = [
   { name: 'Красный', hex: '#C4453F' },
   { name: 'Зелёный', hex: '#5E8C61' },
   { name: 'Коричневый', hex: '#7A5A43' },
+  { name: 'Жёлтый', hex: '#E8B923' },
 ]
 
 /** Группа цвета для фильтра: оттенки сводятся к базовой палитре */
@@ -81,7 +85,8 @@ export function colorGroup(colorName: string): string {
   if (n.includes('син') || n.includes('голуб')) return 'Синий'
   if (n.includes('красн') || n.includes('бордов')) return 'Красный'
   if (n.includes('зел') || n.includes('зёл') || n.includes('оливк')) return 'Зелёный'
-  if (n.includes('коричн')) return 'Коричневый'
+  if (n.includes('коричн') || n.includes('рыж') || n.includes('терракот') || n.includes('оранж')) return 'Коричневый'
+  if (n.includes('жёлт') || n.includes('желт')) return 'Жёлтый'
   return 'Серый'
 }
 
