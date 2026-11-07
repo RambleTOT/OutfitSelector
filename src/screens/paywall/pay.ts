@@ -3,6 +3,7 @@ import { useApp, type Plan } from '../../store/app'
 import { toast } from '../../store/ui'
 import { paymentsLive, payWithCloudPayments } from '../../lib/payments/cloudpayments'
 import { track } from '../../lib/analytics'
+import { HAS_API } from '../../lib/config'
 
 /**
  * Оплата. Если на сервере включён CloudPayments и человек вошёл, открывается настоящий виджет.
@@ -22,6 +23,11 @@ export async function payNow(plan: Plan, navigate: NavigateFunction, from?: stri
     if (r === 'cancel') return
     track(r === 'success' ? 'pay_success' : 'pay_fail', { plan })
     navigate(r === 'success' ? '/paywall/success' : '/paywall/error', { replace: true, state: { from, plan } })
+    return
+  }
+  if (HAS_API) {
+    // боевой режим без подключённой оплаты: демо-включение тарифа здесь недопустимо, иначе платный тариф получают бесплатно
+    toast('Оплата скоро появится', 'neutral', { icon: 'bell' })
     return
   }
   if (app.payFail) {
