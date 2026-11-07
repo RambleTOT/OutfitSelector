@@ -1,0 +1,22 @@
+# /etc/systemd/system/atelier-api.service
+# systemctl daemon-reload && systemctl enable --now atelier-api && journalctl -u atelier-api -f
+[Unit]
+Description=Atelier API
+After=network.target
+
+[Service]
+User=atelier
+WorkingDirectory=/opt/atelier/server
+EnvironmentFile=/opt/atelier/server/.env
+# Для GigaChat: корневой сертификат Минцифры (docs/AI.md, раздел GigaChat)
+# Environment=NODE_EXTRA_CA_CERTS=/opt/atelier/russian_trusted_root_ca.pem
+ExecStart=/usr/bin/node index.mjs
+Restart=always
+RestartSec=3
+# ограничения безопасности
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/atelier/server/data
+
+[Install]
+WantedBy=multi-user.target

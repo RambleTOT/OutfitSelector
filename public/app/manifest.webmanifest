@@ -23,8 +23,8 @@
     { "name": "Гардероб", "short_name": "Гардероб", "url": "/app/?source=shortcut#/wardrobe", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
   ],
   "screenshots": [
-    { "src": "/icons/shot-outfit.png", "sizes": "540x960", "type": "image/png", "form_factor": "narrow", "label": "Образ под погоду и повод" },
-    { "src": "/icons/shot-wardrobe.png", "sizes": "540x960", "type": "image/png", "form_factor": "narrow", "label": "Гардероб с фильтрами" },
-    { "src": "/icons/shot-constructor.png", "sizes": "540x960", "type": "image/png", "form_factor": "narrow", "label": "Конструктор образа" }
+    { "src": "/icons/shot-outfit.png", "sizes": "540x1170", "type": "image/png", "form_factor": "narrow", "label": "Образ под погоду и повод" },
+    { "src": "/icons/shot-wardrobe.png", "sizes": "540x1170", "type": "image/png", "form_factor": "narrow", "label": "Гардероб с фильтрами" },
+    { "src": "/icons/shot-constructor.png", "sizes": "540x1170", "type": "image/png", "form_factor": "narrow", "label": "Конструктор образа" }
   ]
 }

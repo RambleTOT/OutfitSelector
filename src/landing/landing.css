@@ -30,7 +30,8 @@ a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outli
 
 /* секции */
 .sec { padding: 72px 0; }
-.sec--tint { background: var(--bg-sunken); }
+.sec--tint { background: var(--bg-elevated); }
+.sec--tint .card { background: var(--bg-base); box-shadow: none; }
 .sec--dark { background: #111114; color: #F5F2EE; }
 h2 { font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem); line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; text-wrap: balance; margin-bottom: 32px; }
 h3 { font-size: var(--type-title2-size); line-height: var(--type-title2-lh); font-weight: 800; }
@@ -125,7 +126,7 @@ h3 { font-size: var(--type-title2-size); line-height: var(--type-title2-lh); fon
 .final h2 { margin-bottom: 0; max-width: 16ch; }
 
 /* подвал */
-.foot { padding: 48px 0 calc(48px + var(--safe-bottom)); background: var(--bg-sunken); color: var(--ink-secondary); font-size: var(--type-callout-size); }
+.foot { padding: 48px 0 calc(48px + var(--safe-bottom)); background: var(--bg-elevated); border-top: 1px solid var(--line); color: var(--ink-secondary); font-size: var(--type-callout-size); }
 .foot__grid { display: grid; gap: 28px; }
 .foot__logo { display: block; font-size: 30px; color: var(--ink-primary); margin-bottom: 10px; }
 .foot__req { line-height: 1.5; }

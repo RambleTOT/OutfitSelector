@@ -137,7 +137,7 @@ export function Profile() {
         {app.via !== 'guest' && <SettingsRow icon="sign-out" label="Выйти" onClick={() => setSignOut(true)} />}
         <SettingsRow icon="trash" label="Удалить аккаунт" danger onClick={() => navigate('/profile/delete')} />
       </SettingsList>
-      <span className="t-caption muted" style={{ textAlign: 'center' }}>Atelier 1.0 · прототип</span>
+      <span className="t-caption muted" style={{ textAlign: 'center' }}>Atelier 1.0</span>
       <div style={{ height: 96 }} />
 
       <BottomSheet open={signOut} onClose={() => setSignOut(false)} title="Выйти из аккаунта?" subtitle="Гардероб, образы и подписка сохранятся. Войти снова можно по почте или через Telegram">

@@ -8,10 +8,13 @@ import './lib/pwa'
 import { initMetrika } from './lib/analytics'
 import { loadCaps } from './lib/api'
 import { startSync } from './lib/sync'
+import { initNative } from './lib/native'
+import { isNative } from './lib/config'
 import App from './App'
 import { useApp } from './store/app'
 
 initMetrika()
+void initNative()
 void loadCaps().then(() => startSync())
 
 createRoot(document.getElementById('root')!).render(
@@ -21,7 +24,7 @@ createRoot(document.getElementById('root')!).render(
 )
 
 // service worker только в собранной версии, чтобы не мешать разработке
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+if ('serviceWorker' in navigator && import.meta.env.PROD && !isNative()) {
   window.addEventListener('load', () => navigator.serviceWorker.register('/app/sw.js', { scope: '/app/' }).catch(() => {}))
 }
 

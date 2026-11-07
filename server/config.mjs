@@ -27,7 +27,7 @@ export const config = {
   pay: {
     publicId: e.CP_PUBLIC_ID ?? '',
     apiSecret: e.CP_API_SECRET ?? '',
-    prices: { sub: Number(e.PRICE_SUB ?? 300), plus: Number(e.PRICE_SUBPLUS ?? 600) },
+    prices: { sub: Number(e.PRICE_SUB ?? 300), plus: Number(e.PRICE_PLUS ?? e.PRICE_SUBPLUS ?? 600) },
     taxation: Number(e.CP_TAXATION ?? 1),
     vat: e.CP_VAT === undefined || e.CP_VAT === '' ? null : Number(e.CP_VAT),
   },

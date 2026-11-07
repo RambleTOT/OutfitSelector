@@ -23,10 +23,10 @@ export function Splash() {
     navigate('/onboarding/quiz', { replace: true })
   }
   return (
-    <div className="splash" onClick={returning ? () => navigate('/outfit', { replace: true }) : undefined} role="presentation">
+    <div className="splash" role="main" onClick={returning ? () => navigate('/outfit', { replace: true }) : undefined}>
       <div className="splash__glow" />
       <div className="splash__body">
-        <span className="wordmark" style={{ fontSize: 76 }}>Atelier</span>
+        <h1 className="wordmark" style={{ fontSize: 76, margin: 0 }}>Atelier</h1>
         <span className="t-headline" style={{ fontWeight: 600 }}>Новые образы из твоих вещей</span>
       </div>
       {!returning && (

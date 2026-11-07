@@ -27,3 +27,4 @@ dist-ssr
 video/out/
 video/stage/music.wav
 video/atelier-demo.mp4
+builds/
