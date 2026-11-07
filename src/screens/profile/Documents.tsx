@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 import { Icon, NavHeader } from '../../ui'
-import { toast } from '../../store/ui'
 
-const DOCS = [
-  'Пользовательское соглашение',
-  'Политика конфиденциальности',
-  'Оферта на подписку',
-  'Согласие на автоплатёж',
-  'Согласие на обработку фото',
+const DOCS: [string, string][] = [
+  ['Пользовательское соглашение', '/legal/offer.html'],
+  ['Политика конфиденциальности', '/legal/privacy.html'],
+  ['Оферта на подписку', '/legal/offer.html#3-оплата-и-автопродление'],
+  ['Согласие на автоплатёж', '/legal/offer.html#3-оплата-и-автопродление'],
+  ['Согласие на обработку фото', '/legal/consent.html'],
 ]
 
 /** PRF-06 Documents: ссылки на веб-документы */
@@ -17,8 +16,8 @@ export function Documents() {
     <div className="screen screen--push" style={{ gap: 20 }}>
       <NavHeader title="Документы" onBack={() => navigate(-1)} />
       <div className="list" style={{ padding: '0 16px' }}>
-        {DOCS.map((d, i) => (
-          <button key={d} type="button" className="row" style={{ minHeight: 64, padding: 0, borderTop: i ? '1px solid var(--line)' : 'none' }} onClick={() => toast('Документ откроется в браузере', 'neutral')}>
+        {DOCS.map(([d, href], i) => (
+          <button key={d} type="button" className="row" style={{ minHeight: 64, padding: 0, borderTop: i ? '1px solid var(--line)' : 'none' }} onClick={() => { if (!window.open(href, '_blank', 'noopener')) location.href = href }}>
             <Icon name="file-text" size={22} color="var(--ink-secondary)" />
             <span style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 2, textAlign: 'left' }}>
               <span className="t-body" style={{ textWrap: 'pretty' }}>{d}</span>
@@ -28,7 +27,7 @@ export function Documents() {
           </button>
         ))}
       </div>
-      <span className="t-caption muted" style={{ textAlign: 'center', lineHeight: '18px' }}>Atelier 1.0 · ИП Иванова К. А. · ИНН 770000000000</span>
+      <span className="t-caption muted" style={{ textAlign: 'center', lineHeight: '18px' }}>Atelier 1.0</span>
     </div>
   )
 }

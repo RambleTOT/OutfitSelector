@@ -48,7 +48,8 @@ interface Data {
   offline: boolean
 
   signedIn: boolean
-  via: 'email' | 'telegram' | null
+  via: 'email' | 'telegram' | 'guest' | null
+  gateDone: boolean // экран установки на главный экран пройден или пропущен
   email: string
   name: string
   avatar: string
@@ -82,7 +83,7 @@ interface Actions {
   spendGeneration: () => void
   saveOutfit: (o: Omit<SavedOutfit, 'id' | 'createdAt'>) => 'saved' | 'full' | 'over'
   activatePlan: (p: Plan) => void
-  signIn: (email: string, via: 'email' | 'telegram') => 'new' | 'returning'
+  signIn: (email: string, via: 'email' | 'telegram' | 'guest') => 'new' | 'returning'
   setQuiz: (q: Partial<Quiz>) => void
   finishQuiz: () => void
   finishOnboarding: (skipped: boolean) => void
@@ -125,6 +126,7 @@ const initial = (): Data => ({
 
   signedIn: false,
   via: null,
+  gateDone: false,
   email: '',
   name: '',
   avatar: '',
@@ -229,12 +231,12 @@ export const useApp = create<AppState>()(
       // вход: любая почта и код 1111, Telegram пускает сразу. Возвращающийся пользователь сразу попадает в Образ
       signIn: (email, via) => {
         const s = get()
-        const returning = via === 'email' && s.onboarded && s.email === email
+        const returning = s.onboarded && (s.via === 'guest' || (via === 'email' && s.email === email))
         set({
           signedIn: true,
           via,
           email: via === 'email' ? email : s.email,
-          name: s.name || (via === 'email' ? email.split('@')[0].replace(/^./, (c) => c.toUpperCase()) : 'Анна'),
+          name: s.name || (via === 'email' ? email.split('@')[0].replace(/^./, (c) => c.toUpperCase()) : via === 'guest' ? '' : 'Анна'),
           notif: via === 'telegram' ? { ...s.notif, telegramBot: true } : s.notif,
         })
         return returning ? 'returning' : 'new'

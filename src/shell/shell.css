@@ -33,3 +33,23 @@ html, body, #root { height: 100%; }
 .demo__hint { color: var(--ink-secondary); }
 .demo .seg { width: 100%; }
 .demo .seg__btn { flex: 1; padding: 0 8px; }
+
+/* ===== ON-00 InstallGate ===== */
+.gate { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--bg-base); overflow: hidden; }
+.gate__glow { position: absolute; left: 50%; top: -140px; width: 520px; height: 420px; transform: translateX(-50%); background: var(--gradient-sunset-soft); filter: blur(60px); opacity: .9; pointer-events: none; }
+.gate__body { position: relative; flex: 1; overflow-y: auto; padding: calc(var(--safe-top, 0px) + 56px) 20px 220px; display: flex; flex-direction: column; gap: 24px; }
+.gate__hero { display: flex; justify-content: flex-start; padding-top: 12px; }
+.gate__icon { display: flex; align-items: center; justify-content: center; background: var(--gradient-sunset-cta); color: #fff; font-family: var(--font-serif); font-weight: 600; box-shadow: var(--shadow-cta); }
+.gate__steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.gate__step { display: flex; gap: 14px; align-items: center; padding: 12px 16px 12px 12px; min-height: 68px; }
+.gate__num { width: 28px; height: 28px; flex-shrink: 0; border-radius: 999px; background: var(--ink-primary); color: var(--bg-base); display: flex; align-items: center; justify-content: center; font: 800 13px/1 var(--font-ui); }
+.gate__stepicon { width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; background: var(--bg-sunken); color: var(--accent); display: flex; align-items: center; justify-content: center; }
+.gate__pointer { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--accent-text); font-weight: 600; }
+@media (prefers-reduced-motion: no-preference) {
+  .gate__stepicon { animation: gate-pulse 2.4s ease-in-out infinite; }
+  .gate__step:nth-child(2) .gate__stepicon { animation-delay: .8s; }
+  .gate__step:nth-child(3) .gate__stepicon { animation-delay: 1.6s; }
+}
+@media (prefers-reduced-motion: no-preference) { .gate__pointer svg { animation: gate-bounce 1.2s ease-in-out infinite; } }
+@keyframes gate-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+@keyframes gate-pulse { 0%, 70%, 100% { transform: scale(1); } 80% { transform: scale(1.12); background: var(--accent-soft); } }

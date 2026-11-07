@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node tools/build-legal.mjs && tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
     "icons": "node scripts/build-icons.mjs",
@@ -13,10 +13,13 @@
     "video:stage": "npm run build && node tools/build-stage.mjs",
     "video:record": "node tools/record-video.mjs video/out",
     "video:audio": "python3 tools/make-audio.py video/stage/music.wav 60.5",
-    "video:encode": "tools/encode-video.sh video/out video/stage/music.wav video/atelier-demo.mp4"
+    "video:encode": "tools/encode-video.sh video/out video/stage/music.wav video/atelier-demo.mp4",
+    "legal": "node tools/build-legal.mjs",
+    "shots": "node tools/shots.mjs"
   },
   "dependencies": {
     "framer-motion": "^14.5.0",
+    "qrcode": "^1.5.4",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.4",
@@ -26,6 +29,7 @@
     "@fontsource-variable/onest": "^5.3.1",
     "@fontsource/cormorant-garamond": "^5.3.0",
     "@types/node": "^24.19.2",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",

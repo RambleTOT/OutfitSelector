@@ -1,1 +1,198 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Atelier</title></head><body>временный лендинг</body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Atelier: новые образы из твоего шкафа</title>
+  <meta name="description" content="Atelier собирает образ из вещей, которые у тебя уже есть, с учётом погоды и повода. Работает в браузере на любом телефоне, скачивать ничего не нужно" />
+  <link rel="canonical" href="https://atelier.example/" />
+  <meta name="theme-color" content="#F4F4F6" />
+  <meta name="color-scheme" content="light dark" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:site_name" content="Atelier" />
+  <meta property="og:title" content="Atelier: новые образы из твоего шкафа" />
+  <meta property="og:description" content="AI-стилист в телефоне: собирает образ из твоих вещей под погоду и повод. Попробуй бесплатно" />
+  <meta property="og:image" content="/landing/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/app/manifest.webmanifest" />
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Atelier","applicationCategory":"LifestyleApplication","operatingSystem":"Web, iOS, Android","description":"AI-стилист: собирает образы из вещей пользователя с учётом погоды и повода","offers":[{"@type":"Offer","price":"0","priceCurrency":"RUB","name":"Бесплатно"},{"@type":"Offer","price":"300","priceCurrency":"RUB","name":"Подписка"},{"@type":"Offer","price":"600","priceCurrency":"RUB","name":"Подписка+"}],"inLanguage":"ru"}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+    {"@type":"Question","name":"Нужно ли скачивать приложение?","acceptedAnswer":{"@type":"Answer","text":"Нет. Atelier работает в браузере, а при желании его можно добавить на экран телефона"}},
+    {"@type":"Question","name":"Что если у меня мало вещей?","acceptedAnswer":{"@type":"Answer","text":"Начни с пяти: верх, низ и обувь. Чем больше вещей, тем интереснее образы"}},
+    {"@type":"Question","name":"Кто видит мои фото?","acceptedAnswer":{"@type":"Answer","text":"Только ты. Мы храним вырезанное изображение вещи, а исходное фото удаляем после обработки"}},
+    {"@type":"Question","name":"Как отменить подписку?","acceptedAnswer":{"@type":"Answer","text":"В профиле, в разделе Тариф. Подписка будет работать до конца оплаченного периода"}},
+    {"@type":"Question","name":"Подойдёт ли мне?","acceptedAnswer":{"@type":"Answer","text":"Atelier подстраивается под любой стиль. В анкете расскажешь, что любишь и что не носишь, и образы будут под тебя"}}
+  ]}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">К содержанию</a>
+  <header class="top" id="top">
+    <a class="top__logo wordmark" href="/" aria-label="Atelier, на главную">Atelier</a>
+    <nav class="top__nav" aria-label="Разделы">
+      <a href="#how">Как работает</a><a href="#plans">Тарифы</a><a href="#faq">Вопросы</a>
+    </nav>
+    <a class="btn btn--sm" href="/app/?from=landing-top" data-cta="top">Открыть</a>
+  </header>
+
+  <main id="main">
+    <!-- 1. Первый экран -->
+    <section class="hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="wrap hero__grid">
+        <div class="hero__text">
+          <h1>Новые образы из твоего шкафа</h1>
+          <p class="lead">Atelier собирает образ из вещей, которые у тебя уже есть. С учётом погоды и того, куда ты идёшь</p>
+          <a class="btn btn--lg" href="/app/?from=landing-hero" data-cta="hero">Попробовать бесплатно</a>
+          <p class="hint">Работает в браузере на любом телефоне, скачивать ничего не нужно</p>
+        </div>
+        <div class="hero__visual">
+          <figure class="phone phone--hero"><img src="/landing/outfit-result.webp" width="540" height="1170" alt="Экран Atelier с готовым образом на работу: пиджак, рубашка, брюки, сумка и лоферы" fetchpriority="high" /></figure>
+          <img class="float float--a" src="/items/i09.png" alt="" width="120" height="120" loading="lazy" />
+          <img class="float float--b" src="/items/i04.png" alt="" width="110" height="110" loading="lazy" />
+          <img class="float float--c" src="/items/i21.png" alt="" width="100" height="100" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Знакомо? -->
+    <section class="sec" aria-labelledby="h-know">
+      <div class="wrap">
+        <h2 id="h-know">Знакомо?</h2>
+        <ul class="know">
+          <li><span class="know__e" aria-hidden="true">🧥</span>Шкаф полный, а надеть нечего</li>
+          <li><span class="know__e" aria-hidden="true">🤔</span>Половину вещей не носишь, потому что не знаешь, с чем их сочетать</li>
+          <li><span class="know__e" aria-hidden="true">🛍️</span>Покупаешь новое, а оно опять ни с чем не сочетается</li>
+          <li><span class="know__e" aria-hidden="true">⏰</span>Утром нет времени думать, и снова надеваешь одно и то же</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Как это работает -->
+    <section class="sec sec--tint" id="how" aria-labelledby="h-how">
+      <div class="wrap">
+        <h2 id="h-how">Как это работает</h2>
+        <ol class="steps">
+          <li><figure class="phone"><img src="/landing/wardrobe.webp" width="540" height="1170" alt="Гардероб в Atelier: вещи на чистом фоне с фильтрами" loading="lazy" /></figure><div><span class="steps__n">1</span><h3>Сфоткай вещи</h3><p>Фон уберём сами, описание заполним за тебя</p></div></li>
+          <li><figure class="phone"><img src="/landing/outfit-home.webp" width="540" height="1170" alt="Выбор повода и пожеланий для образа" loading="lazy" /></figure><div><span class="steps__n">2</span><h3>Выбери повод</h3><p>Учёба, работа, свидание или прогулка</p></div></li>
+          <li><figure class="phone"><img src="/landing/outfit-result.webp" width="540" height="1170" alt="Готовый образ с пояснением, почему вещи сочетаются" loading="lazy" /></figure><div><span class="steps__n">3</span><h3>Получи образ</h3><p>С учётом погоды и твоего стиля</p></div></li>
+          <li><figure class="phone"><img src="/landing/favorites.webp" width="540" height="1170" alt="Избранные образы" loading="lazy" /></figure><div><span class="steps__n">4</span><h3>Сохрани любимое</h3><p>Чтобы утром не собирать заново</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 4. Что умеет -->
+    <section class="sec" aria-labelledby="h-feat">
+      <div class="wrap feat">
+        <div>
+          <h2 id="h-feat">Что умеет Atelier</h2>
+          <ul class="feat__list">
+            <li><h3>Образ за секунды</h3><p>AI подберёт сочетание из твоих вещей</p></li>
+            <li><h3>Конструктор</h3><p>Собери образ сам: двигай, меняй размер, пробуй сочетания</p></li>
+            <li><h3>Гардероб в телефоне</h3><p>Все вещи под рукой, с поиском и фильтрами</p></li>
+            <li><h3>Напоминания</h3><p>Утром подскажем, что надеть, вечером предупредим о дожде</p></li>
+          </ul>
+        </div>
+        <figure class="phone"><img src="/landing/constructor.webp" width="540" height="1170" alt="Конструктор образа: вещи на холсте, можно двигать и менять размер" loading="lazy" /></figure>
+      </div>
+    </section>
+
+    <!-- 5. Носи больше -->
+    <section class="sec sec--dark" aria-labelledby="h-more">
+      <div class="wrap more">
+        <h2 id="h-more">Носи больше, покупай меньше</h2>
+        <p class="lead">Мы не продаём одежду. Мы помогаем носить то, что у тебя уже есть</p>
+        <p class="bignum" aria-label="47 процентов"><span>47%</span> своих вещей реально носят люди. Остальное просто висит в шкафу</p>
+        <p class="cite">исследование Movinga</p>
+      </div>
+    </section>
+
+    <!-- 6. Тарифы -->
+    <section class="sec" id="plans" aria-labelledby="h-plans">
+      <div class="wrap">
+        <h2 id="h-plans">Тарифы</h2>
+        <div class="plans">
+          <article class="plan">
+            <h3>Бесплатно</h3><p class="plan__price">0 ₽</p>
+            <ul><li>5 AI-образов в неделю</li><li>3 вещи с фото</li><li>Вещи из шаблонов без лимита</li><li>Конструктор</li><li>3 образа в избранном</li></ul>
+          </article>
+          <article class="plan plan--main">
+            <h3>Подписка</h3><p class="plan__price">300 ₽ <small>в месяц</small></p>
+            <ul><li>10 AI-образов в неделю</li><li>30 фото вещей в месяц</li><li>10 образов в избранном</li><li>Шаблоны и конструктор без лимита</li></ul>
+          </article>
+          <article class="plan">
+            <h3>Подписка+</h3><p class="plan__price">600 ₽ <small>в месяц</small></p>
+            <ul><li>Всё без лимитов</li><li>AI-образы, фото и избранное</li></ul>
+          </article>
+        </div>
+        <p class="note">Отменить можно в любой момент в профиле</p>
+      </div>
+    </section>
+
+    <!-- 7. Установка -->
+    <section class="sec sec--tint" id="install" aria-labelledby="h-install">
+      <div class="wrap install">
+        <h2 id="h-install">Как установить на телефон</h2>
+        <div class="install__cols">
+          <div class="card"><h3>iPhone</h3><p>Открой сайт в Safari, нажми Поделиться и выбери На экран Домой</p></div>
+          <div class="card"><h3>Android</h3><p>Открой сайт в Chrome и нажми Установить</p></div>
+        </div>
+        <p class="note">Так Atelier открывается как обычное приложение и присылает напоминания</p>
+      </div>
+    </section>
+
+    <!-- 8. FAQ -->
+    <section class="sec" id="faq" aria-labelledby="h-faq">
+      <div class="wrap wrap--narrow">
+        <h2 id="h-faq">Частые вопросы</h2>
+        <div class="faq">
+          <details><summary>Нужно ли скачивать приложение?</summary><p>Нет. Atelier работает в браузере, а при желании его можно добавить на экран телефона</p></details>
+          <details><summary>Что если у меня мало вещей?</summary><p>Начни с пяти: верх, низ и обувь. Чем больше вещей, тем интереснее образы</p></details>
+          <details><summary>Кто видит мои фото?</summary><p>Только ты. Мы храним вырезанное изображение вещи, а исходное фото удаляем после обработки</p></details>
+          <details><summary>Как отменить подписку?</summary><p>В профиле, в разделе Тариф. Подписка будет работать до конца оплаченного периода</p></details>
+          <details><summary>Подойдёт ли мне?</summary><p>Atelier подстраивается под любой стиль. В анкете расскажешь, что любишь и что не носишь, и образы будут под тебя</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Финальный призыв -->
+    <section class="final" aria-labelledby="h-final">
+      <div class="final__glow" aria-hidden="true"></div>
+      <div class="wrap final__in">
+        <h2 id="h-final">Загляни в свой шкаф по-новому</h2>
+        <a class="btn btn--lg" href="/app/?from=landing-final" data-cta="final">Собрать первый образ</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- 10. Подвал -->
+  <footer class="foot">
+    <div class="wrap foot__grid">
+      <div>
+        <span class="wordmark foot__logo">Atelier</span>
+        <p class="foot__req">ИП Фамилия Имя Отчество<br />ИНН 000000000000, ОГРНИП 000000000000000<br /><span data-todo>Реквизиты заполнить в index.html перед запуском</span></p>
+      </div>
+      <nav aria-label="Документы">
+        <a href="/legal/offer.html">Оферта</a>
+        <a href="/legal/privacy.html">Политика конфиденциальности</a>
+        <a href="/legal/consent.html">Согласие на обработку данных</a>
+      </nav>
+      <nav aria-label="Контакты">
+        <a href="https://t.me/atelier_support" rel="noopener">Поддержка в Telegram</a>
+        <a href="mailto:support@atelier.example">support@atelier.example</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- липкая кнопка на телефоне: появляется после первого экрана -->
+  <div class="sticky" id="sticky" aria-hidden="true"><a class="btn btn--lg" href="/app/?from=landing-sticky" data-cta="sticky" tabindex="-1">Попробовать бесплатно</a></div>
+
+  <script type="module" src="/src/landing/landing.ts"></script>
+</body>
+</html>

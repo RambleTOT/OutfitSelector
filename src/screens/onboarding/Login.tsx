@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Button, TextInput } from '../../ui'
 import { useApp } from '../../store/app'
 import { toast } from '../../store/ui'
@@ -9,6 +9,7 @@ export const emailOk = (v: string) => /.+@.+\..+/.test(v.trim())
 /** ON-02 SignIn: почта с кодом или Telegram (бот подключается сразу) */
 export function Login() {
   const navigate = useNavigate()
+  const after = (useLocation().state as { next?: string } | null)?.next
   const signIn = useApp((s) => s.signIn)
   const patch = useApp((s) => s.patch)
   const stored = useApp((s) => s.email)
@@ -18,12 +19,12 @@ export function Login() {
   const next = () => {
     if (bad) return
     patch({ email: email.trim() })
-    navigate('/code')
+    navigate('/code', { state: { next: after } })
   }
   const telegram = () => {
     const r = signIn('', 'telegram')
     toast('Бот подключён', 'success', { icon: 'telegram-logo' })
-    navigate(r === 'returning' ? '/outfit' : '/onboarding/quiz', { replace: true })
+    navigate(after ?? (r === 'returning' ? '/outfit' : '/onboarding/quiz'), { replace: true })
   }
 
   return (

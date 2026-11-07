@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Button, CodeInput, IconButton } from '../../ui'
 import { useApp } from '../../store/app'
 
@@ -8,6 +8,7 @@ export const DEMO_CODE = '1111'
 /** ON-03 EmailCode: в прототипе принимается код 1111 */
 export function Code() {
   const navigate = useNavigate()
+  const next = (useLocation().state as { next?: string } | null)?.next
   const email = useApp((s) => s.email)
   const signIn = useApp((s) => s.signIn)
   const [code, setCode] = useState('')
@@ -18,7 +19,7 @@ export function Code() {
     if (value.length < 4) return
     if (value !== DEMO_CODE) { setError(true); return }
     const r = signIn(email, 'email')
-    navigate(r === 'returning' ? '/outfit' : '/onboarding/quiz', { replace: true })
+    navigate(next ?? (r === 'returning' ? '/outfit' : '/onboarding/quiz'), { replace: true })
   }
   const change = (v: string) => {
     setError(false)
@@ -28,7 +29,7 @@ export function Code() {
 
   return (
     <div className="flow" style={{ padding: '56px 20px 32px', gap: 28 }}>
-      <div><IconButton icon="caret-left" label="Назад" variant="solid" onClick={() => navigate('/login', { replace: true })} /></div>
+      <div><IconButton icon="caret-left" label="Назад" variant="solid" onClick={() => navigate('/login', { replace: true, state: { next } })} /></div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         <h2 className="t-title1">Введи код из письма</h2>
         <p className="t-body muted">Отправили на {email}</p>

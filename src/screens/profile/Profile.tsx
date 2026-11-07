@@ -37,6 +37,19 @@ export function Profile() {
         <IconButton icon="pencil-simple" label="Редактировать" variant="solid" onClick={() => navigate('/profile/data')} />
       </div>
 
+      {app.via === 'guest' && (
+        <div className="card" style={{ borderRadius: 'var(--radius-card)', padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <span style={{ width: 44, height: 44, flexShrink: 0, borderRadius: 14, background: 'var(--accent-soft)', color: 'var(--accent-text)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="lock-simple" size={24} /></span>
+            <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <span className="t-callout" style={{ fontWeight: 700 }}>Ты без аккаунта</span>
+              <span className="t-caption muted" style={{ textWrap: 'pretty' }}>Войди по почте, чтобы вещи и образы не пропали</span>
+            </span>
+          </div>
+          <Button variant="secondary" full icon="envelope-simple" onClick={() => navigate('/login', { state: { next: '/profile' } })}>Войти по почте</Button>
+        </div>
+      )}
+
       {subEnded ? (
         <div className="card" style={{ borderRadius: 'var(--radius-card)', padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -121,7 +134,7 @@ export function Profile() {
       <SettingsList>
         <SettingsRow icon="user" label="Мои данные" onClick={() => navigate('/profile/data')} />
         <SettingsRow icon="file-text" label="Документы" onClick={() => navigate('/profile/docs')} />
-        <SettingsRow icon="sign-out" label="Выйти" onClick={() => setSignOut(true)} />
+        {app.via !== 'guest' && <SettingsRow icon="sign-out" label="Выйти" onClick={() => setSignOut(true)} />}
         <SettingsRow icon="trash" label="Удалить аккаунт" danger onClick={() => navigate('/profile/delete')} />
       </SettingsList>
       <span className="t-caption muted" style={{ textAlign: 'center' }}>Atelier 1.0 · прототип</span>

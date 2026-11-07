@@ -12,8 +12,7 @@ const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.
 
 const server = http.createServer((req, res) => {
   let url = decodeURIComponent(req.url.split('?')[0])
-  const base = url.startsWith('/app/') || url === '/app' ? 'dist' : 'video/stage'
-  if (base === 'dist') url = url.replace(/^\/app/, '') || '/'
+  const base = /^\/(app|assets|items|icons|favicon)/.test(url) ? 'dist' : 'video/stage'
   if (url.endsWith('/')) url += 'index.html'
   const file = normalize(join(base, url))
   if (!file.startsWith(base) || !existsSync(file) || statSync(file).isDirectory()) { res.statusCode = 404; res.end('404'); return }

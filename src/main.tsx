@@ -4,8 +4,12 @@ import './styles/fonts.css'
 import './styles/tokens.css'
 import './styles/base.css'
 import './ui'
+import './lib/pwa'
+import { initMetrika } from './lib/analytics'
 import App from './App'
 import { useApp } from './store/app'
+
+initMetrika()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

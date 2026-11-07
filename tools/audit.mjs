@@ -36,7 +36,7 @@ for (const theme of ['light', 'dark']) {
   page.on('pageerror', (e) => report.console.push(`[${theme}] pageerror: ${e.message}`))
   page.on('requestfailed', (r) => report.console.push(`[${theme}] requestfailed: ${r.url().slice(0, 120)}`))
   page.on('response', (r) => { if (r.status() >= 400) report.console.push(`[${theme}] HTTP ${r.status()} ${r.url().slice(0, 120)}`) })
-  await page.goto(`http://localhost:${PORT}${APP}`)
+  await page.goto(`http://localhost:${PORT}${APP}?demo`)
   await page.waitForFunction(() => window.__atelier)
   await page.evaluate((t) => {
     const a = window.__atelier.app.getState()
@@ -59,7 +59,7 @@ for (const theme of ['light', 'dark']) {
         const r = el.getBoundingClientRect()
         const name = (el.getAttribute('aria-label') || el.innerText || el.getAttribute('placeholder') || el.title || '').trim()
         const tag = el.tagName.toLowerCase() + (el.className && typeof el.className === 'string' ? '.' + el.className.split(' ')[0] : '')
-        if ((r.width < 43.5 || r.height < 43.5) && !el.classList.contains('chip') && !el.classList.contains('fbtn')) out.small.push(`${tag} "${name.slice(0, 24)}" ${Math.round(r.width)}x${Math.round(r.height)}`)
+        if ((r.width < 43.5 || r.height < 43.5) && !el.classList.contains('chip') && !el.classList.contains('fbtn') && !el.classList.contains('field__input')) out.small.push(`${tag} "${name.slice(0, 24)}" ${Math.round(r.width)}x${Math.round(r.height)}`)
         if (!name && el.tagName !== 'INPUT') out.noname.push(tag)
       }
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)

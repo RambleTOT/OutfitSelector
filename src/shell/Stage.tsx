@@ -1,5 +1,7 @@
 import { AppShell } from './AppShell'
 import { DemoPanel } from './DemoPanel'
+import { DesktopAside } from './DesktopAside'
+import { DEMO } from '../lib/config'
 import { DeviceFrame } from './DeviceFrame'
 import { useMedia, useRealNetwork, useTheme } from './hooks'
 import './shell.css'
@@ -15,7 +17,7 @@ export function Stage() {
   return (
     <div className="stage">
       <DeviceFrame><AppShell /></DeviceFrame>
-      {withPanel && <DemoPanel />}
+      {withPanel && (DEMO ? <DemoPanel /> : <DesktopAside />)}
     </div>
   )
 }

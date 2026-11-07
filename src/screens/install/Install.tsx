@@ -5,11 +5,7 @@ import { useApp } from '../../store/app'
 import { toast } from '../../store/ui'
 import { IN_APP, isInApp, resolvePlatform } from '../../lib/platform'
 
-interface BeforeInstallPromptEvent extends Event { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> }
-let deferred: BeforeInstallPromptEvent | null = null
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferred = e as BeforeInstallPromptEvent })
-}
+import { promptInstall, canPromptInstall } from '../../lib/pwa'
 
 /** ON-10 InstallIOS, ON-11 InstallAndroid, ON-12 OpenInBrowser. Из первого сохранения ведёт дальше на уведомления, из профиля возвращает назад */
 export function Install() {
@@ -52,7 +48,7 @@ export function Install() {
 
   if (platform === 'android') {
     const install = async () => {
-      if (deferred) { await deferred.prompt(); await deferred.userChoice; deferred = null }
+      if (canPromptInstall()) await promptInstall()
       else toast('Atelier добавлен на экран', 'success', { icon: 'device-mobile' })
       patch({ installed: true })
       next()

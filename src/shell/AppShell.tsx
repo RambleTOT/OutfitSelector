@@ -33,6 +33,10 @@ import { DeleteAccount } from '../screens/profile/DeleteAccount'
 import { Paywall } from '../screens/paywall/Paywall'
 import { PaymentError, PaymentSuccess } from '../screens/paywall/PaymentResult'
 import { Kit } from '../screens/Kit'
+import { InstallGate } from '../screens/install/InstallGate'
+import { DEMO } from '../lib/config'
+import { isMobileDevice } from '../lib/platform'
+import { isStandaloneMode } from '../lib/pwa'
 
 /** Без входа пускаем только на сплеш */
 function RequireSignedIn() {
@@ -65,6 +69,9 @@ function TabLayout() {
 /** Внутренность приложения: роуты, оверлеи и тосты живут внутри рамки (position: absolute) */
 export function AppShell() {
   const [overlay, setOverlay] = useState<HTMLElement | null>(null)
+  const gateDone = useApp((s) => s.gateDone)
+  // экран установки: только в браузере телефона, пока иконку не поставили и не пропустили; в демо и на десктопе его нет
+  if (!DEMO && !gateDone && isMobileDevice() && !isStandaloneMode()) return <div className="app"><InstallGate /></div>
   return (
     <div className="app">
       <OverlayContext.Provider value={overlay}>

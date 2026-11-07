@@ -602,3 +602,4 @@
   .hide-narrow { display: none; }
   .tabbar { left: 12px; right: 12px; }
 }
+.splash__cta { position: absolute; left: 20px; right: 20px; bottom: calc(var(--safe-bottom, 0px) + 24px); display: flex; flex-direction: column; gap: 8px; transition: opacity var(--dur-base, .25s) var(--ease-out, ease-out); }
