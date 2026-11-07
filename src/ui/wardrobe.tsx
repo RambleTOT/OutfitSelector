@@ -7,10 +7,13 @@ import { TickBars } from './stats'
 
 /* PNG из public/items/{id}.png подхватывается автоматически; ids без файла запоминаются */
 const noPng = new Set<string>()
+const DEMO_ID = /^i\d{2}$/
+const ITEMS_BASE = '/items/' // сайт живёт в корне домена (лендинг в /, приложение в /app/)
 
 export function ItemArt({ item, shadow = false }: { item: Item; shadow?: boolean }) {
   const [failed, setFailed] = useState(noPng.has(item.id))
-  const src = item.photo ?? (failed ? null : `${import.meta.env.BASE_URL}items/${item.id}.png`)
+  // настоящие фото лежат только у демо-вещей i01…i24 (public/items), остальным запрос не нужен
+  const src = item.photo ?? (failed || !DEMO_ID.test(item.id) ? null : `${ITEMS_BASE}${item.id}.png`)
   return (
     <div className={`art ${shadow ? 'art--shadow' : ''}`}>
       {src ? (
@@ -35,7 +38,7 @@ export function ItemTile({
   return (
     <div className="tile">
       <button
-        type="button" className="tile__btn" aria-pressed={!!selected} aria-label={label ?? item?.title}
+        type="button" className="tile__btn" aria-pressed={!!selected} aria-label={label || item?.title}
         data-selected={!!selected} data-error={!!error} data-loading={!!loading || !!queued}
         onClick={onClick}
         onPointerDown={() => { if (onLongPress) timer.current = setTimeout(onLongPress, 500) }}

@@ -27,6 +27,14 @@ export function BottomSheet({
   const mounted = usePresence(open)
   const closeRef = useRef(onClose)
   closeRef.current = onClose
+  const sheetRef = useRef<HTMLDivElement>(null)
+  // фокус уходит в шторку при открытии и возвращается на кнопку, которая её открыла
+  useEffect(() => {
+    if (!open) return
+    const prev = document.activeElement as HTMLElement | null
+    const t = setTimeout(() => sheetRef.current?.focus({ preventScroll: true }), 30)
+    return () => { clearTimeout(t); prev?.focus?.({ preventScroll: true }) }
+  }, [open])
   useEffect(() => {
     if (!open || !dismissible) return
     const h = (e: KeyboardEvent) => e.key === 'Escape' && closeRef.current()
@@ -37,7 +45,7 @@ export function BottomSheet({
   return createPortal(
     <>
       <div className="scrim" data-closing={!open} onClick={dismissible ? onClose : undefined} />
-      <div className="sheet glass" role="dialog" aria-modal="true" aria-label={title} data-closing={!open}>
+      <div ref={sheetRef} tabIndex={-1} className="sheet glass" role="dialog" aria-modal="true" aria-label={title ?? 'Окно'} data-closing={!open}>
         <button type="button" className="sheet__grab" aria-label="Закрыть" onClick={dismissible ? onClose : undefined} />
         {(title || subtitle) && (
           <div className="sheet__head">

@@ -1,12 +1,13 @@
 import { AppShell } from './AppShell'
 import { DemoPanel } from './DemoPanel'
 import { DeviceFrame } from './DeviceFrame'
-import { useMedia, useTheme } from './hooks'
+import { useMedia, useRealNetwork, useTheme } from './hooks'
 import './shell.css'
 
 /** До 500 px приложение на весь экран; шире: рамка iPhone, а на десктопе ещё и панель демо */
 export function Stage() {
   useTheme()
+  useRealNetwork()
   const framed = useMedia('(min-width: 501px)')
   const withPanel = useMedia('(min-width: 900px)')
 

@@ -1,0 +1,30 @@
+{
+  "id": "/app/",
+  "name": "Atelier: AI-стилист",
+  "short_name": "Atelier",
+  "description": "Новые образы из твоих вещей. Собирает образ под погоду и повод",
+  "lang": "ru",
+  "dir": "ltr",
+  "start_url": "/app/?source=pwa",
+  "scope": "/app/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#F4F4F6",
+  "theme_color": "#F4F4F6",
+  "categories": ["lifestyle", "shopping"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Собрать образ", "short_name": "Образ", "url": "/app/?source=shortcut#/outfit", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Гардероб", "short_name": "Гардероб", "url": "/app/?source=shortcut#/wardrobe", "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }] }
+  ],
+  "screenshots": [
+    { "src": "/icons/shot-outfit.png", "sizes": "540x960", "type": "image/png", "form_factor": "narrow", "label": "Образ под погоду и повод" },
+    { "src": "/icons/shot-wardrobe.png", "sizes": "540x960", "type": "image/png", "form_factor": "narrow", "label": "Гардероб с фильтрами" },
+    { "src": "/icons/shot-constructor.png", "sizes": "540x960", "type": "image/png", "form_factor": "narrow", "label": "Конструктор образа" }
+  ]
+}

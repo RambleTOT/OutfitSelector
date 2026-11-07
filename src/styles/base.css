@@ -57,3 +57,9 @@ h1, h2, h3, h4, p { margin: 0; }
     transition-duration: 150ms !important;
   }
 }
+
+/* Ощущение приложения: интерфейс не выделяется долгим нажатием, текст в полях остаётся выделяемым */
+.app, .phone { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+input, textarea, [contenteditable] { -webkit-user-select: text; user-select: text; }
+img { -webkit-user-drag: none; }
+.sheet:focus, .cam:focus { outline: none; }

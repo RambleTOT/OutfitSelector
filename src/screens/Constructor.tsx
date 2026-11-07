@@ -239,7 +239,7 @@ export function Constructor() {
       {ghost && <div className="cv__ghost" style={{ left: ghost.x, top: ghost.y }}><ItemArt item={ghost.item} /></div>}
 
       <div className="sheet sheet--docked glass" ref={dockRef} onPointerDown={(e) => e.stopPropagation()}>
-        <button type="button" className="sheet__grab" aria-label={expanded ? 'Свернуть шторку' : 'Развернуть шторку'} onClick={() => setExpanded(!expanded)} style={{ width: 64, height: 24, background: 'transparent', opacity: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <button type="button" className="sheet__grab" aria-label={expanded ? 'Свернуть шторку' : 'Развернуть шторку'} onClick={() => setExpanded(!expanded)} style={{ width: 88, height: 44, marginBottom: -14, background: 'transparent', opacity: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ width: 36, height: 4, borderRadius: 999, background: 'var(--ink-tertiary)', opacity: 0.5 }} />
         </button>
         <div className="chips-scroll" style={{ flexShrink: 0 }}>

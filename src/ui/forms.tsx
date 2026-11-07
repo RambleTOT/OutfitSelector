@@ -104,7 +104,7 @@ export function QuestionProgress({
   return (
     <div className="qprog">
       <IconBack onBack={onBack} />
-      <div className="qprog__segs" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={step}>
+      <div className="qprog__segs" role="progressbar" aria-label="Прогресс анкеты" aria-valuemin={0} aria-valuemax={total} aria-valuenow={step}>
         {Array.from({ length: total }, (_, i) => <span key={i} className="qprog__seg" data-on={i < step} />)}
       </div>
       <button type="button" className="qprog__skip t-callout" onClick={onSkip} style={{ visibility: onSkip ? 'visible' : 'hidden' }}>{skipLabel}</button>
@@ -134,7 +134,7 @@ export function CodeInput({ value, onChange, error, length = 4 }: { value: strin
       <input
         ref={ref} autoFocus inputMode="numeric" autoComplete="one-time-code" aria-label="Код из письма" value={value}
         onChange={(e) => onChange(e.target.value.replace(/\D/g, '').slice(0, length))}
-        style={{ position: 'absolute', opacity: 0, width: 1, height: 1, pointerEvents: 'none' }}
+        style={{ position: 'absolute', opacity: 0, width: 1, height: 1, pointerEvents: 'none', fontSize: 16 }}
       />
     </div>
   )

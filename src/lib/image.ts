@@ -2,7 +2,7 @@ import { COLORS } from '../data/catalog'
 
 /** Читает фото с устройства, уменьшает и «вырезает» вещь: фон, связанный с краями и близкий к цвету краёв, становится прозрачным */
 export async function cutOutPhoto(file: File, max = 280): Promise<{ dataUrl: string; colorName: string }> {
-  const bmp = await createImageBitmap(file).catch(() => null)
+  const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }).catch(() => createImageBitmap(file)).catch(() => null)
   if (!bmp) throw new Error('image')
   const k = Math.min(1, max / Math.max(bmp.width, bmp.height))
   const w = Math.max(8, Math.round(bmp.width * k))
@@ -57,7 +57,9 @@ export async function cutOutPhoto(file: File, max = 280): Promise<{ dataUrl: str
   }
   ctx.putImageData(img, 0, 0)
   const avg: [number, number, number] = n ? [r / n, g / n, b / n] : [r0, g0, b0]
-  return { dataUrl: c.toDataURL('image/png'), colorName: nearestColor(avg) }
+  // WebP с прозрачностью втрое легче PNG: в localStorage помещается больше вещей. Если браузер не умеет кодировать WebP, вернётся PNG
+  const webp = c.toDataURL('image/webp', 0.88)
+  return { dataUrl: webp.startsWith('data:image/webp') ? webp : c.toDataURL('image/png'), colorName: nearestColor(avg) }
 }
 
 const parse = (hex: string): [number, number, number] => [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]

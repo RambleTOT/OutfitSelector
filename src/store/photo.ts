@@ -70,7 +70,7 @@ export function finishProcessing(id: string) {
   if (it) app.updateItem({ ...it, processing: undefined, queued: undefined })
 }
 
-/** Когда сеть вернулась, фото из очереди «Ждёт сеть» обрабатываются */
+/** Когда сеть вернулась (кнопка демо или реальное событие online), фото из очереди «Ждёт сеть» обрабатываются */
 export function processQueued() {
   const app = useApp.getState()
   app.items.filter((i) => i.queued).forEach((i, k) => {
@@ -78,3 +78,5 @@ export function processQueued() {
     setTimeout(() => finishProcessing(i.id), PROCESS_MS + k * 600)
   })
 }
+
+if (typeof window !== 'undefined') window.addEventListener('atelier:online', () => setTimeout(processQueued, 600))

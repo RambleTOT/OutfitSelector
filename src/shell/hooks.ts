@@ -36,3 +36,21 @@ export function useTheme() {
   }, [resolved])
   return resolved
 }
+
+/** Настоящее состояние сети: событие offline/online включает оффлайн-режим приложения (кнопка демо делает то же вручную) */
+export function useRealNetwork() {
+  useEffect(() => {
+    const set = (offline: boolean) => {
+      const was = useApp.getState().offline
+      if (was === offline) return
+      useApp.setState({ offline })
+      if (!offline) window.dispatchEvent(new Event('atelier:online'))
+    }
+    if (!navigator.onLine) set(true)
+    const off = () => set(true)
+    const on = () => set(false)
+    window.addEventListener('offline', off)
+    window.addEventListener('online', on)
+    return () => { window.removeEventListener('offline', off); window.removeEventListener('online', on) }
+  }, [])
+}

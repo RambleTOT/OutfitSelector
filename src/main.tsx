@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')!).render(
 
 // service worker только в собранной версии, чтобы не мешать разработке
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {}))
+  window.addEventListener('load', () => navigator.serviceWorker.register('/app/sw.js', { scope: '/app/' }).catch(() => {}))
 }
 
 // доступ к состоянию для записи демо-ролика (tools/record-video.mjs)

@@ -168,7 +168,7 @@ export const useApp = create<AppState>()(
       toggleOffline: () => {
         const nowOnline = get().offline
         set({ offline: !nowOnline })
-        if (nowOnline) setTimeout(() => import('./photo').then((m) => m.processQueued()), 600)
+        if (nowOnline) window.dispatchEvent(new Event('atelier:online')) // очередь фото подхватит store/photo.ts
       },
       endSubscription: () =>
         set((s) => ({ plan: s.plan === 'free' ? 'sub' : s.plan, subEnded: true, subCancelled: false, subEndsAt: null, subEndedAt: Date.now() })),
