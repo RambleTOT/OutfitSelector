@@ -5,6 +5,8 @@ import { useApp } from '../../store/app'
 import { useOutfitFlow } from '../../store/outfit'
 import { dateLong, plural } from '../../lib/format'
 import { toast } from '../../store/ui'
+import { HAS_API } from '../../lib/config'
+import { api, authErrorText, hasSession, requestCode, setToken, verifyCode } from '../../lib/api'
 
 /** PRF-08 DeleteAccount, PRF-09 DeleteAccountConfirm (код из письма, в прототипе 1111) */
 export function DeleteAccount() {
@@ -20,8 +22,15 @@ export function DeleteAccount() {
     { icon: 'sparkle', text: 'История образов и анкета' },
     { icon: 'telegram-logo', text: 'Связь с Telegram-ботом' },
   ]
-  const remove = () => {
-    if (code !== '1111') { setBad(true); return }
+  const remove = async () => {
+    if (hasSession()) {
+      // настоящее удаление: подтверждаем кодом из письма, затем сервер стирает данные и отключает автопродление
+      try {
+        const v = await verifyCode(app.email, code)
+        await api('DELETE', '/api/me', undefined, { token: v.token })
+      } catch (e) { if (e instanceof Error && e.message === 'code_wrong') setBad(true); else toast(authErrorText(e), 'error'); return }
+      setToken('')
+    } else if (code !== '1111') { setBad(true); return }
     useOutfitFlow.getState().back()
     app.resetDemo()
     toast('Аккаунт удалён', 'neutral')
@@ -52,14 +61,14 @@ export function DeleteAccount() {
         )}
       </div>
       <CtaPlate>
-        <Button variant="secondary" full onClick={() => { setCode(''); setBad(false); setConfirm(true) }}>Продолжить удаление</Button>
+        <Button variant="secondary" full onClick={() => { setCode(''); setBad(false); setConfirm(true); if (hasSession()) requestCode(app.email).catch((e) => toast(authErrorText(e), 'error')) }}>Продолжить удаление</Button>
         <Button variant="text" full onClick={() => navigate(-1)}>Оставить аккаунт</Button>
       </CtaPlate>
       <BottomSheet open={confirm} onClose={() => setConfirm(false)} title="Точно удалить?" subtitle={`Введи код из письма на ${app.email || 'почту'}, чтобы подтвердить`}>
         <div style={{ position: 'relative' }}>
           <CodeInput value={code} onChange={(v) => { setCode(v); setBad(false) }} error={bad} />
           {bad && <p className="t-caption" style={{ color: 'var(--error-text)', textAlign: 'center', marginTop: 10 }}>Неверный код, попробуй ещё раз</p>}
-          <p className="t-caption muted" style={{ textAlign: 'center', marginTop: 10 }}>Для демо подойдёт код 1111</p>
+          {!HAS_API && <p className="t-caption muted" style={{ textAlign: 'center', marginTop: 10 }}>Для демо подойдёт код 1111</p>}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <Button variant="danger" full icon="trash" disabled={code.length < 4} onClick={remove}>Удалить навсегда</Button>

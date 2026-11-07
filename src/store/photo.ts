@@ -51,6 +51,24 @@ export function guessItem(photo: string, colorName: string, fileName = ''): Item
   return { ...item, description: makeDescription(item) }
 }
 
+/** Карточка вещи по ответу модели с картинками: вид сверяем с каталогом, остальные поля берём как есть */
+export function describedItem(photo: string, colorName: string, d: import('../lib/ai').Described): Item {
+  const category = (d.category as Category) in TYPES ? (d.category as Category) : 'top'
+  const known = TYPES[category].find((t) => d.type && t.type.toLowerCase() === d.type.toLowerCase())
+  const color = d.colorName || colorName
+  const base = buildTemplateItem(category, (known ?? TYPES[category][0]).type, color)
+  const item: Item = {
+    ...base, source: 'photo', photo, addedAt: Date.now(),
+    title: known ? makeTitle(color.toLowerCase(), known.type, category) : `${color} ${(d.type || base.type).toLowerCase()}`.replace(/^./, (c) => c.toUpperCase()),
+    formality: (d.formality as Item['formality']) ?? base.formality,
+    warmth: (d.warmth as Item['warmth']) ?? base.warmth,
+    fit: (d.fit as Item['fit']) ?? base.fit,
+    pattern: (d.pattern as Item['pattern']) ?? base.pattern,
+    material: d.material || base.material,
+  }
+  return { ...item, description: makeDescription(item) }
+}
+
 /** Фото учитывается в лимите, когда вещь попала в гардероб; неудачные и удалённые слот не возвращают/не тратят */
 export function addPhotoItem(item: Item, opts: { background?: boolean } = {}) {
   const app = useApp.getState()

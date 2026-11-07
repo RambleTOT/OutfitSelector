@@ -2,6 +2,10 @@ import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Button, CodeInput, IconButton } from '../../ui'
 import { useApp } from '../../store/app'
+import { toast } from '../../store/ui'
+import { HAS_API } from '../../lib/config'
+import { ApiError, authErrorText, requestCode, setToken, verifyCode } from '../../lib/api'
+import { applyServerState, applySub, startSync } from '../../lib/sync'
 
 export const DEMO_CODE = '1111'
 
@@ -13,10 +17,28 @@ export function Code() {
   const signIn = useApp((s) => s.signIn)
   const [code, setCode] = useState('')
   const [error, setError] = useState(false)
+  const [busy, setBusy] = useState(false)
   if (!email) return <Navigate to="/login" replace />
 
-  const submit = (value = code) => {
-    if (value.length < 4) return
+  const submit = async (value = code) => {
+    if (value.length < 4 || busy) return
+    if (HAS_API) {
+      setBusy(true)
+      try {
+        const r = await verifyCode(email, value)
+        setToken(r.token)
+        applySub(r.user)
+        // вернувшийся человек: подтягиваем гардероб с сервера; новый: остаётся то, что набрал как гость
+        if (r.state) applyServerState(r.state, r.stateAt)
+        const res = signIn(email, 'email')
+        void startSync()
+        navigate(next ?? (r.state || res === 'returning' ? '/outfit' : '/onboarding/quiz'), { replace: true })
+      } catch (e) {
+        if (e instanceof ApiError && e.code === 'code_wrong') setError(true)
+        else toast(authErrorText(e), 'error')
+      } finally { setBusy(false) }
+      return
+    }
     if (value !== DEMO_CODE) { setError(true); return }
     const r = signIn(email, 'email')
     navigate(next ?? (r === 'returning' ? '/outfit' : '/onboarding/quiz'), { replace: true })
@@ -38,10 +60,15 @@ export function Code() {
         <CodeInput value={code} onChange={change} error={error} />
         {error && <p className="t-caption" style={{ color: 'var(--error-text)', textAlign: 'center', marginTop: 12 }}>Неверный код, попробуй ещё раз</p>}
       </div>
-      <Button variant="text" icon="clipboard-text" style={{ alignSelf: 'flex-start' }} onClick={() => change(DEMO_CODE)}>Вставить код из письма</Button>
-      <span className="t-caption muted">Для демо подойдёт код {DEMO_CODE}</span>
+      <Button variant="text" icon="clipboard-text" style={{ alignSelf: 'flex-start' }} onClick={async () => {
+        if (!HAS_API) { change(DEMO_CODE); return }
+        try { const t = (await navigator.clipboard.readText()).replace(/\D/g, '').slice(0, 4); if (t.length === 4) change(t) } catch { toast('Не получилось вставить, введи код вручную', 'neutral') }
+      }}>Вставить код из письма</Button>
+      {HAS_API
+        ? <Button variant="text" style={{ alignSelf: 'flex-start' }} onClick={() => requestCode(email).then(() => toast('Отправили новый код', 'success'), (e) => toast(authErrorText(e), 'error'))}>Отправить код ещё раз</Button>
+        : <span className="t-caption muted">Для демо подойдёт код {DEMO_CODE}</span>}
       <div style={{ marginTop: 'auto' }}>
-        <Button full disabled={code.length < 4} onClick={() => submit()}>Войти</Button>
+        <Button full disabled={code.length < 4} loading={busy} onClick={() => submit()}>Войти</Button>
       </div>
     </div>
   )

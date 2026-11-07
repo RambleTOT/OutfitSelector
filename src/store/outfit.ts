@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { canGenerate, explain, generateOutfit, type GeneratedOutfit } from '../data/generate'
 import type { Item, OccasionId } from '../data/types'
 import { computeLimits, useApp } from './app'
+import { aiOutfit } from '../lib/ai'
 
 export type Phase = 'idle' | 'waiting' | 'result' | 'error'
 
@@ -28,6 +29,7 @@ interface FlowState {
 
 export const WAIT_MS = 1800
 let timer: ReturnType<typeof setTimeout> | undefined
+let run = 0
 
 /** Состояние сборки образа. Не сохраняется: после перезагрузки экран возвращается в исходное */
 export const useOutfitFlow = create<FlowState>((set, get) => ({
@@ -54,11 +56,23 @@ export const useOutfitFlow = create<FlowState>((set, get) => ({
     const nextVariant = kind === 'another' ? variant + 1 : 0
     set({ phase: 'waiting', variant: nextVariant })
     clearTimeout(timer)
-    timer = setTimeout(() => {
+    const avoid = kind === 'another' ? result?.itemIds : undefined
+    // сервер с AI (если подключён) собирает образ параллельно с минимальным ожиданием; любая его ошибка уходит в локальный алгоритм
+    const ai = aiOutfit(app.items, occasion, wish, avoid ?? [])
+    const mine = ++run
+    timer = setTimeout(async () => {
+      const smart = await ai
+      if (mine !== run || get().phase !== 'waiting') return // человек отменил ожидание
       const a = useApp.getState()
       // сеть пропала, пока ждали: образ не собран, лимит не списывается (OUT-06)
       if (a.offline) { set({ phase: 'error' }); return }
-      const gen = generateOutfit(a.items, occasion, nextVariant, wish, kind === 'another' ? result?.itemIds : undefined)
+      if (smart === 'limit') { a.exhaustLimit(); set({ phase: get().result ? 'result' : 'idle' }); return }
+      const gen = generateOutfit(a.items, occasion, nextVariant, wish, avoid)
+      if (smart) {
+        const chosen = smart.ids.map((id) => a.items.find((i) => i.id === id)).filter((i): i is Item => !!i)
+        gen.itemIds = chosen.map((i) => i.id)
+        gen.explanation = smart.explanation || explain(chosen)
+      }
       a.spendGeneration()
       set({ phase: 'result', result: gen, liked: null, worn: false, savedId: null })
     }, WAIT_MS)
@@ -66,12 +80,12 @@ export const useOutfitFlow = create<FlowState>((set, get) => ({
   },
 
   cancel: () => {
-    clearTimeout(timer)
+    clearTimeout(timer); run++
     set({ phase: get().result ? 'result' : 'idle' })
   },
 
   back: () => {
-    clearTimeout(timer)
+    clearTimeout(timer); run++
     set({ phase: 'idle', result: null, liked: null, worn: false, savedId: null, variant: 0 })
   },
 

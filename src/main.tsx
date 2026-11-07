@@ -6,10 +6,13 @@ import './styles/base.css'
 import './ui'
 import './lib/pwa'
 import { initMetrika } from './lib/analytics'
+import { loadCaps } from './lib/api'
+import { startSync } from './lib/sync'
 import App from './App'
 import { useApp } from './store/app'
 
 initMetrika()
+void loadCaps().then(() => startSync())
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

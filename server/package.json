@@ -1,0 +1,16 @@
+{
+  "name": "atelier-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Сервер Atelier: вход по коду из почты, синхронизация гардероба, AI-образы, оплата CloudPayments",
+  "scripts": {
+    "start": "node index.mjs",
+    "dev": "node --watch --env-file=.env index.mjs",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "nodemailer": "^6.10.0"
+  }
+}

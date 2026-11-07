@@ -1,17 +1,27 @@
 import type { NavigateFunction } from 'react-router-dom'
 import { useApp, type Plan } from '../../store/app'
 import { toast } from '../../store/ui'
+import { paymentsLive, payWithCloudPayments } from '../../lib/payments/cloudpayments'
+import { track } from '../../lib/analytics'
 
 /**
- * Имитация оплаты через ЮKassa: «возврат» сразу ведёт на PAY-02 с включённым тарифом
- * или на PAY-03, если в панели демо включена «Ошибка оплаты» (деньги не списаны, тариф не меняется)
+ * Оплата. Если на сервере включён CloudPayments и человек вошёл, открывается настоящий виджет.
+ * Иначе демо: «возврат» сразу ведёт на PAY-02 с включённым тарифом или на PAY-03, если в панели демо включена «Ошибка оплаты».
  */
-export function payNow(plan: Plan, navigate: NavigateFunction, from?: string) {
+export async function payNow(plan: Plan, navigate: NavigateFunction, from?: string) {
   const app = useApp.getState()
   if (app.via === 'guest') {
     // платёж привязан к аккаунту: гость сначала входит по почте, потом возвращается к оплате
     toast('Сначала войди по почте', 'neutral', { icon: 'envelope-simple' })
     navigate('/login', { state: { next: from ?? '/paywall' } })
+    return
+  }
+  if (plan !== 'free' && paymentsLive()) {
+    track('pay_start', { plan })
+    const r = await payWithCloudPayments(plan)
+    if (r === 'cancel') return
+    track(r === 'success' ? 'pay_success' : 'pay_fail', { plan })
+    navigate(r === 'success' ? '/paywall/success' : '/paywall/error', { replace: true, state: { from, plan } })
     return
   }
   if (app.payFail) {

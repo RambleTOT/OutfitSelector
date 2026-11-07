@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Icon } from '../../ui'
 import { CATEGORY_ICON } from '../../data/items'
 import { useApp, useLimits } from '../../store/app'
-import { usePhotoFlow, guessItem } from '../../store/photo'
+import { usePhotoFlow, guessItem, describedItem } from '../../store/photo'
+import { cutoutPhoto, describePhoto } from '../../lib/ai'
 import { toast } from '../../store/ui'
 import { cutOutPhoto, looksLikeNotClothing } from '../../lib/image'
 
@@ -29,8 +30,16 @@ export function Camera() {
         navigate('/add/notclothing', { replace: true })
         return
       }
-      const { dataUrl, colorName } = await cutOutPhoto(f)
-      usePhotoFlow.getState().start(guessItem(dataUrl, colorName, f.name))
+      const local = await cutOutPhoto(f)
+      // сервер (если подключён) вырезает фон лучше и описывает вещь по фото; без него остаётся локальный результат
+      const [cut, desc] = await Promise.all([cutoutPhoto(local.dataUrl), describePhoto(local.dataUrl)])
+      const dataUrl = cut ?? local.dataUrl
+      if (desc && desc.isClothing === false) {
+        usePhotoFlow.getState().fail()
+        navigate('/add/notclothing', { replace: true })
+        return
+      }
+      usePhotoFlow.getState().start(desc?.category ? describedItem(dataUrl, local.colorName, desc) : guessItem(dataUrl, local.colorName, f.name))
       navigate('/add/processing', { replace: true })
     } catch {
       toast('Не получилось открыть фото', 'error')

@@ -5,6 +5,10 @@ import { useApp, useLimits } from '../../store/app'
 import { LIMITS, PLAN_PRICE } from '../../store/limits'
 import { toast } from '../../store/ui'
 import { dateLong } from '../../lib/format'
+import { HAS_API } from '../../lib/config'
+import { paymentsLive } from '../../lib/payments/cloudpayments'
+import { api, type ServerMe } from '../../lib/api'
+import { applySub } from '../../lib/sync'
 
 /** PRF-02 Subscription, PRF-03 CancelSubscriptionSheet. Отмена в 2 нажатия: «Отменить подписку» → «Да, отменить» */
 export function Subscription() {
@@ -24,7 +28,7 @@ export function Subscription() {
   ]
   const rows = app.subCancelled
     ? [{ label: 'Действует до', value: dateLong(until) }, { label: 'Автоплатёж', value: 'отключён' }]
-    : [{ label: 'Следующее списание', value: dateLong(until) }, { label: 'Карта', value: 'Мир •• 4821' }, { label: 'Чеки', value: app.email ? `на ${app.email}` : 'в Telegram' }]
+    : [{ label: 'Следующее списание', value: dateLong(until) }, ...(HAS_API ? [] : [{ label: 'Карта', value: 'Мир •• 4821' }]), { label: 'Чеки', value: app.email ? `на ${app.email}` : 'в Telegram' }]
 
   const notes = [
     { icon: 'check', color: 'var(--success)', text: 'Все вещи и образы останутся' },
@@ -77,7 +81,12 @@ export function Subscription() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <Button variant="secondary" full onClick={() => setCancel(false)}>Оставить подписку</Button>
-          <button type="button" className="btn btn--text" style={{ color: 'var(--error-text)', height: 44 }} onClick={() => { app.patch({ subCancelled: true }); setCancel(false); toast(`Подписка действует до ${dateLong(until)}`, 'neutral'); navigate('/profile', { replace: true }) }}>Да, отменить</button>
+          <button type="button" className="btn btn--text" style={{ color: 'var(--error-text)', height: 44 }} onClick={async () => {
+            if (paymentsLive()) {
+              try { applySub(await api<ServerMe>('POST', '/api/pay/cancel', {})) } catch { toast('Не получилось отменить, попробуй ещё раз', 'error'); return }
+            } else app.patch({ subCancelled: true })
+            setCancel(false); toast(`Подписка действует до ${dateLong(until)}`, 'neutral'); navigate('/profile', { replace: true })
+          }}>Да, отменить</button>
         </div>
       </BottomSheet>
     </div>
