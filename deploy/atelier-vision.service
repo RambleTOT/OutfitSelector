@@ -1,0 +1,23 @@
+# /etc/systemd/system/atelier-vision.service
+# systemctl daemon-reload && systemctl enable --now atelier-vision && journalctl -u atelier-vision -f
+[Unit]
+Description=Atelier vision (распознавание вещей и вырезание фона)
+After=network.target
+
+[Service]
+User=atelier
+WorkingDirectory=/opt/atelier/vision
+Environment=VISION_MODELS=/opt/atelier/vision/models
+Environment=VISION_THREADS=2
+Environment=VISION_CONCURRENCY=1
+ExecStart=/opt/atelier/vision/.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 7100
+Restart=always
+RestartSec=3
+# модели занимают ~1,2 ГБ: не даём сервису съесть всю память и положить API
+MemoryMax=3G
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/opt/atelier/vision
+
+[Install]
+WantedBy=multi-user.target

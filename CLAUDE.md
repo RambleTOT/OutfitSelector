@@ -9,7 +9,7 @@ Vite, React, TypeScript, React Router (HashRouter), zustand + persist (localStor
 - Дизайн-пакет (только читать): `design_handoff/` (README, screens, components, tokens, animations; макеты в `design/*.dc.html`)
 - Прогресс и решения: `PROGRESS.md`. Читать первым в новой сессии
 - Сервер: `server/` (Node, без фреймворков, `npm run server:test`), клиентские модули `src/lib/{api,sync,ai,analytics,pwa,config}.ts`, `src/lib/payments/`
-- Документы: `docs/DEPLOY.md` (хостинг, домен), `docs/PAYMENTS.md` (CloudPayments), `docs/AI.md` (модели), `docs/RUSTORE.md` (APK), `docs/AUDIT.md`, юридические черновики `docs/legal/`
+- Документы: `docs/DEPLOY.md` (хостинг, домен), `docs/PAYMENTS.md` (CloudPayments), `docs/AI.md` (модели), `docs/VISION.md` (распознавание вещей, сервис `vision/`), `docs/TIMEWEB.md` и `docs/AGENT_BRIEF.md` (сервер), `docs/AUDIT.md`, юридические черновики `docs/legal/`
 - Ссылка `/app/?demo` включает демо-режим (панель справа, без экрана установки), `?demo=0` выключает. Скрипты `tools/audit.mjs`, `tools/record-video.mjs`, `tools/shots.mjs` работают с `?demo`
 
 ## Показ

@@ -62,6 +62,17 @@ export async function cutOutPhoto(file: File, max = 280): Promise<{ dataUrl: str
   return { dataUrl: webp.startsWith('data:image/webp') ? webp : c.toDataURL('image/png'), colorName: nearestColor(avg) }
 }
 
+/** Фото для отправки на распознавание: до 1280 px по большей стороне, JPEG. Поворот из EXIF применяется */
+export async function prepareUpload(file: File, max = 1280): Promise<Blob> {
+  const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }).catch(() => createImageBitmap(file))
+  const k = Math.min(1, max / Math.max(bmp.width, bmp.height))
+  const c = document.createElement('canvas')
+  c.width = Math.round(bmp.width * k)
+  c.height = Math.round(bmp.height * k)
+  c.getContext('2d')!.drawImage(bmp, 0, 0, c.width, c.height)
+  return await new Promise<Blob>((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('jpeg'))), 'image/jpeg', 0.86))
+}
+
 const parse = (hex: string): [number, number, number] => [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]
 
 export function nearestColor([r, g, b]: [number, number, number]): string {

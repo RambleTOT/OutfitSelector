@@ -2,13 +2,16 @@ import { create } from 'zustand'
 import { buildTemplateItem, makeDescription, makeTitle, typeDef, TYPES } from '../data/catalog'
 import type { Category, Item } from '../data/types'
 import { useApp } from './app'
+import type { Analyzed } from '../lib/ai'
 
 /** Фото-ветка добавления вещи (ADD-02…ADD-06). Состояние в памяти, не сохраняется */
 interface PhotoFlow {
   status: 'idle' | 'processing' | 'done' | 'notClothing'
   item: Item | null // карточка с предзаполненными полями
+  found: Item[] // на фото нашли несколько вещей (ADD-07)
   startedAt: number
   start: (item: Item) => void
+  startFound: (items: Item[]) => void
   markDone: () => void
   fail: () => void
   reset: () => void
@@ -17,11 +20,13 @@ interface PhotoFlow {
 export const usePhotoFlow = create<PhotoFlow>((set) => ({
   status: 'idle',
   item: null,
+  found: [],
   startedAt: 0,
+  startFound: (found) => set({ status: 'done', found, item: null }),
   start: (item) => set({ status: 'processing', item, startedAt: Date.now() }),
   markDone: () => set({ status: 'done' }),
   fail: () => set({ status: 'notClothing', item: null }),
-  reset: () => set({ status: 'idle', item: null }),
+  reset: () => set({ status: 'idle', item: null, found: [] }),
 }))
 
 export const PROCESS_MS = 2000
@@ -51,32 +56,29 @@ export function guessItem(photo: string, colorName: string, fileName = ''): Item
   return { ...item, description: makeDescription(item) }
 }
 
-/** Карточка вещи по ответу модели с картинками: вид сверяем с каталогом, остальные поля берём как есть */
-export function describedItem(photo: string, colorName: string, d: import('../lib/ai').Described): Item {
-  const category = (d.category as Category) in TYPES ? (d.category as Category) : 'top'
-  const known = TYPES[category].find((t) => d.type && t.type.toLowerCase() === d.type.toLowerCase())
-  const color = d.colorName || colorName
-  const base = buildTemplateItem(category, (known ?? TYPES[category][0]).type, color)
+/** Карточка вещи по ответу сервиса распознавания. Материал, крой, тепло и формальность берутся из каталога по виду вещи */
+export function analyzedItem(a: Analyzed): Item {
+  const category = (a.category in TYPES ? a.category : 'top') as Category
+  const known = TYPES[category].find((t) => t.type === a.type) ?? TYPES[category][0]
+  const base = buildTemplateItem(category, known.type, a.colorName)
   const item: Item = {
-    ...base, source: 'photo', photo, addedAt: Date.now(),
-    title: known ? makeTitle(color.toLowerCase(), known.type, category) : `${color} ${(d.type || base.type).toLowerCase()}`.replace(/^./, (c) => c.toUpperCase()),
-    formality: (d.formality as Item['formality']) ?? base.formality,
-    warmth: (d.warmth as Item['warmth']) ?? base.warmth,
-    fit: (d.fit as Item['fit']) ?? base.fit,
-    pattern: (d.pattern as Item['pattern']) ?? base.pattern,
-    material: d.material || base.material,
+    ...base, source: 'photo', photo: a.cutout, addedAt: Date.now(),
+    id: `ph${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`,
+    color: a.colorHex || base.color, colorName: a.colorName,
+    pattern: (['однотон', 'полоска', 'клетка', 'принт'].includes(a.pattern) ? a.pattern : 'однотон') as Item['pattern'],
+    title: makeTitle(a.colorName.toLowerCase(), known.type, category),
   }
   return { ...item, description: makeDescription(item) }
 }
 
 /** Фото учитывается в лимите, когда вещь попала в гардероб; неудачные и удалённые слот не возвращают/не тратят */
-export function addPhotoItem(item: Item, opts: { background?: boolean } = {}) {
+export function addPhotoItem(item: Item, opts: { background?: boolean; countPhoto?: boolean } = {}) {
   const app = useApp.getState()
   const offline = app.offline
   const processingLeft = opts.background ? Math.max(0, PROCESS_MS - (Date.now() - usePhotoFlow.getState().startedAt)) : 0
   const entry: Item = { ...item, addedAt: Date.now(), queued: offline || undefined, processing: !offline && processingLeft > 0 ? true : undefined }
   app.addItem(entry)
-  app.patch({ usage: { ...app.usage, photosTotal: app.usage.photosTotal + 1, photosMonth: app.usage.photosMonth + 1 } })
+  if (opts.countPhoto !== false) app.patch({ usage: { ...app.usage, photosTotal: app.usage.photosTotal + 1, photosMonth: app.usage.photosMonth + 1 } })
   if (!offline && processingLeft > 0) setTimeout(() => finishProcessing(entry.id), processingLeft)
   return entry
 }

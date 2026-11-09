@@ -57,29 +57,3 @@ export async function fetchJson(url, init, timeoutMs) {
     return JSON.parse(text)
   } finally { clearTimeout(t) }
 }
-
-export const DESCRIBE_SYSTEM = `Ты помогаешь заполнить карточку вещи по фото одежды. Ответ строго JSON без пояснений:
-{"isClothing":true,"category":"top|bottom|dress|outer|shoes|accessory|bag","type":"короткое название вида по-русски, например рубашка, джинсы, кроссовки","colorName":"основной цвет одним словом по-русски с заглавной","formality":"спорт|кэжуал|смарт-кэжуал|деловой|вечерний","warmth":"лёгкая|демисезон|тёплая","fit":"оверсайз|прямой|приталенный","pattern":"однотон|полоска|клетка|принт","material":"предположительный материал"}
-Если на фото не одежда, обувь или сумка, верни {"isClothing":false}.`
-
-const CATS = ['top', 'bottom', 'dress', 'outer', 'shoes', 'accessory', 'bag']
-const pick = (v, list, d) => (list.includes(v) ? v : d)
-export function parseDescribe(text) {
-  const m = String(text).match(/\{[\s\S]*\}/)
-  if (!m) throw new Error('bad_json')
-  let d
-  try { d = JSON.parse(m[0]) } catch { throw new Error('bad_json') }
-  if (d.isClothing === false) return { isClothing: false }
-  if (!CATS.includes(d.category)) throw new Error('bad_category')
-  return {
-    isClothing: true,
-    category: d.category,
-    type: String(d.type ?? '').slice(0, 40),
-    colorName: String(d.colorName ?? '').slice(0, 30),
-    formality: pick(d.formality, ['спорт', 'кэжуал', 'смарт-кэжуал', 'деловой', 'вечерний'], 'кэжуал'),
-    warmth: pick(d.warmth, ['лёгкая', 'демисезон', 'тёплая'], 'демисезон'),
-    fit: pick(d.fit, ['оверсайз', 'прямой', 'приталенный'], 'прямой'),
-    pattern: pick(d.pattern, ['однотон', 'полоска', 'клетка', 'принт'], 'однотон'),
-    material: String(d.material ?? '').slice(0, 40),
-  }
-}

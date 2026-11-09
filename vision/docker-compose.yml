@@ -1,0 +1,13 @@
+# Запуск на сервере: cd /opt/atelier/vision && docker compose up -d
+# Первый раз скачать модели: docker compose run --rm vision bash scripts/download_models.sh
+services:
+  vision:
+    build: .
+    image: atelier-vision
+    restart: always
+    ports: ["127.0.0.1:7100:7100"]     # наружу не открываем, к сервису ходит только наш API
+    volumes: ["./models:/models"]
+    environment:
+      VISION_THREADS: "2"
+      VISION_CONCURRENCY: "1"
+    mem_limit: 3g

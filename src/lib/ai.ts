@@ -1,4 +1,5 @@
-import { api, getCaps, hasSession, ApiError } from './api'
+import { api, getCaps, getToken, hasSession, ApiError } from './api'
+import { API_URL } from './config'
 import type { Item, OccasionId } from '../data/types'
 import { WEATHER } from '../data/items'
 import { useApp } from '../store/app'
@@ -21,24 +22,26 @@ export async function aiOutfit(items: Item[], occasion: OccasionId, wish: string
   }
 }
 
-export interface Described { isClothing: boolean; category?: string; type?: string; colorName?: string; formality?: string; warmth?: string; fit?: string; pattern?: string; material?: string }
-
-/** Описание вещи по фото. null: сервер без модели с картинками, карточка заполняется шаблоном */
-export async function describePhoto(dataUrl: string): Promise<Described | null> {
-  if (!hasSession() || !getCaps().vision) return null
-  try { return await api<Described>('POST', '/api/ai/describe', { image: dataUrl }, { timeout: 30000 }) } catch { return null }
+/** Вещь, которую нашёл сервис распознавания (vision/): вырезана с прозрачным фоном, вид и цвет определены */
+export interface Analyzed {
+  category: string; type: string; colorName: string; colorHex: string; pattern: string
+  confidence: number; area: number; cutout: string; studio: string; source: string
 }
+export interface AnalyzeResult { mode: 'worn' | 'flat'; notClothing: boolean; warnings: string[]; items: Analyzed[] }
 
-/** Вырезание фона через сервер. null: сервиса нет, остаётся исходное фото */
-export async function cutoutPhoto(dataUrl: string): Promise<string | null> {
-  if (!hasSession() || !getCaps().cutout) return null
+/**
+ * Фото -> вещи с вырезанным фоном. Исходник ужимается до 1280 px и уходит на наш сервер, где не сохраняется.
+ * null: сервис недоступен или занят, тогда приложение обрабатывает фото на телефоне упрощённо.
+ */
+export async function analyzePhoto(blob: Blob): Promise<AnalyzeResult | 'limit' | null> {
+  if (!hasSession() || !getCaps().analyze) return null
   try {
-    const blob = await (await fetch(dataUrl)).blob()
-    const { API_URL } = await import('./config')
-    const { getToken } = await import('./api')
-    const r = await fetch(API_URL + '/api/ai/cutout', { method: 'POST', headers: { Authorization: `Bearer ${getToken()}`, 'Content-Type': blob.type || 'image/png' }, body: blob })
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 100_000)
+    const r = await fetch(API_URL + '/api/ai/analyze', { method: 'POST', signal: ctrl.signal, headers: { Authorization: `Bearer ${getToken()}`, 'Content-Type': blob.type || 'image/jpeg' }, body: blob })
+    clearTimeout(t)
+    if (r.status === 429) return 'limit'
     if (!r.ok) return null
-    const out = await r.blob()
-    return await new Promise<string>((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result)); fr.onerror = rej; fr.readAsDataURL(out) })
+    return await r.json() as AnalyzeResult
   } catch { return null }
 }

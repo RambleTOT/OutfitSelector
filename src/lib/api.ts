@@ -36,14 +36,14 @@ export async function api<T = unknown>(method: string, path: string, body?: unkn
 
 export interface ServerSub { plan: 'free' | 'sub' | 'plus'; effective: string; endsAt: number | null; cancelled: boolean; ended: boolean }
 export interface ServerMe { id: string; email: string; sub: ServerSub }
-export interface ServerCaps { ai: boolean; vision: boolean; cutout: boolean; pay: boolean }
+export interface ServerCaps { ai: boolean; analyze: boolean; pay: boolean }
 
 export const requestCode = (email: string) => api('POST', '/api/auth/request', { email })
 export const verifyCode = (email: string, code: string) =>
   api<{ token: string; user: ServerMe; isNew: boolean; state: Record<string, unknown> | null; stateAt: number }>('POST', '/api/auth/verify', { email, code })
 
 /** Что включено на сервере; запрашивается один раз при запуске */
-let caps: ServerCaps = { ai: false, vision: false, cutout: false, pay: false }
+let caps: ServerCaps = { ai: false, analyze: false, pay: false }
 export const getCaps = () => caps
 export async function loadCaps() {
   if (!HAS_API) return caps
@@ -58,6 +58,8 @@ export function authErrorText(e: unknown): string {
     case 'network': return 'Нет связи с сервером, проверь интернет'
     case 'bad_email': return 'Проверь адрес почты'
     case 'too_soon': return `Код уже отправлен, новый можно через ${e.extra.wait ?? 60} с`
+    case 'photo_limit': return 'Лимит фото на тарифе закончился'
+    case 'busy': return 'Сервер занят, попробуй через минуту'
     case 'rate_limited': return 'Слишком много попыток, попробуй позже'
     case 'code_wrong': return 'Неверный код, попробуй ещё раз'
     case 'code_locked': return 'Слишком много попыток, запроси новый код'

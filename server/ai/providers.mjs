@@ -59,21 +59,3 @@ async function openai(system, user) {
 export const PROVIDERS = { gigachat, yandex, openai }
 export const aiEnabled = () => config.ai.provider in PROVIDERS
 export const chat = (system, user) => PROVIDERS[config.ai.provider](system, user)
-
-/**
- * Описание вещи по фото. Нужна модель с картинками. Сейчас реализовано для OpenAI-совместимых API (OPENAI_VISION_MODEL);
- * GigaChat и Yandex умеют то же самое, но через загрузку файла, подключаются отдельно (docs/AI.md)
- */
-export const visionEnabled = () => config.ai.provider === 'openai' && !!config.ai.openai.visionModel
-export async function describeImage(system, dataUrl) {
-  const c = config.ai.openai
-  const j = await fetchJson(`${c.baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...(c.key ? { Authorization: `Bearer ${c.key}` } : {}) },
-    body: JSON.stringify({
-      model: c.visionModel, temperature: 0.2, max_tokens: 300,
-      messages: [{ role: 'system', content: system }, { role: 'user', content: [{ type: 'text', text: 'Что на фото?' }, { type: 'image_url', image_url: { url: dataUrl } }] }],
-    }),
-  }, config.ai.timeoutMs)
-  return j.choices?.[0]?.message?.content ?? ''
-}

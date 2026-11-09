@@ -10,6 +10,7 @@ process.env.CP_PUBLIC_ID = 'test_api_000'
 process.env.CP_API_SECRET = 'cp-secret'
 process.env.AI_PROVIDER = 'openai'
 process.env.OPENAI_MODEL = 'x'
+process.env.VISION_URL = 'http://vision.local'
 
 const { createApp } = await import('../app.mjs')
 const { Store } = await import('../store.mjs')
@@ -198,5 +199,34 @@ test('фото: загрузка и выдача по ссылке', async () =>
   const got = await fetch(`http://localhost:${t.server.address().port}${url}`)
   assert.equal(got.status, 200)
   assert.equal(got.headers.get('content-type'), 'image/png')
+  t.server.close()
+})
+
+test('фото: распознавание проксируется во vision, лимит Free 3 фото, пустой результат лимит не тратит', async () => {
+  const calls = []
+  let items = [{ category: 'top', type: 'рубашка', cutout: 'data:image/webp;base64,AAAA' }]
+  const fetchImpl = async (url, init) => { calls.push({ url, body: init.body }); return { ok: true, status: 200, json: async () => ({ mode: 'flat', notClothing: !items.length, items }) } }
+  const t = await boot({ fetchImpl })
+  const { auth } = await t.login()
+  const send = () => fetch(`http://localhost:${t.server.address().port}/api/ai/analyze`, { method: 'POST', headers: { ...auth, 'Content-Type': 'image/jpeg' }, body: Buffer.alloc(500, 1) })
+  assert.equal((await fetch(`http://localhost:${t.server.address().port}/api/ai/analyze`, { method: 'POST', headers: { 'Content-Type': 'image/jpeg' }, body: Buffer.alloc(10) })).status, 401)
+  items = []
+  assert.equal((await send()).status, 200) // не одежда: фото не тратится
+  items = [{ category: 'top', type: 'рубашка', cutout: 'data:image/webp;base64,AAAA' }]
+  for (let i = 0; i < 3; i++) assert.equal((await send()).status, 200)
+  const over = await send()
+  assert.equal(over.status, 429)
+  assert.equal((await over.json()).error, 'photo_limit')
+  assert.equal(calls[0].url, 'http://vision.local/analyze')
+  assert.equal(calls.length, 4)
+  t.server.close()
+})
+
+test('фото: сервис распознавания упал или занят', async () => {
+  const t = await boot({ fetchImpl: async () => ({ ok: false, status: 503, json: async () => ({}) }) })
+  const { auth } = await t.login()
+  const r = await fetch(`http://localhost:${t.server.address().port}/api/ai/analyze`, { method: 'POST', headers: { ...auth, 'Content-Type': 'image/png' }, body: Buffer.alloc(500, 1) })
+  assert.equal(r.status, 503)
+  assert.equal((await r.json()).error, 'busy')
   t.server.close()
 })

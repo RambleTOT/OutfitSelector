@@ -2,8 +2,9 @@ import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, CtaPlate, Icon, IconButton } from '../../ui'
 import { useUi } from '../../store/ui'
-import { guessItem, usePhotoFlow } from '../../store/photo'
-import { cutOutPhoto, looksLikeNotClothing } from '../../lib/image'
+import { usePhotoFlow } from '../../store/photo'
+import { looksLikeNotClothing } from '../../lib/image'
+import { intakePhoto } from '../../lib/intake'
 
 /** ADD-04 PhotoNotClothing: фото не списалось, предлагаем переснять или выбрать другое */
 export function NotClothing() {
@@ -14,9 +15,7 @@ export function NotClothing() {
   const pick = async (f?: File) => {
     if (!f) return
     if (looksLikeNotClothing(f)) return
-    const { dataUrl, colorName } = await cutOutPhoto(f)
-    usePhotoFlow.getState().start(guessItem(dataUrl, colorName, f.name))
-    navigate('/add/processing', { replace: true })
+    await intakePhoto(f, navigate)
   }
 
   return (

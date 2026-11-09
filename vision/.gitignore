@@ -1,0 +1,5 @@
+.venv
+models/*
+!models/labels.npz
+__pycache__
+*.pyc

@@ -1,8 +1,8 @@
 /** Лимиты тарифов (источник: CLAUDE.md и спецификация). Недельный счёт по московскому времени, неделя с понедельника */
 export const LIMITS = {
-  free: { outfitsWeek: 5 },
-  sub: { outfitsWeek: 10 },
-  plus: { outfitsWeek: null },
+  free: { outfitsWeek: 5, photosTotal: 3, photosMonth: null },
+  sub: { outfitsWeek: 10, photosTotal: null, photosMonth: 30 },
+  plus: { outfitsWeek: null, photosTotal: null, photosMonth: null },
 }
 export const MONTHLY_CAP = 300
 
@@ -32,4 +32,17 @@ export function spend(store, user, now = Date.now()) {
   if (lim !== null && u.outfitsWeek >= lim) return { ok: false, reason: 'limit' }
   if (lim === null && u.outfitsMonth >= MONTHLY_CAP) return { ok: false, reason: 'cap' }
   return { ok: true, commit: () => { u.outfitsWeek++; u.outfitsMonth++; store.save() } }
+}
+
+/** Лимит фото: Free 3 за всё время, Подписка 30 в месяц, Подписка+ без лимита. Одно фото с несколькими вещами считается за одно */
+export function spendPhoto(store, user, now = Date.now()) {
+  const plan = effectivePlan(user.sub, now)
+  const l = LIMITS[plan]
+  const u = (store.db.usage[user.id] ??= { weekKey: '', outfitsWeek: 0, monthKey: '', outfitsMonth: 0 })
+  const mk = monthKey(now)
+  if (u.photoMonthKey !== mk) { u.photoMonthKey = mk; u.photosMonth = 0 }
+  u.photosTotal ??= 0
+  if (l.photosTotal !== null && u.photosTotal >= l.photosTotal) return { ok: false, reason: 'photo_limit' }
+  if (l.photosMonth !== null && u.photosMonth >= l.photosMonth) return { ok: false, reason: 'photo_limit' }
+  return { ok: true, commit: () => { u.photosTotal++; u.photosMonth++; store.save() } }
 }

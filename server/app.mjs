@@ -6,10 +6,10 @@ import { config } from './config.mjs'
 import { Store } from './store.mjs'
 import { checkCode, emailOk, issueCode, normEmail, signToken, verifyToken } from './auth.mjs'
 import { sendCode } from './mail.mjs'
-import { chat, aiEnabled, describeImage, visionEnabled } from './ai/providers.mjs'
-import { DESCRIBE_SYSTEM, SYSTEM, buildUserPrompt, parseDescribe, parseOutfit } from './ai/prompt.mjs'
+import { chat, aiEnabled } from './ai/providers.mjs'
+import { SYSTEM, buildUserPrompt, parseOutfit } from './ai/prompt.mjs'
 import { buildIntent, cancelSubscription, handleNotification, parseBody, payEnabled, publicSub, verifySignature } from './pay.mjs'
-import { spend } from './plans.mjs'
+import { spend, spendPhoto } from './plans.mjs'
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain', '.xml': 'application/xml', '.ico': 'image/x-icon' }
 const PHOTO_ID = /^[a-f0-9]{32}$/
@@ -40,8 +40,9 @@ function readBody(req, max) {
   })
 }
 
-export function createApp({ store = new Store(config.dataDir), mailer = sendCode, aiChat = chat, aiOn = aiEnabled, aiVision = describeImage, visionOn = visionEnabled, fetchImpl = fetch } = {}) {
+export function createApp({ store = new Store(config.dataDir), mailer = sendCode, aiChat = chat, aiOn = aiEnabled, fetchImpl = fetch } = {}) {
   const limit = limiter()
+  let inflight = 0
   const ip = (req) => String(req.headers['x-forwarded-for'] ?? req.socket.remoteAddress ?? '').split(',')[0].trim()
   const send = (res, status, body, headers = {}) => {
     res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', ...headers })
@@ -66,7 +67,7 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
 
     if (m === 'GET' && path === '/api/health') return send(res, 200, { ok: true, ai: aiOn(), pay: payEnabled() })
     // что включено на сервере: клиент по этому решает, показывать ли настоящую оплату и AI
-    if (m === 'GET' && path === '/api/config') return send(res, 200, { ai: aiOn(), vision: visionOn(), cutout: !!config.ai.cutoutUrl, pay: payEnabled() })
+    if (m === 'GET' && path === '/api/config') return send(res, 200, { ai: aiOn(), analyze: !!config.ai.visionUrl, pay: payEnabled() })
 
     if (m === 'POST' && path === '/api/events') {
       limit(`ev:${ip(req)}`, 120, 60000)
@@ -153,25 +154,29 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
         return send(res, 200, outfit)
       }
 
-      if (m === 'POST' && path === '/api/ai/describe') {
-        if (!visionOn()) throw new HttpError(503, 'vision_off')
-        limit(`ad:${u.id}`, 40, 3600000)
-        const b = await json(req, 1_500_000)
-        if (typeof b.image !== 'string' || !/^data:image\/(png|jpeg|webp);base64,/.test(b.image)) throw new HttpError(400, 'bad_image')
-        try { return send(res, 200, parseDescribe(await aiVision(DESCRIBE_SYSTEM, b.image))) } catch (e) { console.error('[ai] описание:', e.message); throw new HttpError(502, 'ai_failed') }
-      }
-
-      // вырезание фона: прокси к внутреннему сервису rembg/BiRefNet, чтобы ключи и адрес не светились в браузере
-      if (m === 'POST' && path === '/api/ai/cutout') {
-        if (!config.ai.cutoutUrl) throw new HttpError(503, 'cutout_off')
-        limit(`ac:${u.id}`, 60, 3600000)
+      // распознавание вещей и вырезание фона: фото уходит во внутренний сервис vision (docs/VISION.md), нигде не сохраняется
+      if (m === 'POST' && path === '/api/ai/analyze') {
+        if (!config.ai.visionUrl) throw new HttpError(503, 'analyze_off')
+        limit(`an:${u.id}`, 40, 3600000)
+        const ct = String(req.headers['content-type'] ?? '')
+        if (!/^image\/(jpeg|png|webp)/.test(ct)) throw new HttpError(400, 'bad_image')
         const raw = await readBody(req, 6_000_000)
-        const form = new FormData()
-        form.append('file', new Blob([raw], { type: String(req.headers['content-type'] ?? 'image/png') }), 'item.png')
-        const r = await fetchImpl(config.ai.cutoutUrl, { method: 'POST', body: form, signal: AbortSignal.timeout(config.ai.timeoutMs * 2) }).catch(() => null)
-        if (!r?.ok) throw new HttpError(502, 'cutout_failed')
-        res.writeHead(200, { 'Content-Type': 'image/png', 'Cache-Control': 'no-store' })
-        return res.end(Buffer.from(await r.arrayBuffer()))
+        const sp = spendPhoto(store, u)
+        if (!sp.ok) throw new HttpError(429, sp.reason)
+        if (inflight >= 2) throw new HttpError(503, 'busy')
+        inflight++
+        try {
+          const form = new FormData()
+          form.append('file', new Blob([raw], { type: ct }), 'photo')
+          const r = await fetchImpl(`${config.ai.visionUrl}/analyze`, { method: 'POST', body: form, signal: AbortSignal.timeout(90_000) }).catch(() => null)
+          if (!r) throw new HttpError(502, 'analyze_failed')
+          if (r.status === 503) throw new HttpError(503, 'busy')
+          if (!r.ok) throw new HttpError(r.status >= 500 ? 502 : 422, 'analyze_failed')
+          const out = await r.json()
+          // фото тратится только если что-то нашли: «не одежда» и ошибки лимит не уменьшают
+          if (Array.isArray(out.items) && out.items.length) sp.commit()
+          return send(res, 200, out)
+        } finally { inflight-- }
       }
 
       if (m === 'POST' && path === '/api/pay/intent') {

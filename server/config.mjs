@@ -21,13 +21,15 @@ export const config = {
     timeoutMs: Number(e.AI_TIMEOUT_MS ?? 20000),
     gigachat: { key: e.GIGACHAT_AUTH_KEY, scope: e.GIGACHAT_SCOPE ?? 'GIGACHAT_API_PERS', model: e.GIGACHAT_MODEL ?? 'GigaChat-2' },
     yandex: { key: e.YANDEX_API_KEY, folder: e.YANDEX_FOLDER_ID, model: e.YANDEX_MODEL ?? 'yandexgpt-lite/latest' },
-    openai: { baseUrl: (e.OPENAI_BASE_URL ?? 'https://openrouter.ai/api/v1').replace(/\/$/, ''), key: e.OPENAI_API_KEY, model: e.OPENAI_MODEL, visionModel: e.OPENAI_VISION_MODEL },
-    cutoutUrl: e.CUTOUT_URL ?? '',
+    openai: { baseUrl: (e.OPENAI_BASE_URL ?? 'https://openrouter.ai/api/v1').replace(/\/$/, ''), key: e.OPENAI_API_KEY, model: e.OPENAI_MODEL },
+    visionUrl: (e.VISION_URL ?? '').replace(/\/$/, ''),
   },
   pay: {
     publicId: e.CP_PUBLIC_ID ?? '',
     apiSecret: e.CP_API_SECRET ?? '',
     prices: { sub: Number(e.PRICE_SUB ?? 300), plus: Number(e.PRICE_PLUS ?? e.PRICE_SUBPLUS ?? 600) },
+    // для самозанятого онлайн-касса не нужна: чек в «Мой налог» формирует сам продавец. Включай CP_RECEIPT=on только для ИП и юрлиц с CloudKassir
+    receipt: e.CP_RECEIPT === 'on',
     taxation: Number(e.CP_TAXATION ?? 1),
     vat: e.CP_VAT === undefined || e.CP_VAT === '' ? null : Number(e.CP_VAT),
   },

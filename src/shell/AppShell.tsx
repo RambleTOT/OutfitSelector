@@ -17,6 +17,7 @@ import { Camera } from '../screens/add/Camera'
 import { Processing } from '../screens/add/Processing'
 import { NotClothing } from '../screens/add/NotClothing'
 import { PhotoCard } from '../screens/add/PhotoCard'
+import { Found } from '../screens/add/Found'
 import { useApp } from '../store/app'
 import { CoachHost } from './CoachHost'
 import { Install } from '../screens/install/Install'
@@ -88,6 +89,7 @@ export function AppShell() {
             <Route path="/add/processing" element={<Processing />} />
             <Route path="/add/notclothing" element={<NotClothing />} />
             <Route path="/add/card" element={<PhotoCard />} />
+            <Route path="/add/found" element={<Found />} />
             <Route path="/item/:id" element={<ItemDetail />} />
             <Route path="/install" element={<Install />} />
             <Route path="/install/notify" element={<Notify />} />

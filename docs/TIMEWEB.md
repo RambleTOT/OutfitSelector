@@ -25,7 +25,7 @@
 3. Параметры:
    - **Регион:** Москва или Санкт-Петербург (данные должны быть в РФ: это требование 152-ФЗ).
    - **Образ:** Ubuntu 24.04.
-   - **Конфигурация:** без rembg хватит 2 vCPU, 2 ГБ памяти, 30 ГБ диска. Если сразу планируешь вырезание фона на сервере (`docs/AI.md`), бери 2 vCPU и 4 ГБ.
+   - **Конфигурация:** сервис распознавания вещей и вырезания фона (`docs/VISION.md`) держит в памяти ~1,2 ГБ моделей. Бери **4 vCPU, 8 ГБ памяти, 50 ГБ диска**. Если нужно сэкономить, минимум 2 vCPU и 4 ГБ, но фото будут обрабатываться 20–40 секунд. Без сервиса распознавания хватило бы 2 vCPU и 2 ГБ.
    - **Публичный IPv4:** включить (обычно по умолчанию).
    - **SSH-ключ:** добавь свой публичный ключ (см. ниже). Это безопаснее пароля.
    - **Имя:** `atelier`.
@@ -72,17 +72,17 @@ dig +short www.atelierapp.ru
 
 ```bash
 apt update && apt -y upgrade
-apt -y install nginx certbot python3-certbot-nginx ufw rsync curl git
+apt -y install nginx certbot python3-certbot-nginx ufw rsync curl git python3-venv python3-pip libglib2.0-0
 
 curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 apt -y install nodejs
 
 adduser --disabled-password --gecos "" atelier
-mkdir -p /opt/atelier/server /var/www/atelier /home/atelier/.ssh
+mkdir -p /opt/atelier/server /opt/atelier/vision/models /var/www/atelier /home/atelier/.ssh
 cp /root/.ssh/authorized_keys /home/atelier/.ssh/authorized_keys
 chown -R atelier:atelier /opt/atelier /var/www/atelier /home/atelier/.ssh
 chmod 700 /home/atelier/.ssh && chmod 600 /home/atelier/.ssh/authorized_keys
-echo 'atelier ALL=(ALL) NOPASSWD: /bin/systemctl restart atelier-api' > /etc/sudoers.d/atelier
+echo 'atelier ALL=(ALL) NOPASSWD: /bin/systemctl restart atelier-api, /bin/systemctl restart atelier-vision' > /etc/sudoers.d/atelier
 
 ufw allow OpenSSH && ufw allow 'Nginx Full' && ufw --force enable
 ```
@@ -96,6 +96,7 @@ ufw allow OpenSSH && ufw allow 'Nginx Full' && ufw --force enable
 ```bash
 scp -i ~/.ssh/atelier_ed25519 deploy/nginx.conf root@<IP>:/etc/nginx/sites-available/atelier
 scp -i ~/.ssh/atelier_ed25519 deploy/atelier-api.service root@<IP>:/etc/systemd/system/atelier-api.service
+scp -i ~/.ssh/atelier_ed25519 deploy/atelier-vision.service root@<IP>:/etc/systemd/system/atelier-vision.service
 ```
 
 На сервере:
@@ -127,6 +128,34 @@ systemctl daemon-reload && systemctl enable atelier-api
 
 Сертификат продлевается сам (таймер certbot). Проверь: `systemctl list-timers | grep certbot`.
 
+## 5б. Сервис распознавания вещей и вырезания фона (15 минут, один раз)
+
+Сервис выделяет вещи на фото, вырезает фон и определяет вид и цвет (`docs/VISION.md`). Модели (≈ 450 МБ) скачиваются на сервер один раз. С компьютера сначала залей код (`./deploy/deploy.sh` на шаге 7 делает это же, но модели и окружение нужно подготовить заранее):
+
+```bash
+rsync -az -e "ssh -i ~/.ssh/atelier_ed25519" --exclude .venv --exclude models --exclude __pycache__ vision/ atelier@<IP>:/opt/atelier/vision/
+rsync -az -e "ssh -i ~/.ssh/atelier_ed25519" vision/models/labels.npz atelier@<IP>:/opt/atelier/vision/models/labels.npz
+```
+
+На сервере, под пользователем `atelier` (`ssh -i ~/.ssh/atelier_ed25519 atelier@<IP>`):
+
+```bash
+cd /opt/atelier/vision
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+VISION_MODELS=/opt/atelier/vision/models bash scripts/download_models.sh
+```
+
+Потом под root: `systemctl daemon-reload && systemctl enable --now atelier-vision`. Подождать 20 секунд на прогрев и проверить:
+
+```bash
+curl http://127.0.0.1:7100/health        # все четыре модели true
+```
+
+Снаружи сервис не открыт: порт 7100 слушает только `127.0.0.1`, файрвол его не пропускает. К нему ходит только наш API. В `/opt/atelier/server/.env` нужна строка `VISION_URL=http://127.0.0.1:7100`.
+
+Проверка качества на живых фото: скопируй на сервер 5–10 своих фото и выполни `.venv/bin/python scripts/eval.py фото.jpg`: увидишь, что нашли, за сколько секунд и какой вид и цвет. Если время больше 30 секунд на фото, увеличь сервер или поставь `VISION_THREADS` по числу ядер.
+
 ## 6. Настройки сервера приложения (10 минут)
 
 На своём компьютере подготовь `.env` для сервера (по образцу `server/.env.example`). Минимум:
@@ -143,6 +172,7 @@ SMTP_USER=no-reply@atelierapp.ru
 SMTP_PASS=<пароль приложения>
 MAIL_FROM="Atelier <no-reply@atelierapp.ru>"
 AI_PROVIDER=none
+VISION_URL=http://127.0.0.1:7100
 ```
 
 Положи на сервер и закрой права:
@@ -184,7 +214,7 @@ Host atelier-server
 ```bash
 curl -I https://atelierapp.ru                     # 200, сертификат без ошибок
 curl https://atelierapp.ru/api/health             # {"ok":true,...}
-curl https://atelierapp.ru/api/config             # {"ai":false,"vision":false,"cutout":false,"pay":false}
+curl https://atelierapp.ru/api/config             # {"ai":false,"analyze":true,"pay":false}
 curl -I https://atelierapp.ru/app/manifest.webmanifest   # 200, тип application/manifest+json
 curl -I https://atelierapp.ru/legal/offer.html    # 200
 ```
@@ -198,4 +228,4 @@ curl -I https://atelierapp.ru/legal/offer.html    # 200
 - Резервные копии и мониторинг: `docs/DEPLOY.md`, разделы 7 и 8.
 - AI: ключ в `.env`, `AI_PROVIDER=gigachat`, перезапуск `sudo systemctl restart atelier-api` (`docs/AI.md`).
 - Оплата: `docs/PAYMENTS.md`.
-- Если нужен `rembg` на сервере: `docker` ставится из пакетов Ubuntu, команда запуска в `docs/AI.md`.
+- Распознавание вещей и вырезание фона: `docs/VISION.md`.

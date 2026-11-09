@@ -18,7 +18,7 @@ export function buildIntent(user, plan) {
   const price = config.pay.prices[plan]
   if (!price) throw new Error('unknown_plan')
   const externalId = `at-${user.id.slice(0, 8)}-${Date.now().toString(36)}`
-  const receipt = {
+  const receipt = !config.pay.receipt ? undefined : {
     items: [{ label: TITLE[plan] + ', 1 месяц', price, quantity: 1, amount: price, vat: config.pay.vat, method: 4, object: 4 }],
     taxationSystem: config.pay.taxation,
     email: user.email,
@@ -35,9 +35,9 @@ export function buildIntent(user, plan) {
     receiptEmail: user.email,
     userInfo: { accountId: user.id, email: user.email },
     metadata: { plan, userId: user.id },
-    receipt,
+    ...(receipt ? { receipt } : {}),
     // автопродление раз в месяц; первый платёж списывается сразу, дальше CloudPayments списывает сам и присылает Recurrent
-    recurrent: { interval: 'Month', period: 1, amount: price, receipt },
+    recurrent: { interval: 'Month', period: 1, amount: price, ...(receipt ? { receipt } : {}) },
     skin: 'modern',
     emailBehavior: 'Hidden',
   }

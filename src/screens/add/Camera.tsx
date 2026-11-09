@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { Icon } from '../../ui'
 import { CATEGORY_ICON } from '../../data/items'
 import { useApp, useLimits } from '../../store/app'
-import { usePhotoFlow, guessItem, describedItem } from '../../store/photo'
-import { cutoutPhoto, describePhoto } from '../../lib/ai'
 import { toast } from '../../store/ui'
-import { cutOutPhoto, looksLikeNotClothing } from '../../lib/image'
+import { intakePhoto } from '../../lib/intake'
 
 /** ADD-02 Camera: всегда тёмная. Камера и галерея открывают выбор фото с устройства */
 export function Camera() {
@@ -25,22 +23,7 @@ export function Camera() {
     if (!f || busy) return
     setBusy(true)
     try {
-      if (looksLikeNotClothing(f)) {
-        usePhotoFlow.getState().fail()
-        navigate('/add/notclothing', { replace: true })
-        return
-      }
-      const local = await cutOutPhoto(f)
-      // сервер (если подключён) вырезает фон лучше и описывает вещь по фото; без него остаётся локальный результат
-      const [cut, desc] = await Promise.all([cutoutPhoto(local.dataUrl), describePhoto(local.dataUrl)])
-      const dataUrl = cut ?? local.dataUrl
-      if (desc && desc.isClothing === false) {
-        usePhotoFlow.getState().fail()
-        navigate('/add/notclothing', { replace: true })
-        return
-      }
-      usePhotoFlow.getState().start(desc?.category ? describedItem(dataUrl, local.colorName, desc) : guessItem(dataUrl, local.colorName, f.name))
-      navigate('/add/processing', { replace: true })
+      await intakePhoto(f, navigate)
     } catch {
       toast('Не получилось открыть фото', 'error')
     } finally {
@@ -50,6 +33,7 @@ export function Camera() {
 
   return (
     <div className="cam">
+      {busy && <div className="cam__busy" role="status" aria-live="polite"><Icon name="circle-notch" size={32} style={{ animation: 'at-spin 0.9s linear infinite' }} /><span className="t-headline">Ищу вещи на фото</span><span className="t-caption sub">Убираю фон, это пара секунд</span></div>}
       <input ref={camRef} type="file" accept="image/*" capture="environment" hidden onChange={(e) => { onFile(e.target.files?.[0]); e.target.value = '' }} />
       <input ref={galRef} type="file" accept="image/*" hidden onChange={(e) => { onFile(e.target.files?.[0]); e.target.value = '' }} />
       <div className="cam__top">
