@@ -1,4 +1,5 @@
 import { config } from './config.mjs'
+import { codeMessage } from './mail-template.mjs'
 
 let transport
 export async function sendCode(email, code) {
@@ -7,9 +8,6 @@ export async function sendCode(email, code) {
     const { default: nodemailer } = await import('nodemailer')
     transport = nodemailer.createTransport({ host: config.mail.host, port: config.mail.port, secure: config.mail.port === 465, auth: { user: config.mail.user, pass: config.mail.pass } })
   }
-  await transport.sendMail({
-    from: config.mail.from, to: email, subject: `Код для входа в Atelier: ${code}`,
-    text: `Твой код для входа в Atelier: ${code}\n\nОн действует 10 минут. Если ты не запрашивал код, просто игнорируй письмо.`,
-    html: `<div style="font:16px/1.5 system-ui,sans-serif;color:#111114"><p>Твой код для входа в Atelier:</p><p style="font-size:36px;font-weight:800;letter-spacing:8px;margin:8px 0">${code}</p><p style="color:#6B6B74">Он действует 10 минут. Если ты не запрашивал код, просто игнорируй письмо.</p></div>`,
-  })
+  const m = codeMessage(code, { site: config.siteUrl || '' })
+  await transport.sendMail({ from: config.mail.from, to: email, subject: m.subject, text: m.text, html: m.html })
 }

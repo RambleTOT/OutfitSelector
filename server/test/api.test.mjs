@@ -230,3 +230,15 @@ test('фото: сервис распознавания упал или заня
   assert.equal((await r.json()).error, 'busy')
   t.server.close()
 })
+
+test('письмо с кодом: тема, текст и html содержат код, без внешних картинок и скриптов', async () => {
+  const { codeMessage } = await import('../mail-template.mjs')
+  const m = codeMessage('1234', { site: 'https://atelierai.ru' })
+  assert.equal(m.subject, 'Код для входа в Atelier: 1234')
+  assert.match(m.text, /1234/)
+  for (const d of '1234') assert.ok(m.html.includes(`>${d}</td>`))
+  assert.ok(!/<img|<script|<link/i.test(m.html))
+  assert.ok(m.html.includes('atelierai.ru'))
+  // код экранируется, подмена невозможна
+  assert.ok(!codeMessage('<b>', {}).html.includes('<b>'))
+})

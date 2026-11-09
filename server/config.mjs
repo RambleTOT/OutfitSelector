@@ -11,6 +11,7 @@ export const config = {
   tokenSecret: e.TOKEN_SECRET || (dev ? randomBytes(32).toString('hex') : ''),
   dataDir: e.DATA_DIR ?? './data',
   staticDir: e.STATIC_DIR ?? '',
+  siteUrl: (e.SITE_URL ?? '').replace(/\/$/, ''),
   mail: {
     mode: e.MAIL_MODE ?? (dev ? 'log' : 'smtp'),
     host: e.SMTP_HOST, port: Number(e.SMTP_PORT ?? 465), user: e.SMTP_USER, pass: e.SMTP_PASS,
