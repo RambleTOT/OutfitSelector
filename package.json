@@ -21,7 +21,8 @@
     "android:release": "npm run android:sync && cd android && ./gradlew assembleRelease",
     "android:assets": "node scripts/build-android-assets.mjs",
     "server": "cd server && npm start",
-    "server:test": "cd server && npm test"
+    "server:test": "cd server && npm test",
+    "ai:eval": "node tools/ai-eval.mjs"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.2",
