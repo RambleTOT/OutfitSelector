@@ -22,7 +22,9 @@ export const config = {
     timeoutMs: Number(e.AI_TIMEOUT_MS ?? 20000),
     gigachat: { key: e.GIGACHAT_AUTH_KEY, scope: e.GIGACHAT_SCOPE ?? 'GIGACHAT_API_PERS', model: e.GIGACHAT_MODEL ?? 'GigaChat-2' },
     yandex: { key: e.YANDEX_API_KEY, folder: e.YANDEX_FOLDER_ID, model: e.YANDEX_MODEL ?? 'yandexgpt-lite/latest' },
-    openai: { baseUrl: (e.OPENAI_BASE_URL ?? 'https://openrouter.ai/api/v1').replace(/\/$/, ''), key: e.OPENAI_API_KEY, model: e.OPENAI_MODEL },
+    openai: { baseUrl: (e.OPENAI_BASE_URL ?? 'https://openrouter.ai/api/v1').replace(/\/$/, ''), key: e.OPENAI_API_KEY, model: e.OPENAI_MODEL,
+      // у «думающих» моделей рассуждение тратит выходные токены: поднимай OPENAI_MAX_TOKENS или выключай рассуждение через OPENAI_EXTRA (JSON, сливается в тело запроса)
+      maxTokens: Number(e.OPENAI_MAX_TOKENS ?? 400), temperature: Number(e.OPENAI_TEMPERATURE ?? 0.7), extra: (() => { try { return e.OPENAI_EXTRA ? JSON.parse(e.OPENAI_EXTRA) : {} } catch { return {} } })() },
     visionUrl: (e.VISION_URL ?? '').replace(/\/$/, ''),
   },
   pay: {

@@ -11,7 +11,7 @@
  *
  * Без ключа проверка работает на макете (EVAL_MOCK=good|sloppy), чтобы убедиться, что сама проверка исправна.
  *
- * Дополнительно: EVAL_N (случаев, 48), EVAL_CONC (параллельно, 2), EVAL_TEMP (0.7 как в проде),
+ * Дополнительно: EVAL_MAX_TOKENS (400 как в проде; для «думающих» моделей 1500), EVAL_EXTRA (JSON, добавляется в тело запроса, например выключить рассуждение), EVAL_N (случаев, 48), EVAL_CONC (параллельно, 2), EVAL_TEMP (0.7 как в проде),
  * EVAL_JSON=1 (просить response_format json_object), EVAL_USERS (пользователей в месяц для расчёта цены, 20),
  * EVAL_OUTFITS (образов на пользователя в месяц, 25), EVAL_SEED (число).
  */
@@ -22,6 +22,8 @@ const env = process.env
 const N = Number(env.EVAL_N ?? 48)
 const CONC = Number(env.EVAL_CONC ?? 2)
 const TEMP = Number(env.EVAL_TEMP ?? 0.7)
+const MAX_TOKENS = Number(env.EVAL_MAX_TOKENS ?? 400)
+const EXTRA = env.EVAL_EXTRA ? JSON.parse(env.EVAL_EXTRA) : {}
 const USERS = Number(env.EVAL_USERS ?? 20)
 const OUTFITS = Number(env.EVAL_OUTFITS ?? 25)
 const PRICE_IN = Number(env.EVAL_PRICE_IN ?? 0)
@@ -133,12 +135,13 @@ async function callModel(system, user) {
     const r = await fetch(`${BASE}/chat/completions`, {
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', ...(env.EVAL_KEY ? { Authorization: `Bearer ${env.EVAL_KEY}` } : {}) },
-      body: JSON.stringify({ model: MODEL, temperature: TEMP, max_tokens: 400, ...(env.EVAL_JSON === '1' ? { response_format: { type: 'json_object' } } : {}), messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
+      body: JSON.stringify({ model: MODEL, temperature: TEMP, max_tokens: MAX_TOKENS, ...(env.EVAL_JSON === '1' ? { response_format: { type: 'json_object' } } : {}), ...EXTRA, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
     })
     const text = await r.text()
     if (!r.ok) throw new Error(`http_${r.status}: ${text.slice(0, 160).replace(env.EVAL_KEY ?? '\u0000', '***')}`)
     const j = JSON.parse(text)
-    return { text: j.choices?.[0]?.message?.content ?? '', inTok: j.usage?.prompt_tokens, outTok: j.usage?.completion_tokens, ms: Date.now() - t0 }
+    const ch = j.choices?.[0]
+    return { text: ch?.message?.content ?? '', inTok: j.usage?.prompt_tokens, outTok: j.usage?.completion_tokens, reasonTok: j.usage?.completion_tokens_details?.reasoning_tokens ?? 0, cut: ch?.finish_reason === 'length', ms: Date.now() - t0 }
   } finally { clearTimeout(to) }
 }
 
@@ -157,12 +160,12 @@ function mockModel(user) {
 // ---- прогон
 async function runCase(c) {
   const user = buildUserPrompt({ items: c.items, occasion: c.occasion, wish: c.wish, weather: c.weather, nogo: c.nogo, avoid: c.avoid })
-  const res = { fails: [], ms: 0, inTok: 0, outTok: 0, attempts: 0, ok1: false, okAfterRetry: false, clean: true, raw: '' }
+  const res = { fails: [], ms: 0, inTok: 0, outTok: 0, reasonTok: 0, cut: 0, attempts: 0, ok1: false, okAfterRetry: false, clean: true, raw: '' }
   for (let attempt = 1; attempt <= 2; attempt++) {
     res.attempts = attempt
     let r
     try { r = await callModel(SYSTEM, user) } catch (e) { res.error = String(e.message); res.fails = ['api: ' + res.error]; continue }
-    res.ms += r.ms; res.inTok += r.inTok ?? 0; res.outTok += r.outTok ?? 0; res.raw = r.text
+    res.ms += r.ms; res.inTok += r.inTok ?? 0; res.outTok += r.outTok ?? 0; res.reasonTok += r.reasonTok ?? 0; res.cut += r.cut ? 1 : 0; res.raw = r.text
     if (attempt === 1) res.clean = /^\s*\{[\s\S]*\}\s*$/.test(r.text)
     let parsed
     try { parsed = parseOutfit(r.text, c.items) } catch (e) { res.fails = ['parse: ' + e.message]; continue }
@@ -208,7 +211,8 @@ console.log(`Верно с учётом одного повтора: ${okR}/${N}
 console.log(`Чистый JSON без обёртки:     ${pct(clean, N)}   (обёртку из тройных кавычек сервер срезает, это не ошибка)`)
 console.log(`Ошибки разбора / API:        ${parseFail} / ${apiFail}`)
 console.log(`Скорость на запрос:          p50 ${q(0.5)} мс, p95 ${q(0.95)} мс`)
-console.log(`Токены на образ:             ${Math.round(tokIn)} вход, ${Math.round(tokOut)} выход`)
+console.log(`Токены на образ:             ${Math.round(tokIn)} вход, ${Math.round(tokOut)} выход (из них рассуждение ${Math.round(sum('reasonTok') / N)})`)
+if (sum('cut')) console.log(`⚠ Ответ обрезан по лимиту токенов в ${sum('cut')} запросах: модель «думает» и не успевает ответить. Подними EVAL_MAX_TOKENS или выключи рассуждение через EVAL_EXTRA.`)
 if (PRICE_IN || PRICE_OUT) console.log(`Цена образа:                 ${rubOne.toFixed(4)} ₽   →   ${perMonth.toFixed(1)} ₽ в месяц (${USERS} польз. × ${OUTFITS} образов)`)
 console.log('Где ошибается (число случаев):', Object.keys(byCheck).length ? JSON.stringify(byCheck) : 'нигде')
 

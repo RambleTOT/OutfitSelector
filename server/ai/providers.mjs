@@ -51,7 +51,7 @@ async function openai(system, user) {
   const j = await fetchJson(`${c.baseUrl}/chat/completions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...(c.key ? { Authorization: `Bearer ${c.key}` } : {}) },
-    body: JSON.stringify({ model: c.model, temperature: 0.7, max_tokens: 400, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
+    body: JSON.stringify({ model: c.model, temperature: c.temperature, max_tokens: c.maxTokens, ...c.extra, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
   }, config.ai.timeoutMs)
   return j.choices?.[0]?.message?.content ?? ''
 }
