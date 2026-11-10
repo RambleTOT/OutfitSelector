@@ -16,7 +16,7 @@
  * EVAL_OUTFITS (образов на пользователя в месяц, 25), EVAL_SEED (число).
  */
 import { writeFileSync, mkdirSync } from 'node:fs'
-import { SYSTEM, buildUserPrompt, parseOutfit } from '../server/ai/prompt.mjs'
+import { SYSTEM, buildUserPrompt, parseOutfit, repairOutfit } from '../server/ai/prompt.mjs'
 
 const env = process.env
 const N = Number(env.EVAL_N ?? 48)
@@ -186,7 +186,7 @@ async function runCase(c) {
     res.ms += r.ms; res.inTok += r.inTok ?? 0; res.outTok += r.outTok ?? 0; res.reasonTok += r.reasonTok ?? 0; res.cut += r.cut ? 1 : 0; res.raw = r.text
     if (attempt === 1) res.clean = /^\s*\{[\s\S]*\}\s*$/.test(r.text)
     let parsed
-    try { parsed = parseOutfit(r.text, c.items) } catch (e) { res.fails = ['parse: ' + e.message]; continue }
+    try { parsed = parseOutfit(r.text, c.items); if (env.EVAL_NO_REPAIR !== '1') parsed = repairOutfit(parsed, c.items, { weather: c.weather, occasion: c.occasion, nogo: c.nogo }) } catch (e) { res.fails = ['parse: ' + e.message]; continue }
     const byId = new Map(c.items.map((i) => [i.id, i]))
     const chosen = parsed.ids.map((id) => byId.get(id))
     const rawExpl = (() => { try { return String(JSON.parse(r.text.match(/\{[\s\S]*\}/)[0]).explanation ?? '') } catch { return '' } })()

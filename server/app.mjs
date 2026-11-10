@@ -7,7 +7,7 @@ import { Store } from './store.mjs'
 import { checkCode, emailOk, issueCode, normEmail, signToken, verifyToken } from './auth.mjs'
 import { sendCode } from './mail.mjs'
 import { chat, aiEnabled } from './ai/providers.mjs'
-import { SYSTEM, buildUserPrompt, parseOutfit } from './ai/prompt.mjs'
+import { SYSTEM, buildUserPrompt, parseOutfit, repairOutfit, outfitProblems } from './ai/prompt.mjs'
 import { buildIntent, cancelSubscription, handleNotification, parseBody, payEnabled, publicSub, verifySignature } from './pay.mjs'
 import { spend, spendPhoto } from './plans.mjs'
 
@@ -144,9 +144,17 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
         if (items.length < 2) throw new HttpError(400, 'few_items')
         const sp = spend(store, u)
         if (!sp.ok) throw new HttpError(429, sp.reason)
-        let outfit, lastErr
-        for (let attempt = 0; attempt < 2 && !outfit; attempt++) {
-          try { outfit = parseOutfit(await aiChat(SYSTEM, buildUserPrompt({ items, occasion: b.occasion, wish: b.wish, weather: b.weather, nogo: b.nogo, avoid: Array.isArray(b.avoid) ? b.avoid.filter((x) => typeof x === 'string').slice(0, 8) : [] })), items) } catch (e) { lastErr = e }
+        const avoid = Array.isArray(b.avoid) ? b.avoid.filter((x) => typeof x === 'string').slice(0, 8) : []
+        const ctx = { weather: b.weather, occasion: b.occasion, nogo: Array.isArray(b.nogo) ? b.nogo.filter((x) => typeof x === 'string').slice(0, 20) : [] }
+        const prompt = buildUserPrompt({ items, occasion: b.occasion, wish: b.wish, weather: b.weather, nogo: b.nogo, avoid })
+        // до двух запросов: второй, если ответ не разобрался или в образе осталась вещь, которая не подходит к погоде или поводу
+        let outfit, lastErr, bestBad = Infinity
+        for (let attempt = 0; attempt < 2 && bestBad > 0; attempt++) {
+          try {
+            const cand = repairOutfit(parseOutfit(await aiChat(SYSTEM, prompt), items), items, ctx)
+            const bad = outfitProblems(cand, items, ctx).length
+            if (bad < bestBad) { outfit = cand; bestBad = bad }
+          } catch (e) { lastErr = e }
         }
         // лимит списываем только за удачный образ: ошибка модели не должна стоить человеку попытки
         if (!outfit) { console.error('[ai] не удалось:', lastErr?.message); throw new HttpError(502, 'ai_failed') }

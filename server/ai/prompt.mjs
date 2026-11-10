@@ -47,6 +47,46 @@ export function parseOutfit(text, items) {
   }
 }
 
+/**
+ * Мелкие огрехи модели чиним кодом, а не повторным запросом: забытая обувь, нет верхней одежды в холод, куртка в жару.
+ * Чем меньше модель, тем чаще это случается; по стенду tools/ai-eval.mjs это самые частые промахи.
+ */
+const lc = (x) => String(x ?? '').toLowerCase()
+function allowedItem(i, { weather, occasion, nogo }) {
+  const t = Number(weather?.temp)
+  if ((nogo ?? []).some((n) => n && lc(i.title).includes(lc(n)))) return false
+  if (['work', 'study'].includes(occasion) && i.formality === 'спорт' && i.category !== 'accessory') return false
+  if (Number.isFinite(t) && t >= 24 && i.warmth === 'тёплая') return false
+  if (Number.isFinite(t) && t <= 4 && /шорты/.test(lc(i.title))) return false
+  if (Number.isFinite(t) && t <= 0 && /кепк|шляп|панам/.test(lc(i.title))) return false
+  return true
+}
+
+export function repairOutfit(outfit, items, ctx = {}) {
+  const t = Number(ctx.weather?.temp)
+  const byId = new Map(items.map((i) => [i.id, i]))
+  let ids = [...outfit.ids]
+  const cats = () => ids.map((id) => byId.get(id).category)
+  // жарко: верхняя одежда лишняя
+  if (Number.isFinite(t) && t >= 22) ids = ids.filter((id) => byId.get(id).category !== 'outer')
+  const pickFor = (cat) => {
+    const pool = items.filter((i) => i.category === cat && allowedItem(i, ctx))
+    if (!pool.length) return null
+    const want = Number.isFinite(t) && t <= 6 ? 'тёплая' : null
+    // в холод берём самое тёплое, иначе первую подходящую
+    return (want && pool.find((i) => i.warmth === want)) || pool.find((i) => i.warmth !== 'тёплая' || t <= 12) || pool[0]
+  }
+  if (!cats().includes('shoes')) { const s = pickFor('shoes'); if (s) ids.push(s.id) }
+  if (Number.isFinite(t) && t <= 6 && !cats().includes('outer')) { const o = pickFor('outer'); if (o) ids.push(o.id) }
+  return { ...outfit, ids }
+}
+
+/** Что в образе всё ещё нарушает правила (то, что код сам не чинит). Пусто = образ хороший. */
+export function outfitProblems(outfit, items, ctx = {}) {
+  const byId = new Map(items.map((i) => [i.id, i]))
+  return outfit.ids.map((id) => byId.get(id)).filter((i) => i && !allowedItem(i, ctx)).map((i) => i.id)
+}
+
 export async function fetchJson(url, init, timeoutMs) {
   const ctrl = new AbortController()
   const t = setTimeout(() => ctrl.abort(), timeoutMs)

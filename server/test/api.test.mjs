@@ -242,3 +242,40 @@ test('письмо с кодом: тема, текст и html содержат 
   // код экранируется, подмена невозможна
   assert.ok(!codeMessage('<b>', {}).html.includes('<b>'))
 })
+
+test('AI: сервер дополняет забытую обувь и верхнюю одежду в холод, снимает куртку в жару', async () => {
+  const { repairOutfit, outfitProblems } = await import('../ai/prompt.mjs')
+  const items = [
+    { id: 't', category: 'top', title: 'Белая футболка', warmth: 'лёгкая', formality: 'кэжуал' },
+    { id: 'b', category: 'bottom', title: 'Синие джинсы', warmth: 'демисезон', formality: 'кэжуал' },
+    { id: 's1', category: 'shoes', title: 'Белые кроссовки', warmth: 'демисезон', formality: 'спорт' },
+    { id: 's2', category: 'shoes', title: 'Чёрные лоферы', warmth: 'демисезон', formality: 'деловой' },
+    { id: 'o', category: 'outer', title: 'Серое пальто', warmth: 'тёплая', formality: 'смарт-кэжуал' },
+  ]
+  const base = { ids: ['t', 'b'], name: 'x', explanation: 'y' }
+  // мороз на работе: добавляем лоферы (не спорт) и пальто
+  const cold = repairOutfit(base, items, { weather: { temp: -5 }, occasion: 'work', nogo: [] })
+  assert.deepEqual(cold.ids.sort(), ['b', 'o', 's2', 't'])
+  // жара: пальто убираем
+  const hot = repairOutfit({ ...base, ids: ['t', 'b', 'o'] }, items, { weather: { temp: 30 }, occasion: 'every', nogo: [] })
+  assert.ok(!hot.ids.includes('o'))
+  // «не носит» кроссовки: они не добавляются и считаются проблемой, если модель их взяла
+  assert.ok(!repairOutfit(base, items, { weather: { temp: 15 }, occasion: 'every', nogo: ['кроссовки'] }).ids.includes('s1'))
+  assert.deepEqual(outfitProblems({ ids: ['t', 'b', 's1'] }, items, { weather: { temp: 15 }, occasion: 'study', nogo: [] }), ['s1'])
+})
+
+test('AI: если в образе осталась неподходящая вещь, делается второй запрос и берётся лучший', async () => {
+  const items = [
+    { id: 't', category: 'top', title: 'Футболка', warmth: 'лёгкая', formality: 'кэжуал' },
+    { id: 'b', category: 'bottom', title: 'Джинсы', warmth: 'демисезон', formality: 'кэжуал' },
+    { id: 'h', category: 'top', title: 'Худи', warmth: 'демисезон', formality: 'спорт' },
+  ]
+  let calls = 0
+  const t = await boot({ aiChat: async () => (++calls === 1 ? '{"ids":["h","b"],"name":"Один","explanation":"y"}' : '{"ids":["t","b"],"name":"Два","explanation":"y"}') })
+  const { auth } = await t.login()
+  const r = await t.call('POST', '/api/ai/outfit', { items, occasion: 'work', weather: { temp: 15 } }, auth)
+  assert.equal(r.status, 200)
+  assert.equal(calls, 2)
+  assert.equal(r.body.name, 'Два')
+  t.server.close()
+})
