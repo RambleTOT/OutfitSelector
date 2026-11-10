@@ -49,7 +49,7 @@ export function Favorites() {
           <span className="t-callout muted" style={{ fontWeight: 400, textWrap: 'pretty' }}>
             Все {saved.length} можно открывать, редактировать и удалять. Удали {extra} или продли подписку
           </span>
-          <Button size="sm" full onClick={() => setPay(true)}>Продлить за 300 ₽</Button>
+          <Button size="sm" full onClick={() => setPay(true)}>Продлить за 299 ₽</Button>
         </div>
       )}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '16px 12px' }}>

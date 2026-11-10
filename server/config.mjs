@@ -30,7 +30,7 @@ export const config = {
   pay: {
     publicId: e.CP_PUBLIC_ID ?? '',
     apiSecret: e.CP_API_SECRET ?? '',
-    prices: { sub: Number(e.PRICE_SUB ?? 300), plus: Number(e.PRICE_PLUS ?? e.PRICE_SUBPLUS ?? 600) },
+    prices: { sub: Number(e.PRICE_SUB ?? 299), plus: Number(e.PRICE_PLUS ?? e.PRICE_SUBPLUS ?? 599) },
     // для самозанятого онлайн-касса не нужна: чек в «Мой налог» формирует сам продавец. Включай CP_RECEIPT=on только для ИП и юрлиц с CloudKassir
     receipt: e.CP_RECEIPT === 'on',
     taxation: Number(e.CP_TAXATION ?? 1),

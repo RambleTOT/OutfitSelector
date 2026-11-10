@@ -18,7 +18,7 @@ export const LIMITS: Record<Plan, PlanLimits> = {
 export const MONTHLY_CAP = 300
 
 export const PLAN_NAME: Record<Plan, string> = { free: 'Free', sub: 'Подписка', plus: 'Подписка+' }
-export const PLAN_PRICE: Record<Plan, number> = { free: 0, sub: 300, plus: 600 }
+export const PLAN_PRICE: Record<Plan, number> = { free: 0, sub: 299, plus: 599 }
 
 const MSK = 3 * 3600 * 1000 // Москва UTC+3 без перехода на летнее время
 const msk = (d: Date) => new Date(d.getTime() + MSK)

@@ -94,8 +94,8 @@ const SCENES = {
       return `<div class="card lim">
         <div class="lim-head"><div></div>
           <div class="plan"><span class="n">Free</span><span class="p">0 ₽</span></div>
-          <div class="plan sub"><span class="n">Подписка</span><span class="p">300 ₽ в месяц</span></div>
-          <div class="plan"><span class="n">Подписка+</span><span class="p">600 ₽ в месяц</span></div></div>
+          <div class="plan sub"><span class="n">Подписка</span><span class="p">299 ₽ в месяц</span></div>
+          <div class="plan"><span class="n">Подписка+</span><span class="p">599 ₽ в месяц</span></div></div>
         <div class="lim-row"><div class="l">${I('sparkle', 30, true)}Образов в неделю</div>${bar('free', 33, '5', 0.6)}${bar('', 66, '10', 0.75)}${bar('inf', 100, '∞', 0.9)}</div>
         <div class="lim-row"><div class="l">${I('camera', 30, true)}Фото вещей</div>${bar('free', 12, '3', 1.1)}${bar('', 66, '30 в мес', 1.25)}${bar('inf', 100, '∞', 1.4)}</div>
         <div class="lim-row"><div class="l">${I('heart', 30, true)}Избранное</div>${bar('free', 33, '3', 1.6)}${bar('', 66, '10', 1.75)}${bar('inf', 100, '∞', 1.9)}</div>

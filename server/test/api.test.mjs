@@ -122,7 +122,7 @@ test('оплата: параметры виджета считает серве�
   const { auth, user } = await t.login()
   const r = await t.call('POST', '/api/pay/intent', { plan: 'sub', amount: 1 }, auth)
   assert.equal(r.status, 200)
-  assert.equal(r.body.amount, 300)
+  assert.equal(r.body.amount, 299)
   assert.equal(r.body.userInfo.accountId, user.id)
   assert.equal(r.body.metadata.plan, 'sub')
   assert.equal(r.body.recurrent.interval, 'Month')
@@ -138,12 +138,12 @@ test('уведомления: без подписи 401, Check проверяе�
   assert.equal((await t.call('POST', '/api/pay/notify/pay', raw, { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-HMAC': 'nope' })).status, 401)
 
   const data = JSON.stringify({ plan: 'sub', userId: user.id })
-  assert.deepEqual((await notify(t, 'check', { TransactionId: '7', Amount: '300', AccountId: user.id, Data: data })).body, { code: 0 })
+  assert.deepEqual((await notify(t, 'check', { TransactionId: '7', Amount: '299', AccountId: user.id, Data: data })).body, { code: 0 })
   assert.deepEqual((await notify(t, 'check', { TransactionId: '7', Amount: '1', AccountId: user.id, Data: data })).body, { code: 11 })
-  assert.deepEqual((await notify(t, 'check', { TransactionId: '7', Amount: '300', AccountId: 'no', Data: data })).body, { code: 10 })
+  assert.deepEqual((await notify(t, 'check', { TransactionId: '7', Amount: '299', AccountId: 'no', Data: data })).body, { code: 10 })
 
-  assert.deepEqual((await notify(t, 'pay', { TransactionId: '7', Amount: '300', AccountId: user.id, SubscriptionId: 'sc_1', Data: data })).body, { code: 0 })
-  await notify(t, 'pay', { TransactionId: '7', Amount: '300', AccountId: user.id, SubscriptionId: 'sc_1', Data: data }) // повтор
+  assert.deepEqual((await notify(t, 'pay', { TransactionId: '7', Amount: '299', AccountId: user.id, SubscriptionId: 'sc_1', Data: data })).body, { code: 0 })
+  await notify(t, 'pay', { TransactionId: '7', Amount: '299', AccountId: user.id, SubscriptionId: 'sc_1', Data: data }) // повтор
   const me = await t.call('GET', '/api/me', undefined, auth)
   assert.equal(me.body.sub.effective, 'sub')
   const days = (me.body.sub.endsAt - Date.now()) / 86400000
@@ -155,12 +155,12 @@ test('возврат снимает тариф, статус Cancelled отме�
   const t = await boot()
   const { auth, user } = await t.login()
   const data = JSON.stringify({ plan: 'plus', userId: user.id })
-  await notify(t, 'pay', { TransactionId: '9', Amount: '600', AccountId: user.id, SubscriptionId: 'sc_2', Data: data })
+  await notify(t, 'pay', { TransactionId: '9', Amount: '599', AccountId: user.id, SubscriptionId: 'sc_2', Data: data })
   await notify(t, 'recurrent', { Id: 'sc_2', AccountId: user.id, Status: 'Cancelled' })
   let me = await t.call('GET', '/api/me', undefined, auth)
   assert.equal(me.body.sub.cancelled, true)
   assert.equal(me.body.sub.effective, 'plus') // отмена не обрывает оплаченный период
-  await notify(t, 'refund', { TransactionId: '9', Amount: '600' })
+  await notify(t, 'refund', { TransactionId: '9', Amount: '599' })
   me = await t.call('GET', '/api/me', undefined, auth)
   assert.equal(me.body.sub.effective, 'free')
   t.server.close()
@@ -170,7 +170,7 @@ test('отмена подписки идёт в CloudPayments с Basic-авто�
   let seen
   const t = await boot({ fetchImpl: async (url, init) => { seen = { url, init }; return { json: async () => ({ Success: true }) } } })
   const { auth, user } = await t.login()
-  await notify(t, 'pay', { TransactionId: '5', Amount: '300', AccountId: user.id, SubscriptionId: 'sc_5', Data: JSON.stringify({ plan: 'sub' }) })
+  await notify(t, 'pay', { TransactionId: '5', Amount: '299', AccountId: user.id, SubscriptionId: 'sc_5', Data: JSON.stringify({ plan: 'sub' }) })
   const r = await t.call('POST', '/api/pay/cancel', {}, auth)
   assert.equal(r.status, 200)
   assert.equal(seen.url, 'https://api.cloudpayments.ru/subscriptions/cancel')

@@ -54,7 +54,7 @@ export function useSaveOutfit(): { save: (d: Draft, onSaved?: (id: string) => vo
       <RegisterSheet open={reg} onClose={() => setReg(false)} />
       <FavoritesFullSheet
         open={full} onClose={() => setFull(false)}
-        buyLabel={lim.plan === 'free' ? '10 мест за 300 ₽' : 'Без лимита за 600 ₽'}
+        buyLabel={lim.plan === 'free' ? '10 мест за 299 ₽' : 'Без лимита за 599 ₽'}
         onBuy={() => { setFull(false); setTimeout(() => setPay('full'), 260) }}
         onReplace={(old) => {
           if (!pending) return
