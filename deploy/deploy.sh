@@ -12,6 +12,7 @@ npm run build -- --mode production            # VITE_* берутся из .env.
 rsync -az --delete -e "$SSH" dist/ "$HOST:/var/www/atelier/"
 rsync -az --delete -e "$SSH" --exclude node_modules --exclude data --exclude .env server/ "$HOST:/opt/atelier/server/"
 # сервис распознавания: код и словарь подписей (модели скачиваются на сервере один раз, см. docs/TIMEWEB.md)
+$SSH "$HOST" "mkdir -p /opt/atelier/vision/models"
 rsync -az --delete -e "$SSH" --exclude .venv --exclude models --exclude __pycache__ vision/ "$HOST:/opt/atelier/vision/"
 rsync -az -e "$SSH" vision/models/labels.npz "$HOST:/opt/atelier/vision/models/labels.npz"
 $SSH "$HOST" "cd /opt/atelier/vision && .venv/bin/pip install -q -r requirements.txt && sudo systemctl restart atelier-vision" || echo "Сервис распознавания ещё не настроен на сервере, пропускаю (docs/TIMEWEB.md, шаг 5б)"
