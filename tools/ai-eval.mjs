@@ -11,7 +11,7 @@
  *
  * Без ключа проверка работает на макете (EVAL_MOCK=good|sloppy), чтобы убедиться, что сама проверка исправна.
  *
- * Дополнительно: EVAL_MAX_TOKENS (400 как в проде; для «думающих» моделей 1500), EVAL_EXTRA (JSON, добавляется в тело запроса, например выключить рассуждение), EVAL_N (случаев, 48), EVAL_CONC (параллельно, 2), EVAL_TEMP (0.7 как в проде),
+ * Дополнительно: EVAL_SYSTEM_ROLE (system по умолчанию; у Selectel в примере developer), EVAL_MAX_TOKENS (400 как в проде; для «думающих» моделей 1500), EVAL_EXTRA (JSON, добавляется в тело запроса, например выключить рассуждение), EVAL_N (случаев, 48), EVAL_CONC (параллельно, 2), EVAL_TEMP (0.7 как в проде),
  * EVAL_JSON=1 (просить response_format json_object), EVAL_USERS (пользователей в месяц для расчёта цены, 20),
  * EVAL_OUTFITS (образов на пользователя в месяц, 25), EVAL_SEED (число).
  */
@@ -135,7 +135,7 @@ async function callModel(system, user) {
     const r = await fetch(`${BASE}/chat/completions`, {
       method: 'POST', signal: ctrl.signal,
       headers: { 'Content-Type': 'application/json', ...(env.EVAL_KEY ? { Authorization: `Bearer ${env.EVAL_KEY}` } : {}) },
-      body: JSON.stringify({ model: MODEL, temperature: TEMP, max_tokens: MAX_TOKENS, ...(env.EVAL_JSON === '1' ? { response_format: { type: 'json_object' } } : {}), ...EXTRA, messages: [{ role: 'system', content: system }, { role: 'user', content: user }] }),
+      body: JSON.stringify({ model: MODEL, temperature: TEMP, max_tokens: MAX_TOKENS, ...(env.EVAL_JSON === '1' ? { response_format: { type: 'json_object' } } : {}), ...EXTRA, messages: [{ role: env.EVAL_SYSTEM_ROLE ?? 'system', content: system }, { role: 'user', content: user }] }),
     })
     const text = await r.text()
     if (!r.ok) throw new Error(`http_${r.status}: ${text.slice(0, 160).replace(env.EVAL_KEY ?? '\u0000', '***')}`)
