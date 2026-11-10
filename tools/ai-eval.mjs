@@ -126,6 +126,24 @@ const CHECKS = {
   },
 }
 
+// есть ли в этом гардеробе вообще образ, не нарушающий жёсткие правила (иначе провал модели не считаем: случай нерешаем)
+function solvable(c) {
+  const t = c.weather.temp
+  const allowed = c.items.filter((i) => {
+    if (c.nogo.includes(i.type) || c.ban === i.type) return false
+    if (['work', 'study'].includes(c.occasion) && i.formality === 'спорт' && i.category !== 'accessory') return false
+    if (c.occasion === 'work' && i.type === 'шорты') return false
+    if (t >= 24 && i.warmth === 'тёплая') return false
+    if (t <= 4 && i.type === 'шорты') return false
+    return true
+  })
+  const has = (cat, list = allowed) => list.some((i) => i.category === cat)
+  if (!(has('dress') || (has('top') && has('bottom')))) return false
+  if (has('shoes', c.items) && !has('shoes')) return false
+  if (t <= 6 && has('outer', c.items) && !has('outer')) return false
+  return true
+}
+
 // ---- вызов модели
 async function callModel(system, user) {
   if (MOCK) return mockModel(user)
@@ -208,6 +226,11 @@ console.log(`\nМодель: ${MODEL}${MOCK ? ' (макет, не настоящ
 console.log('────────────────────────────────────────────')
 console.log(`Верно с первого раза:        ${ok1}/${N} (${pct(ok1, N)})`)
 console.log(`Верно с учётом одного повтора: ${okR}/${N} (${pct(okR, N)})   ← это увидит пользователь без запасного алгоритма`)
+const solvIdx = cases.map((c, i) => (solvable(c) ? i : -1)).filter((i) => i >= 0)
+const okSolv = solvIdx.filter((i) => results[i].okAfterRetry).length
+const ok1Solv = solvIdx.filter((i) => results[i].ok1).length
+console.log(`Из них решаемых случаев:     ${solvIdx.length}/${N} (в остальных гардероб не позволяет собрать образ без нарушений, это дефект теста, не модели)`)
+console.log(`Среди решаемых: с первого раза ${ok1Solv}/${solvIdx.length} (${pct(ok1Solv, solvIdx.length)}), с учётом повтора ${okSolv}/${solvIdx.length} (${pct(okSolv, solvIdx.length)})   ← главная цифра`)
 console.log(`Чистый JSON без обёртки:     ${pct(clean, N)}   (обёртку из тройных кавычек сервер срезает, это не ошибка)`)
 console.log(`Ошибки разбора / API:        ${parseFail} / ${apiFail}`)
 console.log(`Скорость на запрос:          p50 ${q(0.5)} мс, p95 ${q(0.95)} мс`)
@@ -223,5 +246,5 @@ if (good.length) { console.log('\nПримеры ответов (прочти г
 
 mkdirSync('.ai-eval', { recursive: true })
 const file = `.ai-eval/${MODEL.replace(/[^\w.-]+/g, '_')}.json`
-writeFileSync(file, JSON.stringify({ model: MODEL, n: N, ok1, okAfterRetry: okR, byCheck, p50: q(0.5), p95: q(0.95), tokIn, tokOut, rubOne, perMonth, results: results.map((r, i) => ({ case: { occasion: cases[i].occasion, weather: cases[i].weather, wish: cases[i].wish, nogo: cases[i].nogo, avoid: cases[i].avoid, items: cases[i].items.length }, ...r })) }, null, 1))
+writeFileSync(file, JSON.stringify({ model: MODEL, n: N, ok1, okAfterRetry: okR, solvable: solvIdx.length, ok1Solvable: ok1Solv, okAfterRetrySolvable: okSolv, byCheck, p50: q(0.5), p95: q(0.95), tokIn, tokOut, rubOne, perMonth, results: results.map((r, i) => ({ case: { occasion: cases[i].occasion, weather: cases[i].weather, wish: cases[i].wish, nogo: cases[i].nogo, avoid: cases[i].avoid, items: cases[i].items.length }, ...r })) }, null, 1))
 console.log(`\nПодробности: ${file}`)
