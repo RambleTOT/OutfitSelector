@@ -1,6 +1,20 @@
 import { randomBytes } from 'node:crypto'
 
 const e = process.env
+
+/** Доп. поля тела запроса к OpenAI-совместимому API. systemd при чтении .env съедает кавычки в JSON, поэтому есть простая переменная OPENAI_REASONING_EFFORT, а испорченный JSON чиним и не молчим */
+function openaiExtra(env) {
+  let extra = {}
+  const raw = (env.OPENAI_EXTRA ?? '').trim()
+  if (raw) {
+    try { extra = JSON.parse(raw) } catch {
+      try { extra = JSON.parse(raw.replace(/([{,]\s*)([A-Za-z_][\w]*)\s*:\s*([^,}"\s][^,}]*)/g, (_, a, k, v) => `${a}"${k}":${/^(-?\d+(\.\d+)?|true|false|null)$/.test(v.trim()) ? v.trim() : JSON.stringify(v.trim())}`)) }
+      catch { console.warn('[config] OPENAI_EXTRA не разобран, пропускаю: пиши значение в одинарных кавычках или используй OPENAI_REASONING_EFFORT') }
+    }
+  }
+  if (env.OPENAI_REASONING_EFFORT) extra = { ...extra, reasoning_effort: env.OPENAI_REASONING_EFFORT }
+  return extra
+}
 const dev = e.NODE_ENV !== 'production'
 
 export const config = {
@@ -24,7 +38,7 @@ export const config = {
     yandex: { key: e.YANDEX_API_KEY, folder: e.YANDEX_FOLDER_ID, model: e.YANDEX_MODEL ?? 'yandexgpt-lite/latest' },
     openai: { baseUrl: (e.OPENAI_BASE_URL ?? 'https://openrouter.ai/api/v1').replace(/\/$/, ''), key: e.OPENAI_API_KEY, model: e.OPENAI_MODEL,
       // у «думающих» моделей рассуждение тратит выходные токены: поднимай OPENAI_MAX_TOKENS или выключай рассуждение через OPENAI_EXTRA (JSON, сливается в тело запроса)
-      maxTokens: Number(e.OPENAI_MAX_TOKENS ?? 400), temperature: Number(e.OPENAI_TEMPERATURE ?? 0.7), extra: (() => { try { return e.OPENAI_EXTRA ? JSON.parse(e.OPENAI_EXTRA) : {} } catch { return {} } })() },
+      maxTokens: Number(e.OPENAI_MAX_TOKENS ?? 400), temperature: Number(e.OPENAI_TEMPERATURE ?? 0.7), extra: openaiExtra(e) },
     visionUrl: (e.VISION_URL ?? '').replace(/\/$/, ''),
   },
   pay: {
