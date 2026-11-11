@@ -15,10 +15,35 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/app/manifest.webmanifest" />
+    <!-- Первый кадр до загрузки скриптов: цвет фона как в теме и слово Atelier, чтобы не было чёрного или белого пустого экрана -->
+    <style>
+      html, body { margin: 0; background: #F4F4F6; color-scheme: light dark; }
+      @media (prefers-color-scheme: dark) { html, body { background: #0F0F11; } }
+      .boot { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 24px; font: 17px/24px system-ui, -apple-system, "Segoe UI", sans-serif; color: #111114; }
+      @media (prefers-color-scheme: dark) { .boot { color: #F5F2EE; } .boot p { color: #A8A29C; } }
+      .boot b { font: 500 44px/1 Georgia, serif; }
+      .boot p { margin: 0; max-width: 300px; color: #6B6B74; }
+      .boot button { height: 56px; padding: 0 28px; border: 0; border-radius: 999px; background: linear-gradient(135deg, #C9443D, #9E4F6B); color: #fff; font: 700 17px system-ui, sans-serif; }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div class="boot" id="boot"><b>Atelier</b><p id="boot-msg" hidden>Что-то долго грузится. Проверь интернет и попробуй ещё раз</p><button id="boot-retry" type="button" hidden>Попробовать ещё</button></div></div>
     <noscript>Для работы Atelier нужен включённый JavaScript</noscript>
+    <script>
+      // Если приложение не открылось за 10 секунд (плохая связь, устаревший кэш), показываем кнопку: она чистит кэш приложения и грузит заново
+      setTimeout(function () {
+        var boot = document.getElementById('boot'); if (!boot) return
+        document.getElementById('boot-msg').hidden = false
+        var b = document.getElementById('boot-retry'); b.hidden = false
+        b.onclick = function () {
+          var done = function () { location.reload() }
+          Promise.all([
+            navigator.serviceWorker ? navigator.serviceWorker.getRegistrations().then(function (r) { return Promise.all(r.map(function (x) { return x.unregister() })) }) : 0,
+            window.caches ? caches.keys().then(function (k) { return Promise.all(k.map(function (x) { return caches.delete(x) })) }) : 0,
+          ]).then(done, done)
+        }
+      }, 10000)
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

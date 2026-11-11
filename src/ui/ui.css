@@ -285,7 +285,7 @@
   animation: at-sheet-up var(--dur-spring) var(--ease-spring);
 }
 .sheet[data-closing="true"] { animation: at-sheet-down 250ms var(--ease-out) forwards; }
-.sheet__grab { align-self: center; flex-shrink: 0; width: 36px; height: 4px; border-radius: 999px; background: var(--ink-tertiary); opacity: 0.5; border: none; padding: 0; }
+.sheet__grab { align-self: center; position: relative; flex-shrink: 0; width: 36px; height: 4px; border-radius: 999px; background: var(--ink-tertiary); opacity: 0.5; border: none; padding: 0; }
 .sheet__head { display: flex; flex-direction: column; gap: 6px; padding-top: 4px; flex-shrink: 0; }
 .sheet__sub { color: var(--ink-secondary); }
 .sheet__body { overflow-y: auto; min-height: 0; display: flex; flex-direction: column; gap: var(--space-4); }
@@ -608,3 +608,4 @@
 .found-row { display: flex; align-items: center; gap: 14px; min-height: 88px; padding: 10px 16px 10px 10px; width: 100%; border: none; text-align: left; cursor: pointer; border-radius: var(--radius-tile); background: var(--bg-elevated); box-shadow: var(--shadow-card); }
 .found-row[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--accent); }
 .found-row__art { width: 68px; height: 68px; flex-shrink: 0; border-radius: 18px; background: var(--item-mat); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.sheet__grab::after { content: ""; position: absolute; left: -32px; right: -32px; top: -20px; bottom: -20px; }

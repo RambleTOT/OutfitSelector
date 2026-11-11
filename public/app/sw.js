@@ -1,6 +1,6 @@
 /* Service worker Atelier: приложение открывается без сети (оболочка и фото вещей из кэша), страницы сначала из сети.
    Версию CACHE меняем при каждом релизе, чтобы старый кэш очищался */
-const CACHE = 'atelier-v2'
+const CACHE = 'atelier-v3'
 const SHELL = ['/app/', '/app/offline.html', '/icons/icon-192.png', '/icons/icon-512.png', '/favicon.svg']
 
 self.addEventListener('install', (e) => {
