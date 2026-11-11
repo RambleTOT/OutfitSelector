@@ -35,7 +35,11 @@ export function WeatherSheet({ open, onClose }: { open: boolean; onClose: () => 
         {found.map((c) => (
           <Chip
             key={c.name} label={c.name} selected={place?.source === 'city' && place.name === c.name}
-            onClick={async () => { await pickCity(c); onClose() }}
+            onClick={async () => {
+              setMsg('')
+              if (await pickCity(c)) onClose()
+              else setMsg(`Город ${c.name} выбран, но погоду загрузить не получилось. Проверь интернет и нажми на город ещё раз`)
+            }}
           />
         ))}
       </div>

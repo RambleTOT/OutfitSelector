@@ -36,6 +36,15 @@ def dominant_color(rgb: np.ndarray, mask: np.ndarray) -> tuple[str, str, float]:
     # блики и тени дают крайние по светлоте кластеры: берём самый большой
     main = int(counts.argmax())
     c = centers[main]
+    # нейтральные цвета (белый, серый, чёрный): тень на складках делает белую вещь «серой», поэтому смотрим на светлую часть вещи, а не на среднюю
+    chroma = float(np.hypot(c[1] - 128, c[2] - 128))
+    if chroma < 8:
+        L = lab[:, 0] * (100.0 / 255.0)
+        top, mid = float(np.percentile(L, 85)), float(np.median(L))
+        # чёрная кожа и ткань блестят: по светлой части она «серая», поэтому для тёмных смотрим и на середину
+        name = "Белый" if top >= 84 else "Светло-серый" if top >= 70 else "Чёрный" if (top < 38 or mid < 30) else "Серый"
+        hexv = next(h for n, h in PALETTE if n == name)
+        return name, hexv, float(counts[main] / counts.sum())
     d = np.linalg.norm(_PAL_LAB - c, axis=1)
     i = int(d.argmin())
     return PALETTE[i][0], PALETTE[i][1], float(counts[main] / counts.sum())

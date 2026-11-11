@@ -24,6 +24,8 @@ html, body, #root { height: 100%; }
 .screen--push { animation: at-push var(--dur-spring) var(--ease-out); }
 .screen--fade { animation: at-fade 180ms var(--ease-out); }
 .screen--flow { padding-bottom: 128px; }
+/* низ экрана: место под плавающие кнопки и таббар считает AppShell (--bottom-clear), перекрывает отступы, заданные на экранах */
+.app .screen, .app .flow { padding-bottom: var(--bottom-clear, 160px) !important; }
 
 /* Панель демо: только десктоп */
 .demo { width: 300px; flex-shrink: 0; display: flex; flex-direction: column; gap: var(--space-4); align-self: center; max-height: 100%; overflow-y: auto; scrollbar-width: none; }

@@ -6,7 +6,7 @@ interface Def { title: string; text: string; placement: 'above' | 'below'; radiu
 
 const DEFS: Record<string, Def> = {
   outfit: { title: 'Здесь собираются образы', text: 'Выбери повод и нажми Собрать образ. Погоду подставлю сам', placement: 'above', radius: 999 },
-  wardrobe: { title: 'Добавляй вещи здесь', text: 'Сфоткай вещь, фон уберу сам. Или выбери шаблон, это без лимита', placement: 'above', radius: 999 },
+  wardrobe: { title: 'Добавляй вещи здесь', text: 'Сфоткай вещь, фон уберу сам. Или найди готовое фото в каталоге, это без лимита', placement: 'above', radius: 999 },
   favorites: { title: 'Твой первый образ здесь', text: 'Нажми, чтобы открыть, переименовать или доработать в конструкторе', placement: 'below', radius: 24 },
   profile: { title: 'Здесь видно, сколько осталось', text: 'Образы обновляются в понедельник. Ниже настроишь утреннее напоминание', placement: 'below', radius: 32 },
 }

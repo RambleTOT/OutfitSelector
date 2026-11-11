@@ -17,7 +17,9 @@ async def lifespan(_: FastAPI):
         try:
             if models.available("segformer.onnx"):
                 models.segment(dummy)
-            if models.available("silueta.onnx"):
+            if config.FLAT_MATTING == "isnet" and models.available("isnet-general-use.onnx"):
+                models.salient_isnet(dummy)
+            elif models.available("silueta.onnx"):
                 models.salient_small(dummy)
             if models.available("siglip_vision.onnx"):
                 models.embed(dummy)

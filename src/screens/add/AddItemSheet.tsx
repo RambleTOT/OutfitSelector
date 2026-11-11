@@ -5,7 +5,7 @@ import { useLimits } from '../../store/app'
 import { useUi } from '../../store/ui'
 import { PaywallSheet } from '../paywall/PaywallSheet'
 
-/** ADD-01 AddItemSheet: сфоткать или выбрать из шаблона. Монтируется один раз в AppShell, открывается из любого экрана.
+/** ADD-01 AddItemSheet: сфоткать или найти в каталоге. Монтируется один раз в AppShell, открывается из любого экрана.
  *  Когда фото закончились (Состояния#st5), «Сфоткать» недоступно, а ниже предложение подписки (PAY-01) */
 export function AddItemSheet() {
   const navigate = useNavigate()
@@ -31,7 +31,7 @@ export function AddItemSheet() {
       <BottomSheet open={open} onClose={close} title="Как добавим вещь" subtitle={noPhotos ? undefined : 'Вещь появится в гардеробе через пару секунд'}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <AnswerCard title="Сфоткать" subtitle={photoSub} icon="camera" disabled={noPhotos} onClick={() => go('/add/photo')} />
-          <AnswerCard title="Выбрать из шаблона" subtitle="Категория, тип и цвет · без лимита" icon="shapes" onClick={() => go('/add/template')} />
+          <AnswerCard title="Найти в каталоге" subtitle="Красивые готовые фото: черная футболка, белые кеды · без лимита" icon="magnifying-glass" onClick={() => go('/add/catalog')} />
         </div>
         {noPhotos && (
           <>
@@ -45,7 +45,7 @@ export function AddItemSheet() {
       </BottomSheet>
       <PaywallSheet
         open={pay} onClose={() => setPay(false)}
-        title="Фото закончились" subtitle="Шаблоном можно добавлять без лимита"
+        title="Фото закончились" subtitle="Из каталога можно добавлять без лимита"
       />
     </>
   )

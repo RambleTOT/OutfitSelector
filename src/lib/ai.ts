@@ -34,11 +34,13 @@ export interface AnalyzeResult { mode: 'worn' | 'flat'; notClothing: boolean; wa
  * Фото -> вещи с вырезанным фоном. Исходник ужимается до 1280 px и уходит на наш сервер, где не сохраняется.
  * null: сервис недоступен или занят, тогда приложение обрабатывает фото на телефоне упрощённо.
  */
-export async function analyzePhoto(blob: Blob): Promise<AnalyzeResult | 'limit' | null> {
+export async function analyzePhoto(blob: Blob, outer?: AbortSignal): Promise<AnalyzeResult | 'limit' | null> {
   if (!hasSession() || !getCaps().analyze) return null
   try {
     const ctrl = new AbortController()
-    const t = setTimeout(() => ctrl.abort(), 100_000)
+    // дольше 45 секунд ждать нет смысла: человек уже решит, что всё зависло, а запасной путь на телефоне быстрее
+    const t = setTimeout(() => ctrl.abort(), 45_000)
+    outer?.addEventListener('abort', () => ctrl.abort(), { once: true })
     const r = await fetch(API_URL + '/api/ai/analyze', { method: 'POST', signal: ctrl.signal, headers: { Authorization: `Bearer ${getToken()}`, 'Content-Type': blob.type || 'image/jpeg' }, body: blob })
     clearTimeout(t)
     if (r.status === 429) return 'limit'

@@ -83,12 +83,13 @@ function Idle() {
             ? <WeatherPill icon={WX_ICON[wx.kind]} temp={tempText(wx.temp)} city={placeName(place, quizCity)} offline={offline} onClick={() => setWxSheet(true)} />
             : wxStatus === 'loading'
               ? <WeatherPill loading temp="" city="" onClick={() => setWxSheet(true)} />
-              : <WeatherPill icon="map-pin" temp="—" city="Выбрать город" onClick={() => setWxSheet(true)} />}
+              : <WeatherPill icon="map-pin" temp="—" city={placeName(place, quizCity) || 'Выбрать город'} onClick={() => setWxSheet(true)} />}
           <IconButton icon="bell" label="Уведомления" variant="solid" onClick={() => toast('Новых уведомлений нет', 'neutral')} />
         </div>
         <div className="screen-title">
           <span className="t-callout muted">{offline && !wx ? 'Погода обновится, когда появится сеть'
             : wx ? `${todayLabel()} · ${[wx.label.toLowerCase(), wx.note].filter(Boolean).join(', ')}`
+            : wxStatus === 'error' && placeName(place, quizCity) ? `${todayLabel()} · погоду загрузить не получилось, нажми на город`
             : `${todayLabel()} · выбери город, чтобы учесть погоду`}</span>
           <h2 className="t-title1" style={{ fontSize: '2rem', lineHeight: '2.25rem' }}>Что наденем сегодня</h2>
         </div>

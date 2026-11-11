@@ -63,7 +63,7 @@ export function FirstItems() {
             </button>
           ))}
         </div>
-        {!onboarded && items.length === 0 && <span className="t-caption muted" style={{ textAlign: 'center' }}>Шаблоном можно добавлять без лимита</span>}
+        {!onboarded && items.length === 0 && <span className="t-caption muted" style={{ textAlign: 'center' }}>Из каталога можно добавлять без лимита</span>}
       </div>
       <CtaPlate>
         {ready

@@ -609,3 +609,22 @@
 .found-row[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--accent); }
 .found-row__art { width: 68px; height: 68px; flex-shrink: 0; border-radius: 18px; background: var(--item-mat); display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .sheet__grab::after { content: ""; position: absolute; left: -32px; right: -32px; top: -20px; bottom: -20px; }
+
+/* ---------- Ожидание распознавания фото ---------- */
+.scan { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 24px 28px calc(24px + var(--safe-bottom)); background: #111012; color: #F5F2EE; text-align: center; animation: at-fade 240ms var(--ease-out); }
+.scan__photo { position: relative; width: min(100%, 300px); aspect-ratio: 1 / 1; border-radius: var(--radius-card); overflow: hidden; background: #1B1A19; box-shadow: 0 0 0 1px rgba(245, 242, 238, 0.12), 0 24px 60px rgba(0, 0, 0, 0.5); }
+.scan__bg { position: absolute; inset: -20%; width: 140%; height: 140%; object-fit: cover; filter: blur(28px) saturate(1.2); opacity: 0.55; }
+.scan__img { position: relative; width: 100%; height: 100%; object-fit: contain; animation: scan-breathe 3.2s ease-in-out infinite; }
+.scan__beam { position: absolute; left: 0; right: 0; top: 0; height: 42%; background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.28) 70%, rgba(255, 190, 170, 0.55) 98%, transparent); mix-blend-mode: screen; animation: scan-sweep 2.4s ease-in-out infinite; }
+.scan__text { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; max-width: 300px; }
+.scan__phase { animation: at-fade 420ms var(--ease-out); min-height: 28px; }
+.scan__dots { display: flex; gap: 6px; }
+.scan__dots span { width: 6px; height: 6px; border-radius: 999px; background: rgba(245, 242, 238, 0.25); transition: background 300ms, transform 300ms; }
+.scan__dots span[data-on="true"] { background: var(--accent); transform: scale(1.25); }
+.scan__bar { width: 100%; height: 4px; border-radius: 999px; background: rgba(245, 242, 238, 0.14); overflow: hidden; }
+.scan__bar span { display: block; height: 100%; border-radius: 999px; background: var(--gradient-sunset-cta); transition: width 900ms var(--ease-out); }
+.scan__tip { color: #CFC9C2; min-height: 44px; animation: at-fade 500ms var(--ease-out); text-wrap: pretty; }
+@keyframes scan-sweep { 0% { transform: translateY(-100%); } 100% { transform: translateY(240%); } }
+@keyframes scan-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
+@media (prefers-reduced-motion: reduce) { .scan__beam, .scan__img { animation: none; } .scan__beam { opacity: 0.4; top: 30%; } }
+.geo__pin { width: 88px; height: 88px; border-radius: 28px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; }

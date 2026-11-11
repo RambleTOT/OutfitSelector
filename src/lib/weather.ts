@@ -37,7 +37,8 @@ interface WeatherState {
   dataKey: string
   status: 'idle' | 'loading' | 'ok' | 'error'
   refresh: (force?: boolean) => Promise<void>
-  pickCity: (c: City) => Promise<void>
+  /** true, если погода для города загрузилась */
+  pickCity: (c: City) => Promise<boolean>
   locate: () => Promise<GeoResult>
 }
 
@@ -80,6 +81,8 @@ export const useWeather = create<WeatherState>()(
         set({ place: { name: c.name, lat: c.lat, lon: c.lon, source: 'city' } })
         useApp.getState().setQuiz({ city: c.name })
         await get().refresh(true)
+        const { data, dataKey } = get()
+        return !!data && dataKey === keyOf(c)
       },
 
       locate: () => new Promise<GeoResult>((resolve) => {

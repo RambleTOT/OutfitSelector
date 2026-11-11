@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate, Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { OverlayContext, TabBar, ToastHost } from '../ui'
 import { useUi } from '../store/ui'
@@ -10,9 +10,11 @@ import { Splash } from '../screens/onboarding/Splash'
 import { Login } from '../screens/onboarding/Login'
 import { Code } from '../screens/onboarding/Code'
 import { Quiz } from '../screens/onboarding/Quiz'
+import { Geo } from '../screens/onboarding/Geo'
 import { FirstItems } from '../screens/onboarding/FirstItems'
 import { AddItemSheet } from '../screens/add/AddItemSheet'
 import { TemplatePicker } from '../screens/add/TemplatePicker'
+import { Catalog } from '../screens/add/Catalog'
 import { Camera } from '../screens/add/Camera'
 import { Processing } from '../screens/add/Processing'
 import { NotClothing } from '../screens/add/NotClothing'
@@ -67,14 +69,48 @@ function TabLayout() {
   )
 }
 
+/** Плавающие внизу элементы: плашка с кнопками, таббар, стопка кнопок на «Образе», круглая кнопка. Под них экран оставляет место, чтобы последний блок не прятался */
+const FLOATING = '.cta-plate, .tabbar, .bottom-actions, .fab'
+
+/**
+ * Считает, сколько снизу занято плавающими элементами (с учётом отступа от края и выреза iPhone), и кладёт в --bottom-clear.
+ * Экраны добавляют это к нижнему отступу плюс запас 32 px: так последний блок всегда можно докрутить до конца, на любом телефоне
+ */
+function useBottomClear() {
+  const [app, setApp] = useState<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (!app) return
+    let timer: ReturnType<typeof setTimeout> | undefined
+    const measure = () => {
+      let max = 0
+      app.querySelectorAll<HTMLElement>(FLOATING).forEach((el) => {
+        if (el.closest('.overlay-root') || !el.offsetHeight) return
+        const bottom = parseFloat(getComputedStyle(el).bottom) || 0
+        max = Math.max(max, el.offsetHeight + bottom)
+      })
+      app.style.setProperty('--bottom-clear', `${Math.round(max + 32)}px`)
+    }
+    const schedule = () => { clearTimeout(timer); timer = setTimeout(measure, 30) } // таймер, а не rAF: в фоновой вкладке rAF не срабатывает
+    const mo = new MutationObserver(schedule)
+    mo.observe(app, { childList: true, subtree: true })
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(schedule) : null
+    ro?.observe(app)
+    window.addEventListener('resize', schedule)
+    schedule()
+    return () => { mo.disconnect(); ro?.disconnect(); window.removeEventListener('resize', schedule); clearTimeout(timer) }
+  }, [app])
+  return setApp
+}
+
 /** Внутренность приложения: роуты, оверлеи и тосты живут внутри рамки (position: absolute) */
 export function AppShell() {
   const [overlay, setOverlay] = useState<HTMLElement | null>(null)
   const gateDone = useApp((s) => s.gateDone)
+  const appRef = useBottomClear()
   // экран установки: только в браузере телефона, пока иконку не поставили и не пропустили; в демо и на десктопе его нет
   if (!DEMO && !gateDone && isMobileDevice() && !isStandaloneMode()) return <div className="app"><InstallGate /></div>
   return (
-    <div className="app">
+    <div className="app" ref={appRef}>
       <OverlayContext.Provider value={overlay}>
         <Routes>
           <Route path="/" element={<Navigate to="/splash" replace />} />
@@ -82,8 +118,10 @@ export function AppShell() {
           <Route path="/login" element={<Login />} />
           <Route path="/code" element={<Code />} />
           <Route element={<RequireSignedIn />}>
+            <Route path="/onboarding/geo" element={<Geo />} />
             <Route path="/onboarding/quiz" element={<Quiz />} />
             <Route path="/onboarding/items" element={<FirstItems />} />
+            <Route path="/add/catalog" element={<Catalog />} />
             <Route path="/add/template" element={<TemplatePicker />} />
             <Route path="/add/photo" element={<Camera />} />
             <Route path="/add/processing" element={<Processing />} />

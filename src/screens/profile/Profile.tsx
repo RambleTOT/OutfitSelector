@@ -23,7 +23,7 @@ export function Profile() {
 
   const quotas: { icon: string; label: string; left: number | null; max: number | null; note: string }[] = [
     { icon: 'sparkle', label: 'AI-образы', left: lim.outfitsLeft, max: lim.outfitsLimit, note: lim.outfitsLimit === null ? 'Без лимита, до 300 в месяц' : 'Обновятся в понедельник' },
-    { icon: 'camera', label: 'Фото вещей', left: lim.photosLeft, max: lim.photosLimit, note: lim.photosPeriod === 'total' ? 'За всё время. Шаблоном без лимита' : lim.photosPeriod === 'month' ? 'В этом месяце. Шаблоном без лимита' : 'Без лимита' },
+    { icon: 'camera', label: 'Фото вещей', left: lim.photosLeft, max: lim.photosLimit, note: lim.photosPeriod === 'total' ? 'За всё время. Каталог без лимита' : lim.photosPeriod === 'month' ? 'В этом месяце. Каталог без лимита' : 'Без лимита' },
     { icon: 'heart', label: 'Избранное', left: lim.favLeft === null ? null : Math.max(0, lim.favLeft), max: lim.favLimit, note: lim.favLeft !== null && lim.favLeft <= 0 ? 'Места закончились' : lim.favLimit === null ? 'Без лимита' : 'Свободные места' },
   ]
 

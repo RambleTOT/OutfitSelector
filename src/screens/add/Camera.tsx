@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Icon } from '../../ui'
 import { CATEGORY_ICON } from '../../data/items'
 import { useApp, useLimits } from '../../store/app'
 import { toast } from '../../store/ui'
 import { intakePhoto } from '../../lib/intake'
+import { ScanOverlay } from './ScanOverlay'
 
 /** ADD-02 Camera: всегда тёмная. Камера и галерея открывают выбор фото с устройства */
 export function Camera() {
@@ -13,6 +14,10 @@ export function Camera() {
   const items = useApp((s) => s.items)
   const [flash, setFlash] = useState(false)
   const [busy, setBusy] = useState(false)
+  const [busyFile, setBusyFile] = useState<File | null>(null)
+  const abortRef = useRef<AbortController | null>(null)
+  // ушли с экрана (свайп назад на iPhone): обработка отменяется и не переключит экран позже
+  useEffect(() => () => abortRef.current?.abort(), [])
   const camRef = useRef<HTMLInputElement>(null)
   const galRef = useRef<HTMLInputElement>(null)
 
@@ -22,18 +27,22 @@ export function Camera() {
   const onFile = async (f?: File) => {
     if (!f || busy) return
     setBusy(true)
+    setBusyFile(f)
+    const ctrl = new AbortController()
+    abortRef.current = ctrl
     try {
-      await intakePhoto(f, navigate)
+      await intakePhoto(f, navigate, undefined, ctrl.signal)
     } catch {
       toast('Не получилось открыть фото', 'error')
     } finally {
       setBusy(false)
+      setBusyFile(null)
     }
   }
 
   return (
     <div className="cam">
-      {busy && <div className="cam__busy" role="status" aria-live="polite"><Icon name="circle-notch" size={32} style={{ animation: 'at-spin 0.9s linear infinite' }} /><span className="t-headline">Ищу вещи на фото</span><span className="t-caption sub">Убираю фон, это пара секунд</span></div>}
+      {busy && <ScanOverlay file={busyFile} onCancel={() => abortRef.current?.abort()} />}
       <input ref={camRef} type="file" accept="image/*" capture="environment" hidden onChange={(e) => { onFile(e.target.files?.[0]); e.target.value = '' }} />
       <input ref={galRef} type="file" accept="image/*" hidden onChange={(e) => { onFile(e.target.files?.[0]); e.target.value = '' }} />
       <div className="cam__top">

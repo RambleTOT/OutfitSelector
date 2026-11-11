@@ -12,7 +12,7 @@ import { refreshMe } from './sync'
  * Без него (демо или сервис недоступен): упрощённая обработка на телефоне и догадка по названию файла.
  * Возвращает false, если человек остаётся на месте (ошибка), true, если ушли на другой экран.
  */
-export async function intakePhoto(file: File, navigate: NavigateFunction, onLimit?: () => void): Promise<boolean> {
+export async function intakePhoto(file: File, navigate: NavigateFunction, onLimit?: () => void, signal?: AbortSignal): Promise<boolean> {
   if (looksLikeNotClothing(file)) {
     usePhotoFlow.getState().fail()
     navigate('/add/notclothing', { replace: true })
@@ -20,7 +20,8 @@ export async function intakePhoto(file: File, navigate: NavigateFunction, onLimi
   }
   if (hasSession() && getCaps().analyze) {
     let res
-    try { res = await analyzePhoto(await prepareUpload(file)) } catch { res = null }
+    try { res = await analyzePhoto(await prepareUpload(file), signal) } catch { res = null }
+    if (signal?.aborted) return false // человек нажал «Отмена»
     if (res === 'limit') { onLimit?.(); toast('Лимит фото на тарифе закончился', 'error'); return false }
     if (res) {
       if (res.notClothing || !res.items.length) {

@@ -32,7 +32,7 @@ export function Code() {
         if (r.state) applyServerState(r.state, r.stateAt)
         const res = signIn(email, 'email')
         void startSync()
-        navigate(next ?? (r.state || res === 'returning' ? '/outfit' : '/onboarding/quiz'), { replace: true })
+        navigate(next ?? (r.state || res === 'returning' ? '/outfit' : firstStep()), { replace: true })
       } catch (e) {
         if (e instanceof ApiError && e.code === 'code_wrong') setError(true)
         else toast(authErrorText(e), 'error')
@@ -41,8 +41,10 @@ export function Code() {
     }
     if (value !== DEMO_CODE) { setError(true); return }
     const r = signIn(email, 'email')
-    navigate(next ?? (r === 'returning' ? '/outfit' : '/onboarding/quiz'), { replace: true })
+    navigate(next ?? (r === 'returning' ? '/outfit' : firstStep()), { replace: true })
   }
+  // новому человеку сначала предлагаем определить место (погода), потом анкета
+  const firstStep = () => (useApp.getState().geoAsked ? '/onboarding/quiz' : '/onboarding/geo')
   const change = (v: string) => {
     setError(false)
     setCode(v)

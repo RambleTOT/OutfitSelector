@@ -16,7 +16,7 @@ import cv2
 import numpy as np
 from PIL import Image, ImageOps
 
-from . import config, labels as lb, models
+from . import config, labels as lb, matting, models
 from .colors import dominant_color
 
 _LAB = None
@@ -189,6 +189,10 @@ def flat_alpha(rgb: np.ndarray) -> np.ndarray:
     h, w = rgb.shape[:2]
     mode = config.FLAT_MATTING
     p = None
+    if mode == "isnet" and models.available("isnet-general-use.onnx"):
+        p = models.salient_isnet(rgb)
+        if (p > 0.5).sum() > 0.01 * h * w:
+            return matting.alpha_from_prob(rgb, p)
     if mode == "birefnet" and models.available("birefnet.onnx"):
         p = models.salient_alpha(rgb)
         mask = _components(p > 0.5, 0.01 * h * w)
@@ -334,6 +338,8 @@ def analyze(data: bytes) -> Result:
         if mask.sum() < 0.0015 * H * W:
             continue
         img, a2 = (pack_pair(rgb, alpha) if family == "shoes" else (rgb, alpha))
+        if config.POLISH:  # чистый край без каймы старого фона и аккуратный свет, как на студийном фото
+            img = matting.studio_light(matting.decontaminate(img, a2), a2)
         canvas, studio, _ = compose(img, a2)
         cat, typ, conf, pat, ok = classify(canvas, family)
         if not ok:

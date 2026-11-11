@@ -32,7 +32,7 @@ export function Subscription() {
 
   const notes = [
     { icon: 'check', color: 'var(--success)', text: 'Все вещи и образы останутся' },
-    { icon: 'check', color: 'var(--success)', text: 'Конструктор и шаблоны без лимита' },
+    { icon: 'check', color: 'var(--success)', text: 'Конструктор и каталог без лимита' },
     { icon: 'minus', color: 'var(--ink-tertiary)', text: 'Потом 5 образов в неделю и 3 места в избранном' },
   ]
   const d = new Date(until)

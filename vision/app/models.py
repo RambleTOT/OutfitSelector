@@ -10,6 +10,7 @@ from . import config
 
 _lock = threading.Lock()
 _cache: dict[str, ort.InferenceSession] = {}
+_LEAN = {"isnet-general-use.onnx", "birefnet.onnx"}
 
 IMAGENET_MEAN = np.array([0.485, 0.456, 0.406], np.float32)
 IMAGENET_STD = np.array([0.229, 0.224, 0.225], np.float32)
@@ -21,6 +22,9 @@ def session(name: str) -> ort.InferenceSession:
             opts = ort.SessionOptions()
             opts.intra_op_num_threads = config.THREADS
             opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+            if name in _LEAN:  # крупная модель на 1024 px: без пула памяти пик ниже в 2 раза, а сервер небольшой
+                opts.enable_cpu_mem_arena = False
+                opts.enable_mem_pattern = False
             path = config.MODELS / name
             if not path.exists():
                 raise FileNotFoundError(f"Нет модели {path}. Запусти scripts/download_models.sh")
@@ -71,6 +75,18 @@ def salient_alpha(rgb: np.ndarray) -> np.ndarray:
     out = s.run(None, {s.get_inputs()[0].name: x})[0]
     p = 1.0 / (1.0 + np.exp(-out.reshape(out.shape[-2], out.shape[-1])))
     return cv2.resize(p, (w, h), interpolation=cv2.INTER_LINEAR)
+
+
+def salient_isnet(rgb: np.ndarray) -> np.ndarray:
+    """isnet-general-use (rembg, Apache-2.0), 1024 px: вероятность «вещь» 0..1 в размере входного фото. Резче silueta, на CPU около секунды."""
+    h, w = rgb.shape[:2]
+    s = session("isnet-general-use.onnx")
+    x = cv2.resize(rgb, (1024, 1024), interpolation=cv2.INTER_AREA).astype(np.float32)
+    x = x / max(float(x.max()), 1e-6)
+    x = (x - IMAGENET_MEAN).transpose(2, 0, 1)[None]  # у isnet std = 1
+    out = s.run(None, {s.get_inputs()[0].name: x})[0].reshape(1024, 1024)
+    out = (out - out.min()) / max(float(out.max() - out.min()), 1e-6)
+    return cv2.resize(out, (w, h), interpolation=cv2.INTER_LINEAR)
 
 
 # ---------- что за вещь (FashionSigLIP, Apache-2.0): картинка -> вектор

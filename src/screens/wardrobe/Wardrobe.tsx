@@ -122,7 +122,7 @@ export function Wardrobe() {
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <EmptyState icon="coat-hanger" title="Здесь пока пусто" text="Добавь пару вещей, и я начну собирать из них образы" actionLabel="Добавить вещь" onAction={() => openAddSheet('/wardrobe')} />
           </div>
-          <span className="t-caption muted" style={{ textAlign: 'center', textWrap: 'pretty' }}>Шаблоном можно добавлять без лимита</span>
+          <span className="t-caption muted" style={{ textAlign: 'center', textWrap: 'pretty' }}>Из каталога можно добавлять без лимита</span>
         </div>
       </>
     )

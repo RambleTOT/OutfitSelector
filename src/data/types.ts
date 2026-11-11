@@ -30,7 +30,7 @@ export interface Item {
   formality: Formality
   description: string
   available: boolean // false = «Недоступна сейчас» (в стирке)
-  source: 'template' | 'photo'
+  source: 'template' | 'photo' | 'catalog'
   photo?: string // dataURL вырезанной вещи (после «обработки»)
   queued?: boolean // ждёт сеть
   processing?: boolean // фото доделывается в фоне

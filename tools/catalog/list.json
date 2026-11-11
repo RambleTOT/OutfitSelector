@@ -1,0 +1,4002 @@
+[
+ {
+  "id": "top-t-shirt-white-reg-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Белая футболка",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "white t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-white-over-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Белая футболка оверсайз",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "white oversized t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white oversized t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-white-slim-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Белая футболка",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "white slim fit t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white slim fit t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-black-reg-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Чёрная футболка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "black t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-black-over-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Чёрная футболка оверсайз",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "black oversized t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black oversized t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-black-slim-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Чёрная футболка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "black slim fit t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-gray-reg-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Серая футболка",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "gray t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-gray-over-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Серая футболка оверсайз",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "gray oversized t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray oversized t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-gray-slim-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Серая футболка",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "gray slim fit t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray slim fit t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-navy-reg-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Тёмно-синяя футболка",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "navy blue t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-navy-over-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Тёмно-синяя футболка оверсайз",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "navy blue oversized t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue oversized t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-navy-slim-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Тёмно-синяя футболка",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "navy blue slim fit t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue slim fit t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-beige-reg-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Бежевая футболка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "beige t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single beige t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-green-reg-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Зелёная футболка",
+  "colorName": "Зелёный",
+  "color": "#5E8C61",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "olive green t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single olive green t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-red-reg-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Красная футболка",
+  "colorName": "Красный",
+  "color": "#C4453F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "red t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single red t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-t-shirt-pink-reg-u",
+  "category": "top",
+  "type": "футболка",
+  "title": "Розовая футболка",
+  "colorName": "Розовый",
+  "color": "#E8A5B3",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "pink t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single pink t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-white-reg-m",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Белая рубашка",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "white men's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white men's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-white-reg-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Белая рубашка",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "white women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-white-slim-m",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Белая рубашка",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "white slim fit men's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white slim fit men's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-white-slim-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Белая рубашка",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "white slim fit women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white slim fit women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-blue-reg-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Синяя рубашка",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "blue women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single blue women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-blue-slim-m",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Синяя рубашка",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "blue slim fit men's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single blue slim fit men's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-blue-slim-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Синяя рубашка",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "blue slim fit women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single blue slim fit women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-black-reg-m",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Чёрная рубашка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "black men's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black men's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-black-reg-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Чёрная рубашка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "black women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-black-slim-m",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Чёрная рубашка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "black slim fit men's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit men's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-black-slim-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Чёрная рубашка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "black slim fit women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-beige-reg-m",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Бежевая рубашка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "beige men's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single beige men's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-beige-reg-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Бежевая рубашка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "beige women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single beige women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-beige-slim-m",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Бежевая рубашка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "beige slim fit men's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single beige slim fit men's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-beige-slim-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Бежевая рубашка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "beige slim fit women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single beige slim fit women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-pink-reg-m",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Розовая рубашка",
+  "colorName": "Розовый",
+  "color": "#E8A5B3",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "pink men's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single pink men's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-button-up-shirt-pink-reg-f",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Розовая рубашка",
+  "colorName": "Розовый",
+  "color": "#E8A5B3",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "query": "pink women's button-up shirt flat lay plain background",
+  "prompt": "Studio product photo of a single pink women's button-up shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-gray-reg-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Серый свитер",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "gray knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single gray knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-gray-over-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Серый свитер оверсайз",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "gray oversized knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single gray oversized knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-black-reg-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Чёрный свитер",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "black knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single black knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-black-over-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Чёрный свитер оверсайз",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "black oversized knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single black oversized knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-beige-reg-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Бежевый свитер",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "beige knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single beige knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-beige-over-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Бежевый свитер оверсайз",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "beige oversized knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single beige oversized knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-navy-reg-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Тёмно-синяяый свитер",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "navy blue knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-navy-over-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Тёмно-синяяый свитер оверсайз",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "navy blue oversized knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue oversized knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-green-reg-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Зелёный свитер",
+  "colorName": "Зелёный",
+  "color": "#5E8C61",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "olive green knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single olive green knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-knit-sweater-white-reg-u",
+  "category": "top",
+  "type": "свитер",
+  "title": "Белый свитер",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "white knit sweater flat lay plain background",
+  "prompt": "Studio product photo of a single white knit sweater, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-gray-over-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Серое худи оверсайз",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "gray oversized hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single gray oversized hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-gray-reg-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Серое худи",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "gray hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single gray hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-black-over-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Чёрное худи оверсайз",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "black oversized hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single black oversized hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-black-reg-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Чёрное худи",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "black hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single black hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-white-over-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Белое худи оверсайз",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "white oversized hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single white oversized hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-white-reg-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Белое худи",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "white hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single white hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-navy-over-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Тёмно-синяяое худи оверсайз",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "navy blue oversized hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue oversized hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-navy-reg-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Тёмно-синяяое худи",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "navy blue hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-beige-over-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Бежевое худи оверсайз",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "beige oversized hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single beige oversized hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-hoodie-green-over-u",
+  "category": "top",
+  "type": "худи",
+  "title": "Зелёное худи оверсайз",
+  "colorName": "Зелёный",
+  "color": "#5E8C61",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "olive green oversized hoodie flat lay plain background",
+  "prompt": "Studio product photo of a single olive green oversized hoodie, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-crewneck-sweatshirt-gray-reg-u",
+  "category": "top",
+  "type": "свитшот",
+  "title": "Серый свитшот",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "gray crewneck sweatshirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray crewneck sweatshirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-crewneck-sweatshirt-gray-over-u",
+  "category": "top",
+  "type": "свитшот",
+  "title": "Серый свитшот оверсайз",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "gray oversized crewneck sweatshirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray oversized crewneck sweatshirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-crewneck-sweatshirt-black-reg-u",
+  "category": "top",
+  "type": "свитшот",
+  "title": "Чёрный свитшот",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black crewneck sweatshirt flat lay plain background",
+  "prompt": "Studio product photo of a single black crewneck sweatshirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-crewneck-sweatshirt-black-over-u",
+  "category": "top",
+  "type": "свитшот",
+  "title": "Чёрный свитшот оверсайз",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black oversized crewneck sweatshirt flat lay plain background",
+  "prompt": "Studio product photo of a single black oversized crewneck sweatshirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-crewneck-sweatshirt-white-reg-u",
+  "category": "top",
+  "type": "свитшот",
+  "title": "Белый свитшот",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "white crewneck sweatshirt flat lay plain background",
+  "prompt": "Studio product photo of a single white crewneck sweatshirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-crewneck-sweatshirt-white-over-u",
+  "category": "top",
+  "type": "свитшот",
+  "title": "Белый свитшот оверсайз",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "white oversized crewneck sweatshirt flat lay plain background",
+  "prompt": "Studio product photo of a single white oversized crewneck sweatshirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-crewneck-sweatshirt-navy-reg-u",
+  "category": "top",
+  "type": "свитшот",
+  "title": "Тёмно-синяяый свитшот",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "navy blue crewneck sweatshirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue crewneck sweatshirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-crewneck-sweatshirt-navy-over-u",
+  "category": "top",
+  "type": "свитшот",
+  "title": "Тёмно-синяяый свитшот оверсайз",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "navy blue oversized crewneck sweatshirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue oversized crewneck sweatshirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-long-sleeve-t-shirt-white-reg-u",
+  "category": "top",
+  "type": "лонгслив",
+  "title": "Белый лонгслив",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "white long sleeve t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white long sleeve t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-long-sleeve-t-shirt-white-slim-u",
+  "category": "top",
+  "type": "лонгслив",
+  "title": "Белый лонгслив",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "white slim fit long sleeve t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single white slim fit long sleeve t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-long-sleeve-t-shirt-black-reg-u",
+  "category": "top",
+  "type": "лонгслив",
+  "title": "Чёрный лонгслив",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black long sleeve t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black long sleeve t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-long-sleeve-t-shirt-black-slim-u",
+  "category": "top",
+  "type": "лонгслив",
+  "title": "Чёрный лонгслив",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black slim fit long sleeve t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit long sleeve t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-long-sleeve-t-shirt-gray-reg-u",
+  "category": "top",
+  "type": "лонгслив",
+  "title": "Серый лонгслив",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "gray long sleeve t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray long sleeve t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-long-sleeve-t-shirt-gray-slim-u",
+  "category": "top",
+  "type": "лонгслив",
+  "title": "Серый лонгслив",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "gray slim fit long sleeve t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray slim fit long sleeve t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-long-sleeve-t-shirt-navy-reg-u",
+  "category": "top",
+  "type": "лонгслив",
+  "title": "Тёмно-синяяый лонгслив",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "navy blue long sleeve t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue long sleeve t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "top-long-sleeve-t-shirt-navy-slim-u",
+  "category": "top",
+  "type": "лонгслив",
+  "title": "Тёмно-синяяый лонгслив",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "navy blue slim fit long sleeve t-shirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue slim fit long sleeve t-shirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-blue-reg-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Синяяые джинсы",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "blue jeans flat lay plain background",
+  "prompt": "Studio product photo of a single blue jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-blue-slim-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Синяяые джинсы",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "blue slim fit jeans flat lay plain background",
+  "prompt": "Studio product photo of a single blue slim fit jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-blue-over-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Синяяые джинсы оверсайз",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "blue oversized jeans flat lay plain background",
+  "prompt": "Studio product photo of a single blue oversized jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-black-reg-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Чёрные джинсы",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black jeans flat lay plain background",
+  "prompt": "Studio product photo of a single black jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-black-slim-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Чёрные джинсы",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black slim fit jeans flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-black-over-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Чёрные джинсы оверсайз",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black oversized jeans flat lay plain background",
+  "prompt": "Studio product photo of a single black oversized jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-gray-reg-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Серые джинсы",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "gray jeans flat lay plain background",
+  "prompt": "Studio product photo of a single gray jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-gray-slim-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Серые джинсы",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "gray slim fit jeans flat lay plain background",
+  "prompt": "Studio product photo of a single gray slim fit jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-gray-over-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Серые джинсы оверсайз",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "gray oversized jeans flat lay plain background",
+  "prompt": "Studio product photo of a single gray oversized jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-white-reg-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Белые джинсы",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "white jeans flat lay plain background",
+  "prompt": "Studio product photo of a single white jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-white-slim-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Белые джинсы",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "приталенный",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "white slim fit jeans flat lay plain background",
+  "prompt": "Studio product photo of a single white slim fit jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-jeans-white-over-u",
+  "category": "bottom",
+  "type": "джинсы",
+  "title": "Белые джинсы оверсайз",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "white oversized jeans flat lay plain background",
+  "prompt": "Studio product photo of a single white oversized jeans, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-black-reg-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Чёрные брюки",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "black women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single black women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-black-slim-m",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Чёрные брюки",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "black slim fit men's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit men's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-black-slim-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Чёрные брюки",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "black slim fit women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-gray-reg-m",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Серые брюки",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "gray men's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single gray men's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-gray-reg-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Серые брюки",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "gray women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single gray women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-gray-slim-m",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Серые брюки",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "gray slim fit men's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single gray slim fit men's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-gray-slim-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Серые брюки",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "gray slim fit women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single gray slim fit women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-navy-reg-m",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Тёмно-синяяые брюки",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "navy blue men's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue men's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-navy-reg-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Тёмно-синяяые брюки",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "navy blue women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-navy-slim-m",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Тёмно-синяяые брюки",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "navy blue slim fit men's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue slim fit men's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-navy-slim-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Тёмно-синяяые брюки",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "navy blue slim fit women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue slim fit women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-beige-reg-m",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Бежевые брюки",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "beige men's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single beige men's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-beige-reg-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Бежевые брюки",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "beige women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single beige women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-beige-slim-m",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Бежевые брюки",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "beige slim fit men's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single beige slim fit men's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-beige-slim-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Бежевые брюки",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "beige slim fit women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single beige slim fit women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-brown-reg-m",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Коричневые брюки",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "brown men's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single brown men's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-trousers-brown-reg-f",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Коричневые брюки",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "brown women's trousers flat lay plain background",
+  "prompt": "Studio product photo of a single brown women's trousers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-shorts-blue-reg-u",
+  "category": "bottom",
+  "type": "шорты",
+  "title": "Синяяые шорты",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "blue shorts flat lay plain background",
+  "prompt": "Studio product photo of a single blue shorts, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-shorts-black-reg-u",
+  "category": "bottom",
+  "type": "шорты",
+  "title": "Чёрные шорты",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "black shorts flat lay plain background",
+  "prompt": "Studio product photo of a single black shorts, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-shorts-beige-reg-u",
+  "category": "bottom",
+  "type": "шорты",
+  "title": "Бежевые шорты",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "query": "beige shorts flat lay plain background",
+  "prompt": "Studio product photo of a single beige shorts, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-black-slim-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Чёрная юбка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "black slim fit women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-black-reg-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Чёрная юбка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "black women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single black women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-beige-slim-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Бежевая юбка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "beige slim fit women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single beige slim fit women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-beige-reg-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Бежевая юбка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "beige women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single beige women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-gray-slim-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Серая юбка",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "gray slim fit women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray slim fit women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-gray-reg-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Серая юбка",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "gray women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single gray women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-navy-slim-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Тёмно-синяя юбка",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "navy blue slim fit women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue slim fit women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-navy-reg-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Тёмно-синяя юбка",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "navy blue women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-pink-slim-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Розовая юбка",
+  "colorName": "Розовый",
+  "color": "#E8A5B3",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "pink slim fit women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single pink slim fit women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bottom-skirt-brown-slim-f",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Коричневая юбка",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "смарт-кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "brown slim fit women's skirt flat lay plain background",
+  "prompt": "Studio product photo of a single brown slim fit women's skirt, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-black-slim-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Чёрное платье",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "black slim fit women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-black-reg-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Чёрное платье",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "black women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single black women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-white-slim-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Белое платье",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "white slim fit women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single white slim fit women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-white-reg-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Белое платье",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "white women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single white women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-navy-slim-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Тёмно-синяяое платье",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "navy blue slim fit women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue slim fit women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-navy-reg-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Тёмно-синяяое платье",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "navy blue women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-red-slim-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Красное платье",
+  "colorName": "Красный",
+  "color": "#C4453F",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "red slim fit women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single red slim fit women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-red-reg-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Красное платье",
+  "colorName": "Красный",
+  "color": "#C4453F",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "red women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single red women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-green-slim-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Зелёное платье",
+  "colorName": "Зелёный",
+  "color": "#5E8C61",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "olive green slim fit women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single olive green slim fit women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "dress-dress-beige-slim-f",
+  "category": "dress",
+  "type": "платье",
+  "title": "Бежевое платье",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "query": "beige slim fit women's dress flat lay plain background",
+  "prompt": "Studio product photo of a single beige slim fit women's dress, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-black-reg-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Чёрная куртка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black jacket flat lay plain background",
+  "prompt": "Studio product photo of a single black jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-black-over-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Чёрная куртка оверсайз",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black oversized jacket flat lay plain background",
+  "prompt": "Studio product photo of a single black oversized jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-navy-reg-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Тёмно-синяя куртка",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "navy blue jacket flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-navy-over-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Тёмно-синяя куртка оверсайз",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "navy blue oversized jacket flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue oversized jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-green-reg-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Зелёная куртка",
+  "colorName": "Зелёный",
+  "color": "#5E8C61",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "olive green jacket flat lay plain background",
+  "prompt": "Studio product photo of a single olive green jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-green-over-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Зелёная куртка оверсайз",
+  "colorName": "Зелёный",
+  "color": "#5E8C61",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "olive green oversized jacket flat lay plain background",
+  "prompt": "Studio product photo of a single olive green oversized jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-beige-reg-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Бежевая куртка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "beige jacket flat lay plain background",
+  "prompt": "Studio product photo of a single beige jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-beige-over-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Бежевая куртка оверсайз",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "оверсайз",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "beige oversized jacket flat lay plain background",
+  "prompt": "Studio product photo of a single beige oversized jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-jacket-brown-reg-u",
+  "category": "outer",
+  "type": "куртка",
+  "title": "Коричневая куртка",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "brown jacket flat lay plain background",
+  "prompt": "Studio product photo of a single brown jacket, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-black-reg-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Чёрное пальто",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "black men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single black men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-black-reg-f",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Чёрное пальто",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "black women's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single black women's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-black-over-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Чёрное пальто оверсайз",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "black oversized men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single black oversized men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-black-over-f",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Чёрное пальто оверсайз",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "black oversized women's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single black oversized women's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-gray-reg-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Серое пальто",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "gray men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single gray men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-gray-reg-f",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Серое пальто",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "gray women's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single gray women's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-gray-over-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Серое пальто оверсайз",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "m",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "gray oversized men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single gray oversized men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-gray-over-f",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Серое пальто оверсайз",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "gray oversized women's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single gray oversized women's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-beige-reg-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Бежевое пальто",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "beige men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single beige men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-beige-reg-f",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Бежевое пальто",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "beige women's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single beige women's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-beige-over-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Бежевое пальто оверсайз",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "beige oversized men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single beige oversized men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-brown-reg-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Коричневое пальто",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "brown men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single brown men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-brown-reg-f",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Коричневое пальто",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "brown women's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single brown women's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-brown-over-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Коричневое пальто оверсайз",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "m",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "brown oversized men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single brown oversized men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-brown-over-f",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Коричневое пальто оверсайз",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "brown oversized women's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single brown oversized women's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-navy-reg-m",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Тёмно-синяяое пальто",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "navy blue men's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue men's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-wool-coat-navy-reg-f",
+  "category": "outer",
+  "type": "пальто",
+  "title": "Тёмно-синяяое пальто",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "смарт-кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "navy blue women's wool coat flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue women's wool coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-black-slim-m",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Чёрный пиджак",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "black slim fit men's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit men's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-black-slim-f",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Чёрный пиджак",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "black slim fit women's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single black slim fit women's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-black-reg-m",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Чёрный пиджак",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "black men's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single black men's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-black-reg-f",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Чёрный пиджак",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "black women's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single black women's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-gray-slim-m",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Серый пиджак",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "gray slim fit men's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single gray slim fit men's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-gray-slim-f",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Серый пиджак",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "gray slim fit women's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single gray slim fit women's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-gray-reg-m",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Серый пиджак",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "gray men's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single gray men's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-gray-reg-f",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Серый пиджак",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "gray women's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single gray women's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-navy-slim-m",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Тёмно-синяяый пиджак",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "navy blue slim fit men's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue slim fit men's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-navy-slim-f",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Тёмно-синяяый пиджак",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "navy blue slim fit women's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue slim fit women's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-navy-reg-m",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Тёмно-синяяый пиджак",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "navy blue men's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue men's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-navy-reg-f",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Тёмно-синяяый пиджак",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "navy blue women's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue women's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-beige-slim-m",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Бежевый пиджак",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "приталенный",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "beige slim fit men's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single beige slim fit men's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-beige-reg-m",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Бежевый пиджак",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "beige men's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single beige men's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-blazer-beige-reg-f",
+  "category": "outer",
+  "type": "пиджак",
+  "title": "Бежевый пиджак",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "деловой"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "beige women's blazer flat lay plain background",
+  "prompt": "Studio product photo of a single beige women's blazer, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-trench-coat-beige-reg-u",
+  "category": "outer",
+  "type": "тренч",
+  "title": "Бежевый тренч",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "beige trench coat flat lay plain background",
+  "prompt": "Studio product photo of a single beige trench coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "outer-trench-coat-black-reg-u",
+  "category": "outer",
+  "type": "тренч",
+  "title": "Чёрный тренч",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "query": "black trench coat flat lay plain background",
+  "prompt": "Studio product photo of a single black trench coat, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-sneakers-white-reg-u",
+  "category": "shoes",
+  "type": "кроссовки",
+  "title": "Белые кроссовки",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "спорт"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "white sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single white sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-sneakers-black-reg-u",
+  "category": "shoes",
+  "type": "кроссовки",
+  "title": "Чёрные кроссовки",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "спорт"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "black sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single black sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-sneakers-gray-reg-u",
+  "category": "shoes",
+  "type": "кроссовки",
+  "title": "Серые кроссовки",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "спорт"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "gray sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single gray sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-sneakers-beige-reg-u",
+  "category": "shoes",
+  "type": "кроссовки",
+  "title": "Бежевые кроссовки",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "спорт"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "beige sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single beige sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-sneakers-navy-reg-u",
+  "category": "shoes",
+  "type": "кроссовки",
+  "title": "Тёмно-синяяые кроссовки",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "спорт"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "query": "navy blue sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-canvas-low-top-sneakers-white-reg-u",
+  "category": "shoes",
+  "type": "кеды",
+  "title": "Белые кеды",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "white canvas low-top sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single white canvas low-top sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-canvas-low-top-sneakers-black-reg-u",
+  "category": "shoes",
+  "type": "кеды",
+  "title": "Чёрные кеды",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black canvas low-top sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single black canvas low-top sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-canvas-low-top-sneakers-navy-reg-u",
+  "category": "shoes",
+  "type": "кеды",
+  "title": "Тёмно-синяяые кеды",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "navy blue canvas low-top sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue canvas low-top sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-canvas-low-top-sneakers-red-reg-u",
+  "category": "shoes",
+  "type": "кеды",
+  "title": "Красные кеды",
+  "colorName": "Красный",
+  "color": "#C4453F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "red canvas low-top sneakers flat lay plain background",
+  "prompt": "Studio product photo of a single red canvas low-top sneakers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-loafers-black-reg-m",
+  "category": "shoes",
+  "type": "лоферы",
+  "title": "Чёрные лоферы",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "кожа",
+   "деловой"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "black men's loafers flat lay plain background",
+  "prompt": "Studio product photo of a single black men's loafers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-loafers-black-reg-f",
+  "category": "shoes",
+  "type": "лоферы",
+  "title": "Чёрные лоферы",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "деловой"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "black women's loafers flat lay plain background",
+  "prompt": "Studio product photo of a single black women's loafers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-loafers-brown-reg-m",
+  "category": "shoes",
+  "type": "лоферы",
+  "title": "Коричневые лоферы",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "кожа",
+   "деловой"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "brown men's loafers flat lay plain background",
+  "prompt": "Studio product photo of a single brown men's loafers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-loafers-brown-reg-f",
+  "category": "shoes",
+  "type": "лоферы",
+  "title": "Коричневые лоферы",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "деловой"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "brown women's loafers flat lay plain background",
+  "prompt": "Studio product photo of a single brown women's loafers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-loafers-beige-reg-m",
+  "category": "shoes",
+  "type": "лоферы",
+  "title": "Бежевые лоферы",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "кожа",
+   "деловой"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "beige men's loafers flat lay plain background",
+  "prompt": "Studio product photo of a single beige men's loafers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-loafers-beige-reg-f",
+  "category": "shoes",
+  "type": "лоферы",
+  "title": "Бежевые лоферы",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "деловой"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "деловой",
+  "query": "beige women's loafers flat lay plain background",
+  "prompt": "Studio product photo of a single beige women's loafers, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-leather-boots-black-reg-m",
+  "category": "shoes",
+  "type": "ботинки",
+  "title": "Чёрные ботинки",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "кожа",
+   "смарт-кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "black men's leather boots flat lay plain background",
+  "prompt": "Studio product photo of a single black men's leather boots, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-leather-boots-brown-reg-m",
+  "category": "shoes",
+  "type": "ботинки",
+  "title": "Коричневые ботинки",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "кожа",
+   "смарт-кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "brown men's leather boots flat lay plain background",
+  "prompt": "Studio product photo of a single brown men's leather boots, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-leather-boots-brown-reg-f",
+  "category": "shoes",
+  "type": "ботинки",
+  "title": "Коричневые ботинки",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "смарт-кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "brown women's leather boots flat lay plain background",
+  "prompt": "Studio product photo of a single brown women's leather boots, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-leather-boots-beige-reg-m",
+  "category": "shoes",
+  "type": "ботинки",
+  "title": "Бежевые ботинки",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "m",
+  "tags": [
+   "прямой",
+   "кожа",
+   "смарт-кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "beige men's leather boots flat lay plain background",
+  "prompt": "Studio product photo of a single beige men's leather boots, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "shoes-leather-boots-beige-reg-f",
+  "category": "shoes",
+  "type": "ботинки",
+  "title": "Бежевые ботинки",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "смарт-кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "смарт-кэжуал",
+  "query": "beige women's leather boots flat lay plain background",
+  "prompt": "Studio product photo of a single beige women's leather boots, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bag-handbag-black-reg-f",
+  "category": "bag",
+  "type": "сумка",
+  "title": "Чёрная сумка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black women's handbag flat lay plain background",
+  "prompt": "Studio product photo of a single black women's handbag, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bag-handbag-brown-reg-f",
+  "category": "bag",
+  "type": "сумка",
+  "title": "Коричневая сумка",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "brown women's handbag flat lay plain background",
+  "prompt": "Studio product photo of a single brown women's handbag, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bag-handbag-beige-reg-f",
+  "category": "bag",
+  "type": "сумка",
+  "title": "Бежевая сумка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "beige women's handbag flat lay plain background",
+  "prompt": "Studio product photo of a single beige women's handbag, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bag-handbag-red-reg-f",
+  "category": "bag",
+  "type": "сумка",
+  "title": "Красная сумка",
+  "colorName": "Красный",
+  "color": "#C4453F",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "red women's handbag flat lay plain background",
+  "prompt": "Studio product photo of a single red women's handbag, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bag-backpack-black-reg-u",
+  "category": "bag",
+  "type": "рюкзак",
+  "title": "Чёрный рюкзак",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "black backpack flat lay plain background",
+  "prompt": "Studio product photo of a single black backpack, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bag-backpack-gray-reg-u",
+  "category": "bag",
+  "type": "рюкзак",
+  "title": "Серый рюкзак",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "gray backpack flat lay plain background",
+  "prompt": "Studio product photo of a single gray backpack, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bag-backpack-navy-reg-u",
+  "category": "bag",
+  "type": "рюкзак",
+  "title": "Тёмно-синяяый рюкзак",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "navy blue backpack flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue backpack, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "bag-backpack-green-reg-u",
+  "category": "bag",
+  "type": "рюкзак",
+  "title": "Зелёный рюкзак",
+  "colorName": "Зелёный",
+  "color": "#5E8C61",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "query": "olive green backpack flat lay plain background",
+  "prompt": "Studio product photo of a single olive green backpack, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "accessory-wool-scarf-gray-reg-u",
+  "category": "accessory",
+  "type": "шарф",
+  "title": "Серый шарф",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "gray wool scarf flat lay plain background",
+  "prompt": "Studio product photo of a single gray wool scarf, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "accessory-wool-scarf-black-reg-u",
+  "category": "accessory",
+  "type": "шарф",
+  "title": "Чёрный шарф",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "black wool scarf flat lay plain background",
+  "prompt": "Studio product photo of a single black wool scarf, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "accessory-wool-scarf-beige-reg-u",
+  "category": "accessory",
+  "type": "шарф",
+  "title": "Бежевый шарф",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "beige wool scarf flat lay plain background",
+  "prompt": "Studio product photo of a single beige wool scarf, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "accessory-wool-scarf-red-reg-u",
+  "category": "accessory",
+  "type": "шарф",
+  "title": "Красный шарф",
+  "colorName": "Красный",
+  "color": "#C4453F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "red wool scarf flat lay plain background",
+  "prompt": "Studio product photo of a single red wool scarf, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "accessory-wool-scarf-navy-reg-u",
+  "category": "accessory",
+  "type": "шарф",
+  "title": "Тёмно-синяяый шарф",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "query": "navy blue wool scarf flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue wool scarf, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "accessory-baseball-cap-black-reg-u",
+  "category": "accessory",
+  "type": "кепка",
+  "title": "Чёрная кепка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "query": "black baseball cap flat lay plain background",
+  "prompt": "Studio product photo of a single black baseball cap, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "accessory-baseball-cap-white-reg-u",
+  "category": "accessory",
+  "type": "кепка",
+  "title": "Белая кепка",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "query": "white baseball cap flat lay plain background",
+  "prompt": "Studio product photo of a single white baseball cap, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ },
+ {
+  "id": "accessory-baseball-cap-navy-reg-u",
+  "category": "accessory",
+  "type": "кепка",
+  "title": "Тёмно-синяя кепка",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "спорт"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "query": "navy blue baseball cap flat lay plain background",
+  "prompt": "Studio product photo of a single navy blue baseball cap, laid flat or on an invisible mannequin, front view, centered, soft even daylight lighting, plain light gray background, no model, no text, no logo, realistic fabric texture, e-commerce catalog style"
+ }
+]
