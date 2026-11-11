@@ -30,7 +30,6 @@ curl http://127.0.0.1:7100/health
 Сайт и приложение отдаются, вход по коду работает, распознавание вещей на тестовых фото отвечает (белая футболка 0,93, голубая рубашка в полоску 0,89), порты 465 (почта reg.ru) и 443 (Selectel, Метрика) с сервера доступны.
 
 ## Что осталось
-1. DNS: записи A для `@` и `www` на 152.228.113.55 (MX, SPF, DKIM не трогать). Пока домен смотрит на старый адрес.
-2. После DNS: `certbot --nginx -d atelierai.ru -d www.atelierai.ru`, затем боевой `deploy/nginx.conf` (с редиректом на https).
-3. `bash /opt/atelier/set-secrets.sh`: пароль почты, ключ Selectel, CloudPayments.
-4. Монитор доступности (UptimeRobot) на `https://atelierai.ru/api/health`.
+1. ~~DNS и HTTPS~~ сделано 11 ноября 2026: A-записи на 152.228.113.55, сертификат Let's Encrypt (до 9 февраля 2027, продлевается сам), боевой nginx с редиректом http→https и www→основной адрес.
+2. `bash /opt/atelier/set-secrets.sh`: пароль почты, ключ Selectel, CloudPayments.
+3. Монитор доступности (UptimeRobot) на `https://atelierai.ru/api/health`.
