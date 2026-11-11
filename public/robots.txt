@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /app/
 Disallow: /api/
-Sitemap: https://atelier.example/sitemap.xml
+Sitemap: https://atelierai.ru/sitemap.xml

@@ -4,6 +4,7 @@ import { BottomSheet, Button, Icon, IconButton, PlanBadge, SettingsList, Setting
 import { useApp, useLimits } from '../../store/app'
 import { PLAN_PRICE } from '../../store/limits'
 import { toast } from '../../store/ui'
+import { openSupport, supportLabel } from '../../lib/support'
 import { dateLong } from '../../lib/format'
 
 const TIMES = ['07:00', '07:30', '08:00', '08:30', '09:00']
@@ -36,19 +37,6 @@ export function Profile() {
         </span>
         <IconButton icon="pencil-simple" label="Редактировать" variant="solid" onClick={() => navigate('/profile/data')} />
       </div>
-
-      {app.via === 'guest' && (
-        <div className="card" style={{ borderRadius: 'var(--radius-card)', padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-            <span style={{ width: 44, height: 44, flexShrink: 0, borderRadius: 14, background: 'var(--accent-soft)', color: 'var(--accent-text)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="lock-simple" size={24} /></span>
-            <span style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <span className="t-callout" style={{ fontWeight: 700 }}>Ты без аккаунта</span>
-              <span className="t-caption muted" style={{ textWrap: 'pretty' }}>Войди по почте, чтобы вещи и образы не пропали</span>
-            </span>
-          </div>
-          <Button variant="secondary" full icon="envelope-simple" onClick={() => navigate('/login', { state: { next: '/profile' } })}>Войти по почте</Button>
-        </div>
-      )}
 
       {subEnded ? (
         <div className="card" style={{ borderRadius: 'var(--radius-card)', padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -129,12 +117,12 @@ export function Profile() {
         <SettingsRow icon="arrows-clockwise" label="Пройти анкету стиля заново" onClick={() => navigate('/onboarding/quiz?only=style')} />
         <SettingsRow icon="map-pin" label="Город" value={quiz.city} onClick={() => navigate('/onboarding/quiz?only=city')} />
         <SettingsRow icon="device-mobile" label="Как установить на экран" onClick={() => navigate('/install')} />
-        <SettingsRow icon="chat-circle" label="Поддержка в Telegram" onClick={() => toast('Откроется чат поддержки в Telegram', 'neutral')} />
+        <SettingsRow icon="chat-circle" label={supportLabel()} onClick={() => openSupport()} />
       </SettingsList>
       <SettingsList>
         <SettingsRow icon="user" label="Мои данные" onClick={() => navigate('/profile/data')} />
         <SettingsRow icon="file-text" label="Документы" onClick={() => navigate('/profile/docs')} />
-        {app.via !== 'guest' && <SettingsRow icon="sign-out" label="Выйти" onClick={() => setSignOut(true)} />}
+        <SettingsRow icon="sign-out" label="Выйти" onClick={() => setSignOut(true)} />
         <SettingsRow icon="trash" label="Удалить аккаунт" danger onClick={() => navigate('/profile/delete')} />
       </SettingsList>
       <span className="t-caption muted" style={{ textAlign: 'center' }}>Atelier 1.0</span>

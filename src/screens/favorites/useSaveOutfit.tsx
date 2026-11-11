@@ -7,7 +7,6 @@ import { toast } from '../../store/ui'
 import type { SavedOutfit } from '../../data/types'
 import { PaywallSheet } from '../paywall/PaywallSheet'
 import { FavoritesFullSheet } from './FavoritesFullSheet'
-import { RegisterSheet } from '../onboarding/RegisterSheet'
 
 type Draft = Omit<SavedOutfit, 'id' | 'createdAt'>
 
@@ -25,7 +24,6 @@ export function useSaveOutfit(): { save: (d: Draft, onSaved?: (id: string) => vo
   const [pending, setPending] = useState<{ draft: Draft; done?: (id: string) => void } | null>(null)
   const [full, setFull] = useState(false)
   const [pay, setPay] = useState<'full' | 'over' | null>(null)
-  const [reg, setReg] = useState(false)
 
   const save = (draft: Draft, done?: (id: string) => void) => {
     const r = saveOutfit(draft)
@@ -33,11 +31,7 @@ export function useSaveOutfit(): { save: (d: Draft, onSaved?: (id: string) => vo
       done?.(useApp.getState().saved[0].id)
       toast('Образ сохранён', 'success', { icon: 'heart' })
       const st = useApp.getState()
-      // гостю после первого сохранения предлагаем войти по почте, чтобы не потерять гардероб
-      if (st.via === 'guest' && !st.seen['register-offered']) {
-        markSeen('register-offered')
-        setTimeout(() => setReg(true), 1200)
-      } else if (!st.seen['install-offered'] && !isStandalone() && (DEMO || (isMobileDevice() && !st.gateDone))) {
+      if (!st.seen['install-offered'] && !isStandalone() && (DEMO || (isMobileDevice() && !st.gateDone))) {
         // не ставил иконку на старте: после первого сохранения предлагаем ещё раз (ON-10…ON-12), затем уведомления
         markSeen('install-offered')
         setTimeout(() => navigate('/install', { state: { flow: 'first' } }), 1500)
@@ -51,7 +45,6 @@ export function useSaveOutfit(): { save: (d: Draft, onSaved?: (id: string) => vo
 
   const sheets = (
     <>
-      <RegisterSheet open={reg} onClose={() => setReg(false)} />
       <FavoritesFullSheet
         open={full} onClose={() => setFull(false)}
         buyLabel={lim.plan === 'free' ? '10 мест за 299 ₽' : 'Без лимита за 599 ₽'}

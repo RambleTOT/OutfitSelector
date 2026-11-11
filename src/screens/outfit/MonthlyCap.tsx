@@ -1,7 +1,7 @@
+import { openSupport } from '../../lib/support'
 import { useNavigate } from 'react-router-dom'
 import { Button, CtaPlate, IconButton, PlanBadge } from '../../ui'
 import { firstOfNextMonthLabel, MONTHLY_CAP } from '../../store/limits'
-import { toast } from '../../store/ui'
 
 /** OUT-09 MonthlyCapReached: потолок безлимита 300 образов в месяц на Подписке+ */
 export function MonthlyCap({ onClose }: { onClose: () => void }) {
@@ -21,7 +21,7 @@ export function MonthlyCap({ onClose }: { onClose: () => void }) {
       </div>
       <CtaPlate>
         <Button full icon="hand-pointing" onClick={() => navigate('/constructor')}>Собрать самому</Button>
-        <Button variant="text" full icon="chat-circle" onClick={() => toast('Откроется чат поддержки в Telegram', 'neutral')}>Написать в поддержку</Button>
+        <Button variant="text" full icon="chat-circle" onClick={() => openSupport('Месячный лимит образов')}>Написать в поддержку</Button>
       </CtaPlate>
     </>
   )

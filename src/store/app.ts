@@ -1,3 +1,5 @@
+import { getToken } from '../lib/api'
+import { HAS_API } from '../lib/config'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { MOCK_ITEMS } from '../data/items'
@@ -48,7 +50,7 @@ interface Data {
   offline: boolean
 
   signedIn: boolean
-  via: 'email' | 'telegram' | 'guest' | null
+  via: 'email' | 'telegram' | null
   gateDone: boolean // экран установки на главный экран пройден или пропущен
   email: string
   name: string
@@ -83,7 +85,7 @@ interface Actions {
   spendGeneration: () => void
   saveOutfit: (o: Omit<SavedOutfit, 'id' | 'createdAt'>) => 'saved' | 'full' | 'over'
   activatePlan: (p: Plan) => void
-  signIn: (email: string, via: 'email' | 'telegram' | 'guest') => 'new' | 'returning'
+  signIn: (email: string, via: 'email' | 'telegram') => 'new' | 'returning'
   setQuiz: (q: Partial<Quiz>) => void
   finishQuiz: () => void
   finishOnboarding: (skipped: boolean) => void
@@ -231,12 +233,12 @@ export const useApp = create<AppState>()(
       // вход: любая почта и код 1111, Telegram пускает сразу. Возвращающийся пользователь сразу попадает в Образ
       signIn: (email, via) => {
         const s = get()
-        const returning = s.onboarded && (s.via === 'guest' || (via === 'email' && s.email === email))
+        const returning = s.onboarded && via === 'email' && s.email === email
         set({
           signedIn: true,
           via,
           email: via === 'email' ? email : s.email,
-          name: s.name || (via === 'email' ? email.split('@')[0].replace(/^./, (c) => c.toUpperCase()) : via === 'guest' ? '' : 'Анна'),
+          name: s.name || (via === 'email' ? email.split('@')[0].replace(/^./, (c) => c.toUpperCase()) : 'Анна'),
           notif: via === 'telegram' ? { ...s.notif, telegramBot: true } : s.notif,
         })
         return returning ? 'returning' : 'new'
@@ -286,7 +288,10 @@ export const useApp = create<AppState>()(
         // сохранения до появления quizDone: уже прошедший онбординг считается прошедшим анкету
         // фото, которые «обрабатывались» в момент перезагрузки, считаем готовыми
         const items = (p.items ?? current.items).map((i) => (i.processing ? { ...i, processing: undefined } : i))
-        return { ...current, ...p, items, quizDone: p.quizDone ?? !!p.onboarded }
+        const merged = { ...current, ...p, items, quizDone: p.quizDone ?? !!p.onboarded }
+        // гостевого режима больше нет: сохранённый «гость» или вход без токена (при подключённом сервере) требует войти заново
+        if ((merged.via as string) === 'guest' || (HAS_API && !getToken())) { merged.signedIn = false; merged.via = null }
+        return merged
       },
       onRehydrateStorage: () => (state) => state?.refreshUsage(),
     },

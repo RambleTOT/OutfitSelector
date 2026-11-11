@@ -1,8 +1,8 @@
+import { openSupport } from '../../lib/support'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Button, CtaPlate, EmptyState, IconButton, PlanBadge } from '../../ui'
 import { useLimits } from '../../store/app'
 import { LIMITS } from '../../store/limits'
-import { toast } from '../../store/ui'
 
 /** PAY-02 PaymentSuccess: лимиты сняты сразу */
 export function PaymentSuccess() {
@@ -44,7 +44,7 @@ export function PaymentError() {
       </div>
       <CtaPlate>
         <Button full icon="arrows-clockwise" onClick={() => navigate('/paywall', { replace: true, state: { from: state?.from } })}>Попробовать ещё</Button>
-        <Button variant="text" full icon="chat-circle" onClick={() => toast('Откроется чат поддержки в Telegram', 'neutral')}>Написать в поддержку</Button>
+        <Button variant="text" full icon="chat-circle" onClick={() => openSupport('Проблема с оплатой')}>Написать в поддержку</Button>
       </CtaPlate>
     </>
   )

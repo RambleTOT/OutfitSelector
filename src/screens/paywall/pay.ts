@@ -11,12 +11,6 @@ import { HAS_API } from '../../lib/config'
  */
 export async function payNow(plan: Plan, navigate: NavigateFunction, from?: string) {
   const app = useApp.getState()
-  if (app.via === 'guest') {
-    // платёж привязан к аккаунту: гость сначала входит по почте, потом возвращается к оплате
-    toast('Сначала войди по почте', 'neutral', { icon: 'envelope-simple' })
-    navigate('/login', { state: { next: from ?? '/paywall' } })
-    return
-  }
   if (plan !== 'free' && paymentsLive()) {
     track('pay_start', { plan })
     const r = await payWithCloudPayments(plan)

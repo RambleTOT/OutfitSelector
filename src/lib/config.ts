@@ -28,6 +28,10 @@ const RAW = import.meta.env.VITE_API_URL as string | undefined
 export const HAS_API = RAW !== undefined && RAW !== ''
 export const API_URL: string = RAW === 'same' || RAW === undefined ? '' : RAW.replace(/\/$/, '')
 
+/** Контакты поддержки: ник в Telegram (без @) и почта. Задаются в .env, пока пусто, кнопки поддержки скромно сообщают, что чат скоро откроется */
+export const SUPPORT_TG: string = ((import.meta.env.VITE_SUPPORT_TG as string | undefined) ?? '').replace(/^@/, '')
+export const SUPPORT_EMAIL: string = (import.meta.env.VITE_SUPPORT_EMAIL as string | undefined) ?? ''
+
 /** Id счётчика Яндекс.Метрики. Пусто: метрика не подключается */
 export const METRIKA_ID: string = (import.meta.env.VITE_METRIKA_ID as string | undefined) ?? ''
 
