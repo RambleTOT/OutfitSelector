@@ -1,5 +1,6 @@
 import { typeDef } from './catalog'
-import { MISSING_HINT, OUTFIT_TEMPLATES, WEATHER } from './items'
+import { MISSING_HINT, OUTFIT_TEMPLATES } from './items'
+import { currentWeather } from '../lib/weather'
 import type { Category, Item, MissingSlot, OccasionId, OutfitTemplate } from './types'
 
 export interface GeneratedOutfit {
@@ -27,9 +28,12 @@ const FORMALITY_TARGET: Record<OccasionId, string[]> = {
   party: ['вечерний', 'деловой'],
 }
 
-/** Подходит ли вещь к погоде: на +8 без шорт и без «лёгких» нижних вещей */
+/** Температура для расчёта: если погоды нет, считаем условия мягкими (15°), чтобы образ собирался всё равно */
+const nowTemp = () => currentWeather()?.temp ?? 15
+
+/** Подходит ли вещь к погоде: в холод без шорт */
 function weatherOk(i: Item): boolean {
-  if (WEATHER.temp < 15 && i.kind === 'shorts') return false
+  if (nowTemp() < 15 && i.kind === 'shorts') return false
   return true
 }
 
@@ -37,7 +41,7 @@ function score(i: Item, occasion: OccasionId): number {
   const target = FORMALITY_TARGET[occasion]
   const f = target.indexOf(i.formality)
   let s = f === 0 ? 3 : f === 1 ? 2 : 0
-  if (WEATHER.temp < 12 && i.warmth !== 'лёгкая') s += 1
+  if (nowTemp() < 12 && i.warmth !== 'лёгкая') s += 1
   return s
 }
 

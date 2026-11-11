@@ -10,6 +10,7 @@ import { chat, aiEnabled } from './ai/providers.mjs'
 import { SYSTEM, buildUserPrompt, parseOutfit, repairOutfit, outfitProblems } from './ai/prompt.mjs'
 import { buildIntent, cancelSubscription, handleNotification, parseBody, payEnabled, publicSub, verifySignature } from './pay.mjs'
 import { spend, spendPhoto } from './plans.mjs'
+import { createWeather } from './weather.mjs'
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain', '.xml': 'application/xml', '.ico': 'image/x-icon' }
 const PHOTO_ID = /^[a-f0-9]{32}$/
@@ -42,6 +43,7 @@ function readBody(req, max) {
 
 export function createApp({ store = new Store(config.dataDir), mailer = sendCode, aiChat = chat, aiOn = aiEnabled, fetchImpl = fetch } = {}) {
   const limit = limiter()
+  const getWeather = createWeather(fetchImpl)
   let inflight = 0
   const ip = (req) => String(req.headers['x-forwarded-for'] ?? req.socket.remoteAddress ?? '').split(',')[0].trim()
   const send = (res, status, body, headers = {}) => {
@@ -68,6 +70,15 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
     if (m === 'GET' && path === '/api/health') return send(res, 200, { ok: true, ai: aiOn(), pay: payEnabled() })
     // что включено на сервере: клиент по этому решает, показывать ли настоящую оплату и AI
     if (m === 'GET' && path === '/api/config') return send(res, 200, { ai: aiOn(), analyze: !!config.ai.visionUrl, pay: payEnabled() })
+
+    // погода по координатам (и гостю, и вошедшему): точку округляем, ответ кэшируется, наружу ходит только сервер
+    if (m === 'GET' && path === '/api/weather') {
+      limit(`wx:${ip(req)}`, 90, 3600000)
+      const lat = Number(url.searchParams.get('lat'))
+      const lon = Number(url.searchParams.get('lon'))
+      if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 180) throw new HttpError(400, 'bad_coords')
+      try { return send(res, 200, await getWeather(lat, lon)) } catch { throw new HttpError(502, 'weather_unavailable') }
+    }
 
     if (m === 'POST' && path === '/api/events') {
       limit(`ev:${ip(req)}`, 120, 60000)

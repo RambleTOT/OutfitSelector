@@ -1,7 +1,7 @@
 import { api, getCaps, getToken, hasSession, ApiError } from './api'
 import { API_URL } from './config'
 import type { Item, OccasionId } from '../data/types'
-import { WEATHER } from '../data/items'
+import { currentWeather } from './weather'
 import { useApp } from '../store/app'
 
 export interface AiOutfit { ids: string[]; name: string; explanation: string }
@@ -10,10 +10,11 @@ export interface AiOutfit { ids: string[]; name: string; explanation: string }
 export async function aiOutfit(items: Item[], occasion: OccasionId, wish: string, avoid: string[] = []): Promise<AiOutfit | 'limit' | null> {
   if (!hasSession() || !getCaps().ai) return null
   const nogo = useApp.getState().quiz.nogo
+  const wx = currentWeather()
   try {
     return await api<AiOutfit>('POST', '/api/ai/outfit', {
       occasion, wish, avoid, nogo,
-      weather: { temp: WEATHER.temp, desc: WEATHER.label },
+      weather: wx ? { temp: wx.temp, desc: [wx.label, wx.note].filter(Boolean).join(', ') } : undefined,
       items: items.filter((i) => i.available).slice(0, 25).map((i) => ({ id: i.id, category: i.category, title: i.title, colorName: i.colorName, formality: i.formality, warmth: i.warmth })),
     }, { timeout: 25000 })
   } catch (e) {

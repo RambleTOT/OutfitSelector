@@ -74,7 +74,7 @@ function ResultView() {
       <div className="screen screen--push" style={{ gap: 16, paddingBottom: 128 }}>
         <div className="nav-row">
           <IconButton icon="caret-left" label="Назад" variant="solid" onClick={() => { flow.back(); navigate('/outfit', { replace: true }) }} />
-          <span className="t-headline">{occ.emoji} {occ.label} · {temp()}</span>
+          <span className="t-headline">{occ.emoji} {occ.label}{temp() ? ` · ${temp()}` : ''}</span>
           <IconButton icon="share-network" label="Поделиться" variant="solid" onClick={() => navigate('/outfit/share')} />
         </div>
         <OutfitCard

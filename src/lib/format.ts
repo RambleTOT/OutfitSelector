@@ -1,4 +1,5 @@
-import { OCCASIONS, WEATHER } from '../data/items'
+import { OCCASIONS } from '../data/items'
+import { currentWeather, tempText } from './weather'
 import type { OccasionId } from '../data/types'
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
@@ -11,7 +12,8 @@ export function todayLabel(d = new Date()): string {
   return `${cap(wd)}, ${dm}`
 }
 
-export const temp = () => `${WEATHER.temp > 0 ? '+' : ''}${WEATHER.temp}°`
+/** Температура сейчас: «+8°». Пусто, если погоды нет (место не выбрано или нет данных) */
+export const temp = () => { const w = currentWeather(); return w ? tempText(w.temp) : '' }
 
 export const occasionById = (id: OccasionId) => OCCASIONS.find((o) => o.id === id)!
 

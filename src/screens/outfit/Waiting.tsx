@@ -40,7 +40,7 @@ export function Waiting({ withTabBar = true }: { withTabBar?: boolean }) {
       </div>
       <div className="screen-title">
         <h2 className="t-title1" style={{ fontSize: '2rem', lineHeight: '2.25rem' }}>Собираю образ</h2>
-        <span className="t-callout muted">{occ.emoji} {occ.label} · {temp()}{wishText}</span>
+        <span className="t-callout muted">{occ.emoji} {occ.label}{temp() ? ` · ${temp()}` : ''}{wishText}</span>
       </div>
       <OutfitCard items={shuffle} loading ghostSlots={ghosts} aspect="1 / 1.05" />
       <p className="t-body muted" style={{ textAlign: 'center' }} aria-live="polite">{WAIT[tick % WAIT.length]}</p>

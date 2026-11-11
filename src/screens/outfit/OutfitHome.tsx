@@ -3,12 +3,14 @@ import { Navigate, useNavigate } from 'react-router-dom'
 import {
   BigTextField, Button, Chip, Icon, IconButton, LimitMeter, SetupBanner, WeatherPill,
 } from '../../ui'
-import { OCCASIONS, WEATHER, WISH_SUGGESTIONS } from '../../data/items'
+import { OCCASIONS, WISH_SUGGESTIONS } from '../../data/items'
 import { canGenerate } from '../../data/generate'
 import { useApp, useLimits } from '../../store/app'
 import { useOutfitFlow } from '../../store/outfit'
 import { toast } from '../../store/ui'
-import { todayLabel, temp } from '../../lib/format'
+import { todayLabel } from '../../lib/format'
+import { currentWeather, placeName, refreshGeoQuietly, tempText, useWeather, WX_ICON } from '../../lib/weather'
+import { WeatherSheet } from './WeatherSheet'
 import { PaywallSheet } from '../paywall/PaywallSheet'
 import { goalReached, setupHint } from '../../lib/setup'
 import { MonthlyCap } from './MonthlyCap'
@@ -26,7 +28,14 @@ function Idle() {
   const navigate = useNavigate()
   const items = useApp((s) => s.items)
   const offline = useApp((s) => s.offline)
-  const quizCity = useApp((s) => s.quiz.city) || WEATHER.city
+  const quizCity = useApp((s) => s.quiz.city)
+  // погода: подписка на место и данные, чтобы экран обновлялся при выборе города или геопозиции
+  const place = useWeather((s) => s.place)
+  const wxStatus = useWeather((s) => s.status)
+  useWeather((s) => s.data)
+  const wx = currentWeather()
+  const refreshWx = useWeather((s) => s.refresh)
+  const [wxSheet, setWxSheet] = useState(false)
   const onboarded = useApp((s) => s.onboarded)
   const markSeen = useApp((s) => s.markSeen)
   const lim = useLimits()
@@ -46,6 +55,13 @@ function Idle() {
     prevLeft.current = lim.outfitsLeft
   }, [lim.outfitsLeft])
   useEffect(() => { markSeen('outfit-visited') }, [markSeen])
+  // погода: при открытии экрана и при возвращении в приложение (свежие данные не перезапрашиваются)
+  useEffect(() => {
+    void refreshWx().then(() => refreshGeoQuietly())
+    const onVis = () => { if (document.visibilityState === 'visible') void refreshWx() }
+    document.addEventListener('visibilitychange', onVis)
+    return () => document.removeEventListener('visibilitychange', onVis)
+  }, [refreshWx, quizCity])
 
   if (lim.monthlyCapReached && !capClosed) return <MonthlyCap onClose={() => setCapClosed(true)} />
 
@@ -63,11 +79,17 @@ function Idle() {
     <>
       <div className="screen screen--fade" style={{ paddingBottom: 250 }}>
         <div className="nav-row">
-          <WeatherPill icon={WEATHER.icon} temp={temp()} city={quizCity} offline={offline} />
+          {wx
+            ? <WeatherPill icon={WX_ICON[wx.kind]} temp={tempText(wx.temp)} city={placeName(place, quizCity)} offline={offline} onClick={() => setWxSheet(true)} />
+            : wxStatus === 'loading'
+              ? <WeatherPill loading temp="" city="" onClick={() => setWxSheet(true)} />
+              : <WeatherPill icon="map-pin" temp="—" city="Выбрать город" onClick={() => setWxSheet(true)} />}
           <IconButton icon="bell" label="Уведомления" variant="solid" onClick={() => toast('Новых уведомлений нет', 'neutral')} />
         </div>
         <div className="screen-title">
-          <span className="t-callout muted">{offline ? 'Погода обновится, когда появится сеть' : `${todayLabel()} · ${WEATHER.label.toLowerCase()}, ${WEATHER.note}`}</span>
+          <span className="t-callout muted">{offline && !wx ? 'Погода обновится, когда появится сеть'
+            : wx ? `${todayLabel()} · ${[wx.label.toLowerCase(), wx.note].filter(Boolean).join(', ')}`
+            : `${todayLabel()} · выбери город, чтобы учесть погоду`}</span>
           <h2 className="t-title1" style={{ fontSize: '2rem', lineHeight: '2.25rem' }}>Что наденем сегодня</h2>
         </div>
         <div className="chips-scroll">
@@ -94,6 +116,7 @@ function Idle() {
         <div data-coach="outfit" style={{ borderRadius: 999 }}><Button full icon="sparkle" disabled={disabled} onClick={build}>Собрать образ</Button></div>
         <Button variant="secondary" full icon="hand-pointing" onClick={() => navigate('/constructor')}>Собрать самому</Button>
       </div>
+      <WeatherSheet open={wxSheet} onClose={() => setWxSheet(false)} />
       <PaywallSheet
         open={sheet} onClose={() => setSheet(false)}
         title="Образы закончились"

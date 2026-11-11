@@ -1,3 +1,5 @@
+import { findCity, searchCities } from '../../data/cities'
+import { useWeather } from '../../lib/weather'
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AnswerCard, BigTextField, Button, Chip, CtaPlate, Icon, QuestionProgress } from '../../ui'
@@ -21,12 +23,14 @@ export const QUIZ: Q[] = [
   { key: 'no', type: 'chips', multi: true, optional: true, title: 'Что ты точно не носишь', hint: 'Не буду предлагать. Можно пропустить', opts: [['Каблуки'], ['Юбки'], ['Шорты'], ['Яркие цвета'], ['Обтягивающее'], ['Галстуки'], ['Принты']] },
 ]
 
-const CITIES = ['Москва', 'Санкт-Петербург', 'Казань', 'Екатеринбург']
+
+/** Что набрал человек -> название города из списка (для погоды); незнакомый город сохраняем как есть, погоду тогда выберут вручную */
+const resolveCity = (text: string) => findCity(text)?.name ?? searchCities(text, 1)[0]?.name ?? (text.trim() || 'Москва')
 
 type Answers = { who: string | null; city: string; occ: string[]; style: string[]; no: string[] }
 
 const toAnswers = (q: QuizState): Answers => ({ who: q.who, city: q.city, occ: q.occasions, style: q.styles, no: q.nogo })
-const fromAnswers = (a: Answers): Partial<QuizState> => ({ who: a.who, city: a.city.trim() || 'Москва', occasions: a.occ, styles: a.style, nogo: a.no })
+const fromAnswers = (a: Answers): Partial<QuizState> => ({ who: a.who, city: resolveCity(a.city), occasions: a.occ, styles: a.style, nogo: a.no })
 
 /** Повод по анкете: первый выбранный (Спорт → Прогулка), чтобы он сразу стоял на экране Образ */
 function defaultOccasion(labels: string[]): OccasionId | null {
@@ -59,6 +63,8 @@ export function Quiz() {
   const empty = !(q.type === 'chips' && q.optional) && (Array.isArray(value) ? value.length === 0 : !String(value ?? '').trim())
 
   const commit = (a: Answers) => {
+    // город сменили в анкете: выбранное раньше место (геопозиция или другой город) больше не действует
+    if (resolveCity(a.city) !== useApp.getState().quiz.city) useWeather.setState({ place: null, data: null, dataKey: '' })
     setQuiz(fromAnswers(a))
     const occ = defaultOccasion(a.occ)
     if (occ) useOutfitFlow.getState().setOccasion(occ)
@@ -100,7 +106,7 @@ export function Quiz() {
           </div>
         )}
         {q.type === 'city' && (
-          <BigTextField placeholder="Например, Казань" value={ans.city} onChange={(v) => setAns({ ...ans, city: v })} suggestions={CITIES} maxLength={40} />
+          <BigTextField placeholder="Например, Казань" value={ans.city} onChange={(v) => setAns({ ...ans, city: v })} suggestions={searchCities(ans.city, 6).map((c) => c.name).filter((n) => n !== ans.city.trim())} maxLength={40} />
         )}
         {q.type === 'chips' && (
           <div className="chips-wrap">

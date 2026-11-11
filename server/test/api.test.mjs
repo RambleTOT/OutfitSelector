@@ -279,3 +279,36 @@ test('AI: если в образе осталась неподходящая в�
   assert.equal(r.body.name, 'Два')
   t.server.close()
 })
+
+const MET = (temp, symbol, wind = 2, precip = 0) => ({ properties: { timeseries: [{ time: new Date().toISOString(), data: { instant: { details: { air_temperature: temp, wind_speed: wind } }, next_1_hours: { summary: { symbol_code: symbol }, details: { precipitation_amount: precip } } } }] } })
+
+test('погода: запрос без входа, ответ по-русски, второй запрос берётся из кэша, координаты округляются', async () => {
+  const urls = []
+  const t = await boot({ fetchImpl: async (url, init) => { urls.push({ url, ua: init.headers['User-Agent'] }); return { ok: true, status: 200, json: async () => MET(1.3, 'cloudy', 6) } } })
+  const r = await t.call('GET', '/api/weather?lat=55.7558&lon=37.6173')
+  assert.equal(r.status, 200)
+  assert.equal(r.body.temp, 1)
+  assert.equal(r.body.label, 'Пасмурно')
+  assert.equal(r.body.kind, 'cloud')
+  assert.equal(r.body.note, 'ветер, без осадков')
+  assert.ok(urls[0].url.includes('lat=55.76&lon=37.62'))
+  assert.ok(urls[0].ua.includes('Atelier'))
+  await t.call('GET', '/api/weather?lat=55.7601&lon=37.6199')
+  assert.equal(urls.length, 1)
+  t.server.close()
+})
+
+test('погода: дождь и гроза, плохие координаты, недоступный источник без кэша', async () => {
+  const t = await boot({ fetchImpl: async () => ({ ok: true, status: 200, json: async () => MET(-4, 'heavysnow_day', 12, 1) }) })
+  const r = await t.call('GET', '/api/weather?lat=59.9&lon=30.3')
+  assert.equal(r.body.kind, 'snow')
+  assert.equal(r.body.note, 'сильный ветер')
+  assert.equal((await t.call('GET', '/api/weather?lat=abc&lon=1')).status, 400)
+  assert.equal((await t.call('GET', '/api/weather?lat=95&lon=1')).status, 400)
+  t.server.close()
+  const down = await boot({ fetchImpl: async () => ({ ok: false, status: 503, json: async () => ({}) }) })
+  const e = await down.call('GET', '/api/weather?lat=1&lon=1')
+  assert.equal(e.status, 502)
+  assert.equal(e.body.error ?? e.body.code, 'weather_unavailable')
+  down.server.close()
+})
