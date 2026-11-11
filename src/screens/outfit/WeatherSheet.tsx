@@ -39,6 +39,7 @@ export function WeatherSheet({ open, onClose }: { open: boolean; onClose: () => 
           />
         ))}
       </div>
+      <p className="t-caption muted">Данные о погоде: MET Norway</p>
       {q.trim() && found.length === 0 && <p className="t-callout muted">Такого города нет в списке. Выбери ближайший крупный город рядом с тобой</p>}
     </BottomSheet>
   )
