@@ -9,7 +9,7 @@ import { sendCode } from './mail.mjs'
 import { chat, aiEnabled } from './ai/providers.mjs'
 import { SYSTEM, buildUserPrompt, parseOutfit, repairOutfit, outfitProblems } from './ai/prompt.mjs'
 import { buildIntent, cancelSubscription, handleNotification, parseBody, payEnabled, publicSub, verifySignature } from './pay.mjs'
-import { spend, spendPhoto } from './plans.mjs'
+import { spend, spendPhoto, usageSnapshot } from './plans.mjs'
 import { createWeather } from './weather.mjs'
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain', '.xml': 'application/xml', '.ico': 'image/x-icon' }
@@ -61,7 +61,7 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
     const raw = await readBody(req, max)
     try { return raw.length ? JSON.parse(raw.toString()) : {} } catch { throw new HttpError(400, 'bad_json') }
   }
-  const me = (u) => ({ id: u.id, email: u.email, sub: publicSub(u) })
+  const me = (u) => ({ id: u.id, email: u.email, sub: publicSub(u), usage: usageSnapshot(store, u) })
 
   async function api(req, res, url) {
     const path = url.pathname

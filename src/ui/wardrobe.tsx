@@ -77,9 +77,9 @@ const SLOTS_WITH_DRESS: Partial<Record<Category, Slot>> = {
 }
 
 export function OutfitCard({
-  items, explanation, liked = null, onLike, onDislike, loading = false, hint, aspect = '1 / 1.05', header, footer, ghostSlots, style, deletedIds,
+  items, explanation, hintIcon = 'sneaker', liked = null, onLike, onDislike, loading = false, hint, aspect = '1 / 1.05', header, footer, ghostSlots, style, deletedIds,
 }: {
-  items: Item[]; explanation?: string; liked?: boolean | null; onLike?: () => void; onDislike?: () => void; loading?: boolean
+  items: Item[]; explanation?: string; hintIcon?: string; liked?: boolean | null; onLike?: () => void; onDislike?: () => void; loading?: boolean
   hint?: ReactNode; aspect?: string; header?: ReactNode; footer?: ReactNode
   /** для ожидания AI: пустые слоты по категориям вместо реальных вещей */
   ghostSlots?: Category[]
@@ -122,7 +122,7 @@ export function OutfitCard({
         )}
       </div>
       {explanation && <p className="t-body outfit__text">{explanation}</p>}
-      {hint && <div className="t-callout outfit__hint"><Icon name="sneaker" size={20} color="var(--accent)" />{hint}</div>}
+      {hint && <div className="t-callout outfit__hint"><Icon name={hintIcon} size={20} color="var(--accent)" />{hint}</div>}
       {footer}
     </div>
   )

@@ -46,3 +46,17 @@ export function spendPhoto(store, user, now = Date.now()) {
   if (l.photosMonth !== null && u.photosMonth >= l.photosMonth) return { ok: false, reason: 'photo_limit' }
   return { ok: true, commit: () => { u.photosTotal++; u.photosMonth++; store.save() } }
 }
+
+/** Расход лимитов для клиента: на новом устройстве счётчики берутся отсюда, а не из локального хранилища. Счётчики прошлых недели и месяца обнуляются */
+export function usageSnapshot(store, user, now = Date.now()) {
+  const u = store.db.usage[user.id] ?? {}
+  const wk = weekKey(now), mk = monthKey(now)
+  return {
+    weekKey: wk,
+    outfitsWeek: u.weekKey === wk ? u.outfitsWeek ?? 0 : 0,
+    monthKey: mk,
+    outfitsMonth: u.monthKey === mk ? u.outfitsMonth ?? 0 : 0,
+    photosTotal: u.photosTotal ?? 0,
+    photosMonth: u.photoMonthKey === mk ? u.photosMonth ?? 0 : 0,
+  }
+}

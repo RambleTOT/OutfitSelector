@@ -1,6 +1,6 @@
 import { typeDef } from './catalog'
 import { MISSING_HINT, OUTFIT_TEMPLATES } from './items'
-import { currentWeather } from '../lib/weather'
+import { currentWeather, tempText } from '../lib/weather'
 import type { Category, Item, MissingSlot, OccasionId, OutfitTemplate } from './types'
 
 export interface GeneratedOutfit {
@@ -129,4 +129,15 @@ export function generateOutfit(items: Item[], occasion: OccasionId, variant: num
     missing,
     wish,
   }
+}
+
+/**
+ * Если для погоды в гардеробе не хватает вещи, говорим об этом прямо и обещаем рекомендации из магазинов партнёров (их пока нет).
+ * Сейчас проверяем одно: холодно, а верхней одежды нет совсем. Если она есть в гардеробе, подбор уже её учёл, подсказка не нужна
+ */
+export function weatherGap(items: Item[]): string | null {
+  const wx = currentWeather()
+  if (!wx || wx.temp > 8) return null
+  if (items.some((i) => i.category === 'outer' && i.available)) return null
+  return `Для ${tempText(wx.temp)} не хватает тёплой верхней одежды: куртки или пальто. Добавь её в гардероб, а совсем скоро мы начнём подсказывать, где купить подходящую у партнёров`
 }

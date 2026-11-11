@@ -20,13 +20,15 @@ export function applyServerState(state: Snapshot | null, at: number) {
   writeAt(at)
 }
 
-/** Тариф и срок: источник правды — сервер */
+/** Тариф, срок и расход лимитов: источник правды — сервер */
 export function applySub(me: ServerMe) {
   const s = me.sub
   useApp.setState({
     plan: s.plan, subEnded: s.ended, subCancelled: s.cancelled, subEndsAt: s.endsAt,
     subEndedAt: s.ended ? s.endsAt : null,
     email: me.email, via: 'email',
+    // расход лимитов считает сервер: на новом устройстве и после переустановки цифры те же, что и на старом
+    ...(me.usage ? { usage: me.usage } : {}),
   })
 }
 

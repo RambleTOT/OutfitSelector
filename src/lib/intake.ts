@@ -4,6 +4,7 @@ import { cutOutPhoto, looksLikeNotClothing, prepareUpload } from './image'
 import { getCaps, hasSession } from './api'
 import { analyzedItem, guessItem, usePhotoFlow } from '../store/photo'
 import { toast } from '../store/ui'
+import { refreshMe } from './sync'
 
 /**
  * Единый вход для фото вещи (камера, галерея, «Не похоже на одежду»).
@@ -27,6 +28,7 @@ export async function intakePhoto(file: File, navigate: NavigateFunction, onLimi
         navigate('/add/notclothing', { replace: true })
         return true
       }
+      void refreshMe() // сервер списал фото: подтягиваем его счётчик
       const items = res.items.map(analyzedItem)
       if (items.length === 1) {
         usePhotoFlow.getState().start(items[0])

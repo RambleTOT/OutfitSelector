@@ -1,3 +1,4 @@
+import { weatherGap } from '../../data/generate'
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { Button, CtaPlate, EmptyState, Icon, IconButton, OutfitCard } from '../../ui'
@@ -57,6 +58,7 @@ function ResultView() {
   const saved = flow.savedId !== null
   const unlimited = lim.outfitsLeft === null
   const missingShoes = result.missing.some((m) => m.category === 'shoes')
+  const gap = weatherGap(items)
 
   const another = () => {
     const r = flow.start('another')
@@ -83,7 +85,8 @@ function ResultView() {
           onLike={() => flow.setLiked(liked === true ? null : true)}
           onDislike={() => flow.setLiked(liked === false ? null : false)}
           explanation={result.explanation}
-          hint={missingShoes ? 'Добавь обувь, чтобы образ был полным' : undefined}
+          hint={missingShoes ? 'Добавь обувь, чтобы образ был полным' : gap ?? undefined}
+          hintIcon={missingShoes ? 'sneaker' : 'coat-hanger'}
         />
         {missingShoes ? (
           <Button variant="text" full icon="plus" onClick={() => useUi.getState().openAddSheet('/outfit/result')}>Добавить обувь</Button>

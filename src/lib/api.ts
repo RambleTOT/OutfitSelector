@@ -35,7 +35,8 @@ export async function api<T = unknown>(method: string, path: string, body?: unkn
 }
 
 export interface ServerSub { plan: 'free' | 'sub' | 'plus'; effective: string; endsAt: number | null; cancelled: boolean; ended: boolean }
-export interface ServerMe { id: string; email: string; sub: ServerSub }
+export interface ServerUsage { weekKey: string; outfitsWeek: number; monthKey: string; outfitsMonth: number; photosTotal: number; photosMonth: number }
+export interface ServerMe { id: string; email: string; sub: ServerSub; usage?: ServerUsage }
 export interface ServerCaps { ai: boolean; analyze: boolean; pay: boolean }
 
 export const requestCode = (email: string) => api('POST', '/api/auth/request', { email })

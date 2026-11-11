@@ -384,7 +384,7 @@
 .outfit__item { position: absolute; display: flex; align-items: center; justify-content: center; }
 .outfit__rate { position: absolute; top: 12px; right: 12px; z-index: 10; display: flex; gap: var(--space-2); }
 .outfit__text { margin: 0 4px; color: var(--ink-secondary); text-wrap: pretty; }
-.outfit__hint { display: flex; align-items: center; gap: var(--space-2); margin: 0 4px; padding: 10px 12px; border-radius: var(--radius-chip); background: var(--accent-soft); color: var(--ink-primary); }
+.outfit__hint { display: flex; align-items: center; gap: var(--space-2); margin: 0 4px; padding: 10px 14px; border-radius: var(--radius-input); background: var(--accent-soft); color: var(--ink-primary); }
 
 .card { background: var(--bg-elevated); border-radius: var(--radius-tile); box-shadow: var(--shadow-card); }
 .setup {

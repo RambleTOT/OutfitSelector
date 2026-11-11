@@ -219,6 +219,10 @@ test('фото: распознавание проксируется во vision,
   assert.equal((await over.json()).error, 'photo_limit')
   assert.equal(calls[0].url, 'http://vision.local/analyze')
   assert.equal(calls.length, 4)
+  // новое устройство узнаёт расход лимита из /api/me
+  const me = await (await fetch(`http://localhost:${t.server.address().port}/api/me`, { headers: auth })).json()
+  assert.equal(me.usage.photosTotal, 3)
+  assert.equal(me.usage.outfitsWeek, 0)
   t.server.close()
 })
 

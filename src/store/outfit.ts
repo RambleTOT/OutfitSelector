@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { canGenerate, explain, generateOutfit, type GeneratedOutfit } from '../data/generate'
 import type { Item, OccasionId } from '../data/types'
 import { computeLimits, useApp } from './app'
+import { refreshMe } from '../lib/sync'
 import { aiOutfit } from '../lib/ai'
 
 export type Phase = 'idle' | 'waiting' | 'result' | 'error'
@@ -73,7 +74,8 @@ export const useOutfitFlow = create<FlowState>((set, get) => ({
         gen.itemIds = chosen.map((i) => i.id)
         gen.explanation = smart.explanation || explain(chosen)
       }
-      a.spendGeneration()
+      // образ от серверного AI сервер уже посчитал: берём его цифры; локальный алгоритм считаем у себя
+      if (smart) void refreshMe(); else a.spendGeneration()
       set({ phase: 'result', result: gen, liked: null, worn: false, savedId: null })
     }, WAIT_MS)
     return 'started'

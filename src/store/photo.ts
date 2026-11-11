@@ -3,6 +3,7 @@ import { buildTemplateItem, makeDescription, makeTitle, typeDef, TYPES } from '.
 import type { Category, Item } from '../data/types'
 import { useApp } from './app'
 import type { Analyzed } from '../lib/ai'
+import { getCaps, hasSession } from '../lib/api'
 
 /** Фото-ветка добавления вещи (ADD-02…ADD-06). Состояние в памяти, не сохраняется */
 interface PhotoFlow {
@@ -78,7 +79,9 @@ export function addPhotoItem(item: Item, opts: { background?: boolean; countPhot
   const processingLeft = opts.background ? Math.max(0, PROCESS_MS - (Date.now() - usePhotoFlow.getState().startedAt)) : 0
   const entry: Item = { ...item, addedAt: Date.now(), queued: offline || undefined, processing: !offline && processingLeft > 0 ? true : undefined }
   app.addItem(entry)
-  if (opts.countPhoto !== false) app.patch({ usage: { ...app.usage, photosTotal: app.usage.photosTotal + 1, photosMonth: app.usage.photosMonth + 1 } })
+  // с серверным распознаванием фото уже посчитал сервер (см. intakePhoto), считаем у себя только без него
+  const serverCounts = hasSession() && getCaps().analyze
+  if (opts.countPhoto !== false && !serverCounts) app.patch({ usage: { ...app.usage, photosTotal: app.usage.photosTotal + 1, photosMonth: app.usage.photosMonth + 1 } })
   if (!offline && processingLeft > 0) setTimeout(() => finishProcessing(entry.id), processingLeft)
   return entry
 }
