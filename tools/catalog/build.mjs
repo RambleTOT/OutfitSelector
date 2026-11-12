@@ -3,7 +3,8 @@
 //   node tools/catalog/build.mjs --source=generate --vision=http://127.0.0.1:7100 [--limit=20] [--only=tee]
 //
 // Источники картинок (--source):
-//   generate  генерация студийных фото моделью изображений через OpenAI-совместимый API (IMAGE_API_URL, IMAGE_API_KEY, IMAGE_MODEL).
+//   generate  генерация студийных фото моделью изображений через OpenAI-совместимый API (IMAGE_API_URL, IMAGE_API_KEY, IMAGE_MODEL, IMAGE_AUTH).
+//             Yandex AI Studio (Alice AI ART): IMAGE_API_URL=https://ai.api.cloud.yandex.net/v1  IMAGE_MODEL=art://<id каталога>/aliceai-image-art-3.0  IMAGE_AUTH=Api-Key
 //             Права на картинки наши, единый стиль, цвет и крой точно как в списке. Рекомендуемый вариант, ~200 фото = несколько долларов
 //   yandex    YandexART через Yandex AI Studio (YANDEX_API_KEY, YANDEX_FOLDER_ID), оплата в рублях, 10 бесплатных запросов в день в консоли
 //   pexels    поиск свободных фото на Pexels (PEXELS_API_KEY, бесплатный ключ). Лицензия разрешает коммерческое использование,
@@ -35,7 +36,7 @@ async function fetchImage(e) {
   if (source === 'generate') {
     const base = (process.env.IMAGE_API_URL ?? 'https://api.openai.com/v1').replace(/\/$/, '')
     const r = await fetch(`${base}/images/generations`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.IMAGE_API_KEY}` },
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `${process.env.IMAGE_AUTH ?? 'Bearer'} ${process.env.IMAGE_API_KEY}` },
       body: JSON.stringify({ model: process.env.IMAGE_MODEL ?? 'gpt-image-1', prompt: e.prompt, size: '1024x1024', n: 1 }),
     })
     if (!r.ok) throw new Error(`images ${r.status} ${(await r.text()).slice(0, 120)}`)
