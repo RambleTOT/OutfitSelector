@@ -5,6 +5,7 @@
 // Источники картинок (--source):
 //   generate  генерация студийных фото моделью изображений через OpenAI-совместимый API (IMAGE_API_URL, IMAGE_API_KEY, IMAGE_MODEL).
 //             Права на картинки наши, единый стиль, цвет и крой точно как в списке. Рекомендуемый вариант, ~200 фото = несколько долларов
+//   yandex    YandexART через Yandex AI Studio (YANDEX_API_KEY, YANDEX_FOLDER_ID), оплата в рублях, 10 бесплатных запросов в день в консоли
 //   pexels    поиск свободных фото на Pexels (PEXELS_API_KEY, бесплатный ключ). Лицензия разрешает коммерческое использование,
 //             автор и ссылка сохраняются в credit. Качество разное, нужна ручная проверка contact sheet
 //   dir       свои фото из tools/catalog/inbox/<id>.jpg (например, купленный пак студийных фото)
@@ -43,6 +44,25 @@ async function fetchImage(e) {
     if (d?.b64_json) return { bytes: Buffer.from(d.b64_json, 'base64') }
     if (d?.url) return { bytes: Buffer.from(await (await fetch(d.url)).arrayBuffer()) }
     throw new Error('нет картинки в ответе')
+  }
+  if (source === 'yandex') {
+    const H = { 'Content-Type': 'application/json', Authorization: `Api-Key ${process.env.YANDEX_API_KEY}` }
+    const start = await fetch('https://llm.api.cloud.yandex.net/foundationModels/v1/imageGenerationAsync', {
+      method: 'POST', headers: H,
+      body: JSON.stringify({ modelUri: `art://${process.env.YANDEX_FOLDER_ID}/yandex-art/latest`, generationOptions: { seed: Math.floor(Math.random() * 1e6), aspectRatio: { widthRatio: 1, heightRatio: 1 } }, messages: [{ weight: 1, text: e.prompt }] }),
+    })
+    if (!start.ok) throw new Error(`yandex ${start.status} ${(await start.text()).slice(0, 120)}`)
+    const op = await start.json()
+    for (let i = 0; i < 40; i++) {
+      await new Promise((r) => setTimeout(r, 3000))
+      const st = await fetch(`https://operation.api.cloud.yandex.net/operations/${op.id}`, { headers: H })
+      const j = await st.json()
+      if (j.done) {
+        if (j.error) throw new Error('yandex: ' + JSON.stringify(j.error).slice(0, 120))
+        return { bytes: Buffer.from(j.response.image, 'base64') }
+      }
+    }
+    throw new Error('yandex: долго ждали')
   }
   if (source === 'pexels') {
     const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(e.query)}&per_page=8&orientation=square`, { headers: { Authorization: process.env.PEXELS_API_KEY } })
