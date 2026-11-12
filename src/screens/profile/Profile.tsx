@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BottomSheet, Button, Icon, IconButton, PlanBadge, SettingsList, SettingsRow, StatTile, Switch, TickBars } from '../../ui'
 import { useApp, useLimits } from '../../store/app'
 import { PLAN_PRICE } from '../../store/limits'
 import { toast } from '../../store/ui'
-import { openSupport, supportLabel } from '../../lib/support'
+import { loadSupport, openSupport, supportLabel } from '../../lib/support'
 import { dateLong } from '../../lib/format'
 
 const TIMES = ['07:00', '07:30', '08:00', '08:30', '09:00']
@@ -15,6 +15,9 @@ export function Profile() {
   const app = useApp()
   const lim = useLimits()
   const [signOut, setSignOut] = useState(false)
+  const [unread, setUnread] = useState(0)
+  // есть ли новые ответы поддержки (экран при этом не помечает их прочитанными)
+  useEffect(() => { void loadSupport(true).then((t) => setUnread(t.unread)).catch(() => {}) }, [])
   const { name, quiz, height, size, avatar, notif, theme, subEnded, items, saved } = app
   const sub = (k: keyof typeof notif) => (v: boolean) => app.patch({ notif: { ...notif, [k]: v } })
   const initial = (name || 'А').charAt(0).toUpperCase()
@@ -117,7 +120,7 @@ export function Profile() {
         <SettingsRow icon="arrows-clockwise" label="Пройти анкету стиля заново" onClick={() => navigate('/onboarding/quiz?only=style')} />
         <SettingsRow icon="map-pin" label="Город" value={quiz.city} onClick={() => navigate('/onboarding/quiz?only=city')} />
         <SettingsRow icon="device-mobile" label="Как установить на экран" onClick={() => navigate('/install')} />
-        <SettingsRow icon="chat-circle" label={supportLabel()} onClick={() => openSupport()} />
+        <SettingsRow icon="chat-circle" label={supportLabel()} value={unread ? `Ответили: ${unread}` : undefined} onClick={() => openSupport()} />
       </SettingsList>
       <SettingsList>
         <SettingsRow icon="user" label="Мои данные" onClick={() => navigate('/profile/data')} />

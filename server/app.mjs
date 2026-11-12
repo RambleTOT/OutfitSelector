@@ -1,7 +1,7 @@
 import http from 'node:http'
 import { createReadStream, existsSync, statSync, mkdirSync, writeFileSync } from 'node:fs'
 import { extname, join, normalize } from 'node:path'
-import { randomBytes } from 'node:crypto'
+import { randomBytes, timingSafeEqual } from 'node:crypto'
 import { config } from './config.mjs'
 import { Store } from './store.mjs'
 import { checkCode, emailOk, issueCode, normEmail, signToken, verifyToken } from './auth.mjs'
@@ -11,6 +11,7 @@ import { SYSTEM, buildUserPrompt, parseOutfit, repairOutfit, outfitProblems } fr
 import { buildIntent, cancelSubscription, handleNotification, parseBody, payEnabled, publicSub, verifySignature } from './pay.mjs'
 import { spend, spendPhoto, usageSnapshot } from './plans.mjs'
 import { createWeather } from './weather.mjs'
+import { addMessage, notifyTeam, view as supportView } from './support.mjs'
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain', '.xml': 'application/xml', '.ico': 'image/x-icon' }
 const PHOTO_ID = /^[a-f0-9]{32}$/
@@ -110,8 +111,44 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
       return send(res, 200, { token: signToken(u.id), user: me(u), isNew: !existing, state: u.state, stateAt: u.stateAt })
     }
 
+    // ===== поддержка: ответы команды (по токену администратора из .env, SUPPORT_ADMIN_TOKEN)
+    if (path.startsWith('/api/admin/support')) {
+      const tok = String(req.headers['x-admin-token'] ?? '')
+      if (!config.supportAdminToken || tok.length !== config.supportAdminToken.length || !timingSafeEqual(Buffer.from(tok), Buffer.from(config.supportAdminToken))) throw new HttpError(401, 'unauthorized')
+      limit(`adm:${ip(req)}`, 120, 3600000)
+      if (m === 'GET') {
+        const email = normEmail(url.searchParams.get('email') ?? '')
+        if (email) {
+          const u = store.userByEmail(email)
+          if (!u) throw new HttpError(404, 'no_user')
+          return send(res, 200, supportView(store, u.id))
+        }
+        const threads = Object.entries(store.db.support ?? {}).filter(([id, t]) => store.user(id) && t.messages.length).map(([id, t]) => {
+          const u = store.user(id); const last = t.messages[t.messages.length - 1]
+          return { email: u.email, plan: u.sub?.plan ?? 'free', last, waiting: last.from === 'user' }
+        }).sort((a, b) => b.last.at - a.last.at)
+        return send(res, 200, { threads })
+      }
+      if (m === 'DELETE') {
+        const u = store.userByEmail(normEmail(url.searchParams.get('email') ?? ''))
+        if (!u) throw new HttpError(404, 'no_user')
+        if (store.db.support) delete store.db.support[u.id]
+        store.save()
+        return send(res, 200, { ok: true })
+      }
+      if (m === 'POST') {
+        const b = await json(req, 10_000)
+        const u = store.userByEmail(normEmail(String(b.email ?? '')))
+        const text = String(b.text ?? '').trim()
+        if (!u) throw new HttpError(404, 'no_user')
+        if (!text) throw new HttpError(400, 'empty')
+        addMessage(store, u.id, 'team', text)
+        return send(res, 200, { ok: true })
+      }
+    }
+
     // ===== всё ниже только для вошедших
-    if (path.startsWith('/api/me') || path.startsWith('/api/state') || path.startsWith('/api/ai') || path.startsWith('/api/pay/') && !path.startsWith('/api/pay/notify') || path.startsWith('/api/photos') && m !== 'GET') {
+    if (path.startsWith('/api/me') || path.startsWith('/api/support') || path.startsWith('/api/state') || path.startsWith('/api/ai') || path.startsWith('/api/pay/') && !path.startsWith('/api/pay/notify') || path.startsWith('/api/photos') && m !== 'GET') {
       const u = authUser(req)
 
       if (m === 'GET' && path === '/api/me') return send(res, 200, me(u))
@@ -120,6 +157,19 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
         if (u.sub.subscriptionId && payEnabled()) await cancelSubscription(store, u, fetchImpl).catch(() => {})
         store.deleteUser(u.id)
         return send(res, 200, { ok: true })
+      }
+
+      // поддержка: переписка человека с командой
+      if (m === 'GET' && path === '/api/support') return send(res, 200, supportView(store, u.id, url.searchParams.get('peek') !== '1'))
+      if (m === 'POST' && path === '/api/support') {
+        limit(`sp:${u.id}`, 10, 3600000)
+        const b = await json(req, 10_000)
+        const text = String(b.text ?? '').trim()
+        if (text.length < 2) throw new HttpError(400, 'empty')
+        if (text.length > 1500) throw new HttpError(400, 'too_long')
+        addMessage(store, u.id, 'user', text)
+        void notifyTeam({ email: u.email, plan: u.sub?.plan ?? 'free', text }, process.env, fetchImpl)
+        return send(res, 200, supportView(store, u.id))
       }
 
       if (m === 'GET' && path === '/api/state') return send(res, 200, { state: u.state, stateAt: u.stateAt })

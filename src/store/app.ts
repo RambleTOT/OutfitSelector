@@ -2,7 +2,7 @@ import { getToken } from '../lib/api'
 import { HAS_API } from '../lib/config'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { MOCK_ITEMS } from '../data/items'
+import { hasPhoto, MOCK_ITEMS } from '../data/items'
 import type { Item, SavedOutfit } from '../data/types'
 import type { PlatformPref } from '../lib/platform'
 import { LIMITS, MONTHLY_CAP, monthKey, weekKey } from './limits'
@@ -289,7 +289,7 @@ export const useApp = create<AppState>()(
         const p = (persisted ?? {}) as Partial<AppState>
         // сохранения до появления quizDone: уже прошедший онбординг считается прошедшим анкету
         // фото, которые «обрабатывались» в момент перезагрузки, считаем готовыми
-        const items = (p.items ?? current.items).map((i) => (i.processing ? { ...i, processing: undefined } : i))
+        const items = (p.items ?? current.items).filter(hasPhoto).map((i) => (i.processing ? { ...i, processing: undefined } : i))
         const merged = { ...current, ...p, items, quizDone: p.quizDone ?? !!p.onboarded }
         // гостевого режима больше нет: сохранённый «гость» или вход без токена (при подключённом сервере) требует войти заново
         if ((merged.via as string) === 'guest' || (HAS_API && !getToken())) { merged.signedIn = false; merged.via = null }

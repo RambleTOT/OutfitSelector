@@ -15,6 +15,11 @@ const SHORT: Record<Category, string> = { top: 'Верх', bottom: 'Низ', sho
 const CHIP_ORDER: Category[] = ['top', 'bottom', 'shoes', 'outer', 'dress', 'bag', 'accessory']
 const TOP = 112 // верх рабочей области под плавающей панелью
 
+/** Вид холста: масштаб и сдвиг. Двумя пальцами по пустому месту можно увеличить поле, одним сдвинуть; есть кнопки + и − */
+interface View { z: number; x: number; y: number }
+const MIN_Z = 0.5
+const MAX_Z = 3
+
 interface Snap { layout: CanvasLayoutItem[]; bg: string }
 interface NavState { itemIds?: string[]; savedId?: string; occasion?: OccasionId; explanation?: string }
 
@@ -48,6 +53,11 @@ export function Constructor() {
   const [dims, setDims] = useState<Dims>({ w: 390, boxH: 390 * BOX_ASPECT, top: TOP })
   const [ghost, setGhost] = useState<{ item: Item; x: number; y: number } | null>(null)
   const [canUndo, setCanUndo] = useState(false)
+  const [view, setView] = useState<View>({ z: 1, x: 0, y: 0 })
+  const viewRef = useRef(view)
+  viewRef.current = view
+  const vpts = useRef(new Map<number, { x: number; y: number }>())
+  const vmode = useRef<{ m: 'pan'; sx: number; sy: number; x0: number; y0: number } | { m: 'pinch'; d0: number; z0: number; x0: number; y0: number; mx: number; my: number } | null>(null)
 
   const cvRef = useRef<HTMLDivElement>(null)
   const dockRef = useRef<HTMLDivElement>(null)
@@ -65,6 +75,61 @@ export function Constructor() {
     ro.observe(el)
     return () => ro.disconnect()
   }, [])
+
+  // ---- масштаб и сдвиг холста
+  const cvPoint = (cx: number, cy: number) => {
+    const r = cvRef.current!.getBoundingClientRect()
+    const k = r.width / dims.w || 1
+    return { x: (cx - r.left) / k, y: (cy - r.top) / k }
+  }
+  const clampView = (v: View): View => {
+    const H = cvRef.current?.offsetHeight ?? 844
+    const lim = (size: number) => { const free = size * (1 - v.z); return [Math.min(0, free) - 80, Math.max(0, free) + 80] as const }
+    const [ax, bx] = lim(dims.w)
+    const [ay, by] = lim(H)
+    return { z: clamp(v.z, MIN_Z, MAX_Z), x: clamp(v.x, ax, bx), y: clamp(v.y, ay, by) }
+  }
+  const zoomAt = (factor: number, mx = dims.w / 2, my = (cvRef.current?.offsetHeight ?? 844) / 2) => {
+    const v = viewRef.current
+    const z = clamp(v.z * factor, MIN_Z, MAX_Z)
+    const wx = (mx - v.x) / v.z
+    const wy = (my - v.y) / v.z
+    setView(clampView({ z, x: mx - wx * z, y: my - wy * z }))
+  }
+  const startView = () => {
+    const a = [...vpts.current.values()].map((p) => cvPoint(p.x, p.y))
+    const v = viewRef.current
+    if (a.length >= 2) vmode.current = { m: 'pinch', d0: Math.hypot(a[1].x - a[0].x, a[1].y - a[0].y) || 1, z0: v.z, x0: v.x, y0: v.y, mx: (a[0].x + a[1].x) / 2, my: (a[0].y + a[1].y) / 2 }
+    else if (a.length === 1) vmode.current = { m: 'pan', sx: a[0].x, sy: a[0].y, x0: v.x, y0: v.y }
+    else vmode.current = null
+  }
+  const cvDown = (e: React.PointerEvent) => {
+    setSel(null)
+    vpts.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    startView()
+  }
+  const cvMove = (e: React.PointerEvent) => {
+    if (!vpts.current.has(e.pointerId) || !vmode.current) return
+    vpts.current.set(e.pointerId, { x: e.clientX, y: e.clientY })
+    const a = [...vpts.current.values()].map((p) => cvPoint(p.x, p.y))
+    const m = vmode.current
+    if (m.m === 'pinch' && a.length >= 2) {
+      const d = Math.hypot(a[1].x - a[0].x, a[1].y - a[0].y) || 1
+      const z = clamp(m.z0 * (d / m.d0), MIN_Z, MAX_Z)
+      const mx = (a[0].x + a[1].x) / 2
+      const my = (a[0].y + a[1].y) / 2
+      const wx = (m.mx - m.x0) / m.z0
+      const wy = (m.my - m.y0) / m.z0
+      setView(clampView({ z, x: mx - wx * z, y: my - wy * z }))
+    } else if (m.m === 'pan' && a.length === 1 && Math.hypot(a[0].x - m.sx, a[0].y - m.sy) > 3) {
+      setView(clampView({ z: viewRef.current.z, x: m.x0 + (a[0].x - m.sx), y: m.y0 + (a[0].y - m.sy) }))
+    }
+  }
+  const cvUp = (e: React.PointerEvent) => { vpts.current.delete(e.pointerId); startView() }
+  const cvWheel = (e: React.WheelEvent) => {
+    const p = cvPoint(e.clientX, e.clientY)
+    zoomAt(Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.002)), p.x, p.y)
+  }
 
   const pushHistory = (s: Snap) => { history.current.push(s); if (history.current.length > 50) history.current.shift(); setCanUndo(true) }
   const snapNow = (): Snap => ({ layout: layoutRef.current.map((l) => ({ ...l })), bg: bgRef.current })
@@ -114,6 +179,12 @@ export function Constructor() {
       const k = r.width / dims.w
       return { x: (cx - r.left) / k, y: (cy - r.top) / k, k, r }
     }
+    // точка в координатах холста с учётом масштаба и сдвига
+    const toWorld = (cx: number, cy: number) => {
+      const p = toApp(cx, cy)
+      const v = viewRef.current
+      return { x: (p.x - v.x) / v.z, y: (p.y - v.y) / v.z }
+    }
     const mv = (ev: PointerEvent) => {
       const dx = ev.clientX - sx
       const dy = ev.clientY - sy
@@ -137,7 +208,7 @@ export function Constructor() {
       }
       const dock = dockRef.current?.getBoundingClientRect()
       if (ev.type === 'pointerup' && dock && ev.clientY < dock.top) {
-        const p = toApp(ev.clientX, ev.clientY)
+        const p = toWorld(ev.clientX, ev.clientY)
         add(item, clamp(p.x / dims.w, 0.04, 0.96), clamp((p.y - dims.top) / dims.boxH, 0.04, 0.96))
       }
     }
@@ -185,13 +256,13 @@ export function Constructor() {
   // панель инструментов под выбранной вещью
   const selL = layout.find((l) => l.itemId === sel)
   const tool = selL && {
-    x: clamp(selL.x * dims.w, 90, dims.w - 90),
-    y: clamp(dims.top + selL.y * dims.boxH + (dims.w * 0.36 * selL.scale) / 2 + 30, dims.top, 560),
+    x: clamp(view.x + selL.x * dims.w * view.z, 90, dims.w - 90),
+    y: clamp(view.y + (dims.top + selL.y * dims.boxH + (dims.w * 0.36 * selL.scale) / 2 + 30) * view.z, dims.top, 560),
   }
 
   return (
-    <div className="cv" ref={cvRef} style={{ background: bgColor(bg) }} onPointerDown={() => setSel(null)}>
-      <div className="cv__dots" />
+    <div className="cv" ref={cvRef} style={{ background: bgColor(bg) }} onPointerDown={cvDown} onPointerMove={cvMove} onPointerUp={cvUp} onPointerCancel={cvUp} onWheel={cvWheel}>
+      <div className="cv__dots" style={{ backgroundSize: `${20 * view.z}px ${20 * view.z}px`, backgroundPosition: `${view.x}px ${view.y}px` }} />
       {empty && (
         <div className="cv__empty">
           <span className="cv__empty-ico"><Icon name="hand-pointing" size={32} /></span>
@@ -199,16 +270,18 @@ export function Constructor() {
           <span className="t-callout muted" style={{ fontWeight: 400, textWrap: 'pretty' }}>Перетащи вещи из шторки на холст. Двумя пальцами можно увеличить и повернуть</span>
         </div>
       )}
-      {layout.map((l) => {
-        const it = items.find((i) => i.id === l.itemId)
-        if (!it) return null
-        return (
-          <CanvasItem
-            key={l.itemId} item={it} l={l} selected={sel === l.itemId} dims={dims} fresh={fresh === l.itemId}
-            onSelect={() => setSel(l.itemId)} onLive={(p) => live(l.itemId, p)} onStart={onStart} onEnd={onEnd}
-          />
-        )
-      })}
+      <div className="cv__world" style={{ transform: `translate(${view.x}px, ${view.y}px) scale(${view.z})` }}>
+        {layout.map((l) => {
+          const it = items.find((i) => i.id === l.itemId)
+          if (!it) return null
+          return (
+            <CanvasItem
+              key={l.itemId} item={it} l={l} selected={sel === l.itemId} dims={dims} fresh={fresh === l.itemId}
+              onSelect={() => setSel(l.itemId)} onLive={(p) => live(l.itemId, p)} onStart={onStart} onEnd={onEnd}
+            />
+          )
+        })}
+      </div>
       {tool && (
         <div className="cv__tools glass" style={{ left: tool.x, top: tool.y }} onPointerDown={(e) => e.stopPropagation()}>
           <IconButton icon="stack-plus" label="На передний план" variant="plain" onClick={() => bump(true)} />
@@ -228,6 +301,11 @@ export function Constructor() {
             </>
           }
         />
+      </div>
+      <div className="cv__zoom glass" onPointerDown={(e) => e.stopPropagation()}>
+        <IconButton icon="plus" label="Увеличить" variant="plain" disabled={view.z >= MAX_Z} onClick={() => zoomAt(1.3)} />
+        <IconButton icon="minus" label="Уменьшить" variant="plain" disabled={view.z <= MIN_Z} onClick={() => zoomAt(1 / 1.3)} />
+        <IconButton icon="arrows-out-simple" label="Вернуть вид" variant="plain" disabled={view.z === 1 && view.x === 0 && view.y === 0} onClick={() => setView({ z: 1, x: 0, y: 0 })} />
       </div>
       {!empty && (
         <div className="cv__bg glass" onPointerDown={(e) => e.stopPropagation()}>

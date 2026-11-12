@@ -1,6 +1,8 @@
 import { api, getToken, hasSession, ApiError, type ServerMe, setToken } from './api'
 import { API_URL } from './config'
 import { useApp } from '../store/app'
+import { hasPhoto } from '../data/items'
+import type { Item } from '../data/types'
 
 /**
  * Синхронизация гардероба с сервером. Сервер хранит снимок состояния и фото; тариф приходит только с сервера.
@@ -16,7 +18,11 @@ const writeAt = (n: number) => { try { localStorage.setItem(SYNC_AT, String(n)) 
 const snapshot = (): Snapshot => { const s = useApp.getState() as unknown as Snapshot; return Object.fromEntries(SYNCED.map((k) => [k, s[k]])) }
 
 export function applyServerState(state: Snapshot | null, at: number) {
-  if (state) useApp.setState({ ...state, signedIn: true })
+  if (state) {
+    const next: Record<string, unknown> = { ...state, signedIn: true }
+    if (Array.isArray(state.items)) next.items = (state.items as Item[]).filter(hasPhoto)
+    useApp.setState(next as Partial<ReturnType<typeof useApp.getState>>)
+  }
   writeAt(at)
 }
 

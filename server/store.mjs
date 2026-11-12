@@ -51,6 +51,7 @@ export class Store {
     delete this.db.byEmail[u.email]
     delete this.db.users[id]
     delete this.db.usage[id]
+    if (this.db.support) delete this.db.support[id]
     rmSync(join(this.dir, 'photos', id), { recursive: true, force: true })
     this.save()
   }

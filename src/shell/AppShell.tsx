@@ -13,7 +13,6 @@ import { Quiz } from '../screens/onboarding/Quiz'
 import { Geo } from '../screens/onboarding/Geo'
 import { FirstItems } from '../screens/onboarding/FirstItems'
 import { AddItemSheet } from '../screens/add/AddItemSheet'
-import { TemplatePicker } from '../screens/add/TemplatePicker'
 import { Catalog } from '../screens/add/Catalog'
 import { Camera } from '../screens/add/Camera'
 import { Processing } from '../screens/add/Processing'
@@ -29,6 +28,7 @@ import { ItemDetail } from '../screens/wardrobe/ItemDetail'
 import { Favorites } from '../screens/favorites/Favorites'
 import { SavedOutfitDetail } from '../screens/favorites/SavedOutfitDetail'
 import { Profile } from '../screens/profile/Profile'
+import { Support } from '../screens/profile/Support'
 import { EditProfile } from '../screens/profile/EditProfile'
 import { Documents } from '../screens/profile/Documents'
 import { Subscription } from '../screens/profile/Subscription'
@@ -122,7 +122,6 @@ export function AppShell() {
             <Route path="/onboarding/quiz" element={<Quiz />} />
             <Route path="/onboarding/items" element={<FirstItems />} />
             <Route path="/add/catalog" element={<Catalog />} />
-            <Route path="/add/template" element={<TemplatePicker />} />
             <Route path="/add/photo" element={<Camera />} />
             <Route path="/add/processing" element={<Processing />} />
             <Route path="/add/notclothing" element={<NotClothing />} />
@@ -141,6 +140,7 @@ export function AppShell() {
               <Route path="/favorites/:id" element={<SavedOutfitDetail />} />
               <Route path="/profile/data" element={<EditProfile />} />
               <Route path="/profile/docs" element={<Documents />} />
+              <Route path="/support" element={<Support />} />
               <Route path="/profile/subscription" element={<Subscription />} />
               <Route path="/profile/delete" element={<DeleteAccount />} />
               <Route path="/paywall" element={<Paywall />} />

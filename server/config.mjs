@@ -19,6 +19,7 @@ const dev = e.NODE_ENV !== 'production'
 
 export const config = {
   dev,
+  supportAdminToken: e.SUPPORT_ADMIN_TOKEN ?? '',
   port: Number(e.PORT ?? 8787),
   corsOrigin: e.CORS_ORIGIN ?? '',
   // в разработке секрет случайный на каждый запуск: токены живут до перезапуска. В проде секрет обязателен

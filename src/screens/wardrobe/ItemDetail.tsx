@@ -54,7 +54,12 @@ export function ItemDetail({ isNew = false, itemOverride, onSaved }: { isNew?: b
       case 'type': return TYPES[draft.category].map((t) => ({ label: cap(t.type), selected: draft.type === t.type, pick: () => set({ type: t.type }) }))
       case 'color': return COLORS.map((c) => ({ label: c.name, selected: draft.colorName === c.name.toLowerCase(), pick: () => set({ colorNameTo: c.name }) }))
       case 'color2': return [{ label: 'Нет', selected: !draft.color2, pick: () => set({ color2: undefined }) }, ...COLORS.map((c) => ({ label: c.name, selected: draft.color2 === c.name.toLowerCase(), pick: () => set({ color2: c.name.toLowerCase() }) }))]
-      default: return (FIELD_OPTIONS[k as 'pattern'] as string[]).map((o) => ({ label: cap(o), selected: draft[k] === o, pick: () => set({ [k]: o } as Partial<Item>) }))
+      default: {
+        const list = FIELD_OPTIONS[k as 'pattern'] as string[]
+        // значение, которого нет в списке (например, пришло от распознавания), тоже показываем и оставляем выбранным
+        const all = list.includes(String(draft[k])) ? list : [String(draft[k]), ...list]
+        return all.map((o) => ({ label: cap(o), selected: draft[k] === o, pick: () => set({ [k]: o } as Partial<Item>) }))
+      }
     }
   }
   const swatchOf = (k: Key) => (k === 'color' ? draft.color : k === 'color2' && draft.color2 ? hexOfColorName(draft.color2) : undefined)

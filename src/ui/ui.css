@@ -628,3 +628,14 @@
 @keyframes scan-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
 @media (prefers-reduced-motion: reduce) { .scan__beam, .scan__img { animation: none; } .scan__beam { opacity: 0.4; top: 30%; } }
 .geo__pin { width: 88px; height: 88px; border-radius: 28px; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; }
+
+.cv__world { position: absolute; inset: 0; transform-origin: 0 0; will-change: transform; }
+.cv__zoom { position: absolute; left: 12px; top: 124px; z-index: 30; display: flex; flex-direction: column; gap: 2px; padding: 4px; border-radius: 999px; }
+
+/* ---------- Поддержка ---------- */
+.chat { display: flex; flex-direction: column; gap: 10px; padding-bottom: calc(var(--bottom-clear, 200px) + 40px); }
+.chat__msg { max-width: 86%; display: flex; flex-direction: column; gap: 4px; padding: 10px 14px; border-radius: 20px; }
+.chat__msg--user { align-self: flex-end; background: var(--accent-soft); border-bottom-right-radius: 6px; }
+.chat__msg--team { align-self: flex-start; background: var(--bg-elevated); box-shadow: var(--shadow-card); border-bottom-left-radius: 6px; }
+.chat__time { color: var(--ink-secondary); }
+.chat__input { width: 100%; resize: none; border: none; outline: none; border-radius: var(--radius-input); background: var(--bg-sunken); color: var(--ink-primary); padding: 12px 14px; font: var(--type-body-weight) var(--type-body-size)/var(--type-body-lh) var(--font-ui); }

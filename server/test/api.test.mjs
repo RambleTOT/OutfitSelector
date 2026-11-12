@@ -11,6 +11,7 @@ process.env.CP_API_SECRET = 'cp-secret'
 process.env.AI_PROVIDER = 'openai'
 process.env.OPENAI_MODEL = 'x'
 process.env.VISION_URL = 'http://vision.local'
+process.env.SUPPORT_ADMIN_TOKEN = 'admin-secret-token'
 
 const { createApp } = await import('../app.mjs')
 const { Store } = await import('../store.mjs')
@@ -315,4 +316,32 @@ test('погода: дождь и гроза, плохие координаты,
   assert.equal(e.status, 502)
   assert.equal(e.body.error ?? e.body.code, 'weather_unavailable')
   down.server.close()
+})
+
+test('поддержка: человек пишет, команда отвечает, ответ виден в приложении, чужой токен не пускает', async () => {
+  const t = await boot()
+  const { auth } = await t.login('u@x.ru')
+  const noAuth = await t.call('POST', '/api/support', { text: 'привет' })
+  assert.equal(noAuth.status, 401)
+  assert.equal((await t.call('POST', '/api/support', { text: ' ' }, auth)).status, 400)
+  const sent = await t.call('POST', '/api/support', { text: 'Не открывается гардероб' }, auth)
+  assert.equal(sent.status, 200)
+  assert.equal(sent.body.messages.length, 1)
+  assert.equal(sent.body.messages[0].from, 'user')
+  const admin = { 'X-Admin-Token': 'admin-secret-token' }
+  assert.equal((await t.call('GET', '/api/admin/support', undefined, { 'X-Admin-Token': 'nope' })).status, 401)
+  assert.equal((await t.call('GET', '/api/admin/support')).status, 401)
+  const list = await t.call('GET', '/api/admin/support', undefined, admin)
+  assert.equal(list.body.threads[0].email, 'u@x.ru')
+  assert.equal(list.body.threads[0].waiting, true)
+  assert.equal((await t.call('POST', '/api/admin/support', { email: 'u@x.ru', text: 'Починили, обнови приложение' }, admin)).status, 200)
+  const mine = await t.call('GET', '/api/support', undefined, auth)
+  assert.equal(mine.body.messages.length, 2)
+  assert.equal(mine.body.unread, 1)
+  const again = await t.call('GET', '/api/support', undefined, auth)
+  assert.equal(again.body.unread, 0) // прочитано
+  const del = await t.call('DELETE', '/api/me', undefined, auth)
+  assert.equal(del.status, 200)
+  assert.equal(t.store.db.support?.[Object.keys(t.store.db.support ?? {})[0]], undefined) // переписка удаляется вместе с аккаунтом
+  t.server.close()
 })
