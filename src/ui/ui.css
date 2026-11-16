@@ -639,3 +639,21 @@
 .chat__msg--team { align-self: flex-start; background: var(--bg-elevated); box-shadow: var(--shadow-card); border-bottom-left-radius: 6px; }
 .chat__time { color: var(--ink-secondary); }
 .chat__input { width: 100%; resize: none; border: none; outline: none; border-radius: var(--radius-input); background: var(--bg-sunken); color: var(--ink-primary); padding: 12px 14px; font: var(--type-body-weight) var(--type-body-size)/var(--type-body-lh) var(--font-ui); }
+
+/* ---------- Подписка включена ---------- */
+.pay-glow { position: absolute; left: 50%; top: 110px; width: 340px; height: 340px; margin-left: -170px; border-radius: 50%; background: var(--gradient-sunset); filter: blur(90px); opacity: 0; pointer-events: none; animation: pay-glow 1.2s var(--ease-out) 0.1s forwards; }
+.pay-badge { position: relative; margin-bottom: 12px; width: 112px; height: 112px; border-radius: 999px; background: var(--gradient-sunset-cta); color: var(--ink-on-accent); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-cta); animation: pay-pop 640ms var(--ease-spring) both; }
+.pay-check path { stroke-dasharray: 48; stroke-dashoffset: 48; animation: pay-draw 520ms var(--ease-out) 0.38s forwards; }
+.pay-ring { position: absolute; inset: -6px; border-radius: 999px; border: 2px solid var(--accent); opacity: 0; animation: pay-ring 1.1s var(--ease-out) 0.3s; }
+.pay-dot { position: absolute; left: 50%; top: 50%; width: 8px; height: 8px; margin: -4px; border-radius: 999px; background: var(--c); opacity: 0; animation: pay-burst 900ms var(--ease-out) forwards; }
+.pay-rise { opacity: 0; animation: at-rise 520ms var(--ease-out) forwards; }
+.pay-list { width: 100%; max-width: 340px; margin-top: 8px; padding: 6px 16px; border-radius: var(--radius-tile); background: var(--bg-elevated); box-shadow: var(--shadow-card); text-align: left; }
+.pay-row { display: flex; align-items: center; gap: 12px; min-height: 48px; opacity: 0; animation: at-rise 420ms var(--ease-out) forwards; }
+.pay-row + .pay-row { border-top: 1px solid var(--line); }
+.pay-wait { width: 56px; height: 56px; border-radius: 999px; border: 4px solid var(--bg-sunken); border-top-color: var(--accent); animation: at-spin 0.9s linear infinite; }
+@keyframes pay-pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes pay-draw { to { stroke-dashoffset: 0; } }
+@keyframes pay-ring { 0% { transform: scale(0.9); opacity: 0.7; } 100% { transform: scale(1.7); opacity: 0; } }
+@keyframes pay-burst { 0% { transform: rotate(var(--a)) translateY(0) scale(0.4); opacity: 1; } 100% { transform: rotate(var(--a)) translateY(calc(-1 * var(--d))) scale(1); opacity: 0; } }
+@keyframes pay-glow { 0% { opacity: 0; } 100% { opacity: 0.38; } }
+@media (prefers-reduced-motion: reduce) { .pay-dot { display: none; } .pay-check path { stroke-dashoffset: 0; } .pay-rise, .pay-row, .pay-glow { opacity: 1; } }
