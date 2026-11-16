@@ -42,6 +42,13 @@ export const config = {
       maxTokens: Number(e.OPENAI_MAX_TOKENS ?? 400), temperature: Number(e.OPENAI_TEMPERATURE ?? 0.7), extra: openaiExtra(e) },
     visionUrl: (e.VISION_URL ?? '').replace(/\/$/, ''),
   },
+  robokassa: {
+    login: e.ROBOKASSA_LOGIN ?? '',
+    algo: (e.ROBOKASSA_HASH ?? 'sha256').toLowerCase(),
+    pass1: e.ROBOKASSA_PASS1 ?? '', pass2: e.ROBOKASSA_PASS2 ?? '',
+    testPass1: e.ROBOKASSA_TEST_PASS1 ?? '', testPass2: e.ROBOKASSA_TEST_PASS2 ?? '',
+    test: e.ROBOKASSA_TEST === 'on', // тестовый режим: IsTest=1 и тестовые пароли
+  },
   pay: {
     publicId: e.CP_PUBLIC_ID ?? '',
     apiSecret: e.CP_API_SECRET ?? '',

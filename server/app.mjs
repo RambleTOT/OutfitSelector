@@ -8,9 +8,10 @@ import { checkCode, emailOk, issueCode, normEmail, signToken, verifyToken } from
 import { sendCode } from './mail.mjs'
 import { chat, aiEnabled } from './ai/providers.mjs'
 import { SYSTEM, buildUserPrompt, parseOutfit, repairOutfit, outfitProblems } from './ai/prompt.mjs'
-import { buildIntent, cancelSubscription, handleNotification, parseBody, payEnabled, publicSub, verifySignature } from './pay.mjs'
+import { buildIntent, cancelSubscription, handleNotification, parseBody, payEnabled as cpEnabled, publicSub, verifySignature } from './pay.mjs'
 import { spend, spendPhoto, usageSnapshot } from './plans.mjs'
 import { createWeather } from './weather.mjs'
+import { buildRobokassaUrl, handleRobokassaResult, returnPage, robokassaEnabled } from './robokassa.mjs'
 import { addMessage, notifyTeam, view as supportView } from './support.mjs'
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain', '.xml': 'application/xml', '.ico': 'image/x-icon' }
@@ -62,6 +63,7 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
     const raw = await readBody(req, max)
     try { return raw.length ? JSON.parse(raw.toString()) : {} } catch { throw new HttpError(400, 'bad_json') }
   }
+  const payEnabled = () => cpEnabled() || robokassaEnabled()
   const me = (u) => ({ id: u.id, email: u.email, sub: publicSub(u), usage: usageSnapshot(store, u) })
 
   async function api(req, res, url) {
@@ -109,6 +111,26 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
       const existing = store.userByEmail(email)
       const u = existing ?? store.createUser(email)
       return send(res, 200, { token: signToken(u.id), user: me(u), isNew: !existing, state: u.state, stateAt: u.stateAt })
+    }
+
+    // ===== Robokassa: уведомление об оплате (подпись проверяется паролем #2) и страницы возврата
+    if (path === '/api/pay/robokassa/result' && (m === 'POST' || m === 'GET')) {
+      if (!robokassaEnabled()) throw new HttpError(503, 'pay_off')
+      limit(`rkr:${ip(req)}`, 300, 3600000)
+      const raw = m === 'POST' ? (await readBody(req, 20_000)).toString('utf8') : url.search.slice(1)
+      const params = Object.fromEntries(new URLSearchParams(raw))
+      try {
+        const answer = handleRobokassaResult(store, params)
+        res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' })
+        return res.end(answer)
+      } catch (e) {
+        if (e.status) { console.error('[pay] robokassa:', e.message); throw new HttpError(e.status, e.message) }
+        throw e
+      }
+    }
+    if (m === 'GET' && (path === '/api/pay/robokassa/success' || path === '/api/pay/robokassa/fail')) {
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' })
+      return res.end(returnPage(path.endsWith('success')))
     }
 
     // ===== поддержка: ответы команды (по токену администратора из .env, SUPPORT_ADMIN_TOKEN)
@@ -253,10 +275,12 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
         limit(`pi:${u.id}`, 20, 3600000)
         const b = await json(req, 1000)
         if (!['sub', 'plus'].includes(b.plan)) throw new HttpError(400, 'bad_plan')
+        if (robokassaEnabled()) return send(res, 200, { provider: 'robokassa', url: buildRobokassaUrl(store, u, b.plan) })
         return send(res, 200, buildIntent(u, b.plan))
       }
       if (m === 'POST' && path === '/api/pay/cancel') {
         if (!payEnabled()) throw new HttpError(503, 'pay_off')
+        if (!u.sub.subscriptionId) { u.sub.cancelled = true; store.save(); return send(res, 200, me(u)) } // разовая оплата без автопродления
         try { await cancelSubscription(store, u, fetchImpl) } catch (e) { console.error('[pay]', e.message); throw new HttpError(502, 'cancel_failed') }
         return send(res, 200, me(u))
       }

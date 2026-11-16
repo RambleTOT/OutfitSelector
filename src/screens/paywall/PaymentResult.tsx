@@ -1,4 +1,6 @@
+import { useEffect } from 'react'
 import { openSupport } from '../../lib/support'
+import { refreshMe } from '../../lib/sync'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Button, CtaPlate, EmptyState, IconButton, PlanBadge } from '../../ui'
 import { useLimits } from '../../store/app'
@@ -9,6 +11,8 @@ export function PaymentSuccess() {
   const navigate = useNavigate()
   const { state } = useLocation() as { state: { from?: string } | null }
   const lim = useLimits()
+  // пришли по ссылке из страницы оплаты: подтягиваем тариф с сервера (уведомление об оплате могло прийти только что)
+  useEffect(() => { void refreshMe() }, [])
   const plan = lim.plan
   const l = LIMITS[plan]
   const text = plan === 'plus'
