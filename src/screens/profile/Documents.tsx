@@ -2,10 +2,8 @@ import { useNavigate } from 'react-router-dom'
 import { Icon, NavHeader } from '../../ui'
 
 const DOCS: [string, string][] = [
-  ['Пользовательское соглашение', '/legal/offer.html'],
   ['Политика конфиденциальности', '/legal/privacy.html'],
-  ['Оферта на подписку', '/legal/offer.html#3-оплата-и-автопродление'],
-  ['Согласие на автоплатёж', '/legal/offer.html#3-оплата-и-автопродление'],
+  ['Оферта и условия оплаты', '/legal/offer.html'],
   ['Согласие на обработку фото', '/legal/consent.html'],
 ]
 

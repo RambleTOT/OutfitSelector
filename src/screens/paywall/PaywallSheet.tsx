@@ -43,13 +43,13 @@ export function PaywallSheet({
         ))}
       </div>
       {plan !== 'free' && !isCurrent && (
-        <Checkbox checked={agree} onChange={setAgree}>Согласен на автоматическое продление подписки, списание {PLAN_PRICE[plan]} ₽ каждый месяц</Checkbox>
+        <Checkbox checked={agree} onChange={setAgree}>Согласен с офертой: оплата {PLAN_PRICE[plan]} ₽ за 30 дней, автоматических списаний нет</Checkbox>
       )}
       <div className="pay-foot">
         <Button full disabled={isCurrent || plan === 'free' || !agree} onClick={pay}>
-          {isCurrent || plan === 'free' ? 'Это твой тариф' : `Оформить за ${PLAN_PRICE[plan]} ₽`}
+          {isCurrent || plan === 'free' ? 'Это твой тариф' : `Оплатить ${PLAN_PRICE[plan]} ₽`}
         </Button>
-        <span className="t-caption muted">Отменить можно в любой момент в профиле</span>
+        <span className="t-caption muted">Оплата разовая. Через 30 дней вернёшься на Free, ничего не удалится</span>
       </div>
     </BottomSheet>
   )

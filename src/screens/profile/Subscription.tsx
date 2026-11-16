@@ -26,7 +26,11 @@ export function Subscription() {
     { v: String(l.photosMonth === null ? u.photosTotal : u.photosMonth), u: l.photosMonth === null ? 'всего' : `из ${l.photosMonth}`, l: l.photosMonth === null ? 'фото' : 'фото в месяце' },
     { v: String(app.saved.length), u: l.favorites === null ? '' : `из ${l.favorites}`, l: 'в избранном' },
   ]
-  const rows = app.subCancelled
+  // боевая оплата разовая на 30 дней, автосписаний нет: показываем срок и кнопку «Продлить» вместо отмены
+  const oneTime = HAS_API
+  const rows = oneTime
+    ? [{ label: 'Действует до', value: dateLong(until) }, { label: 'Оплата', value: 'разовая, без автосписаний' }, { label: 'Чеки', value: app.email ? `на ${app.email}` : 'в Telegram' }]
+    : app.subCancelled
     ? [{ label: 'Действует до', value: dateLong(until) }, { label: 'Автоплатёж', value: 'отключён' }]
     : [{ label: 'Следующее списание', value: dateLong(until) }, ...(HAS_API ? [] : [{ label: 'Карта', value: 'Мир •• 4821' }]), { label: 'Чеки', value: app.email ? `на ${app.email}` : 'в Telegram' }]
 
@@ -59,8 +63,9 @@ export function Subscription() {
         {stats.map((s) => <StatTile key={s.l} value={s.v} unit={s.u} label={s.l} size="sm" />)}
       </div>
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8, paddingTop: 16 }}>
+        {oneTime && <Button full onClick={() => navigate('/paywall', { state: { from: '/profile/subscription' } })}>Продлить на 30 дней</Button>}
         <Button variant="secondary" full onClick={() => navigate('/paywall')}>Сменить тариф</Button>
-        {app.subCancelled
+        {oneTime ? null : app.subCancelled
           ? <Button variant="text" full onClick={() => { app.patch({ subCancelled: false }); toast('Подписка продолжится') }}>Возобновить подписку</Button>
           : <button type="button" className="btn btn--text" style={{ color: 'var(--error-text)', height: 44 }} onClick={() => setCancel(true)}>Отменить подписку</button>}
       </div>
