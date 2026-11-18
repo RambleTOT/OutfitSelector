@@ -31,3 +31,4 @@ builds/
 
 .ai-eval/
 docs/legal/values.json
+.env.catalog

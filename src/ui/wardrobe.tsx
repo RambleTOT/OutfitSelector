@@ -18,7 +18,7 @@ export function ItemArt({ item, shadow = false }: { item: Item; shadow?: boolean
     <div className={`art ${shadow ? 'art--shadow' : ''}`}>
       {src ? (
         <img
-          src={src} alt={item.title} draggable={false}
+          src={src} alt={item.title} draggable={false} loading="lazy" decoding="async"
           onError={() => { noPng.add(item.id); setFailed(true) }}
         />
       ) : (

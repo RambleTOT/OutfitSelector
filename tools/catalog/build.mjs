@@ -26,7 +26,22 @@ const limit = Number(args.limit ?? 1e9)
 const out = join(root, 'public', 'catalog')
 mkdirSync(out, { recursive: true })
 
-const list = JSON.parse(readFileSync(join(here, 'list.json'), 'utf8')).filter((e) => !args.only || e.id.includes(args.only)).slice(0, limit)
+let all = JSON.parse(readFileSync(join(here, 'list.json'), 'utf8')).filter((e) => !args.only || e.id.includes(args.only))
+// --diverse: по кругу берём разные виды (type), чтобы первые N были максимально разными: обувь, низ, верх, аксессуары
+if (args.diverse) {
+  const groups = new Map()
+  for (const e of all) { if (!groups.has(e.type)) groups.set(e.type, []); groups.get(e.type).push(e) }
+  const byCat = new Map()
+  for (const [, g] of groups) { const c = g[0].category; if (!byCat.has(c)) byCat.set(c, []); byCat.get(c).push(g) }
+  const mixed = []
+  for (let i = 0; mixed.length < all.length; i++) {
+    let any = false
+    for (const [, gs] of byCat) { const g = gs[i % gs.length]; const k = Math.floor(i / gs.length); if (g[k]) { mixed.push(g[k]); any = true } }
+    if (!any && i > 400) break
+  }
+  all = mixed
+}
+const list = all.slice(0, limit)
 const indexPath = join(out, 'index.json')
 const index = existsSync(indexPath) ? JSON.parse(readFileSync(indexPath, 'utf8')) : []
 const have = new Set(index.map((e) => e.id))
@@ -36,7 +51,7 @@ async function fetchImage(e) {
   if (source === 'generate') {
     const base = (process.env.IMAGE_API_URL ?? 'https://api.openai.com/v1').replace(/\/$/, '')
     const r = await fetch(`${base}/images/generations`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `${process.env.IMAGE_AUTH ?? 'Bearer'} ${process.env.IMAGE_API_KEY}` },
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `${process.env.IMAGE_AUTH ?? 'Bearer'} ${process.env.IMAGE_API_KEY}`, ...(process.env.IMAGE_PROJECT ? { 'OpenAI-Project': process.env.IMAGE_PROJECT } : {}) },
       body: JSON.stringify({ model: process.env.IMAGE_MODEL ?? 'gpt-image-1', prompt: e.prompt, size: '1024x1024', n: 1 }),
     })
     if (!r.ok) throw new Error(`images ${r.status} ${(await r.text()).slice(0, 120)}`)
@@ -83,21 +98,30 @@ async function fetchImage(e) {
 async function analyze(bytes) {
   const form = new FormData()
   form.append('file', new Blob([bytes], { type: 'image/jpeg' }), 'photo')
-  const r = await fetch(`${vision}/analyze`, { method: 'POST', body: form })
-  if (!r.ok) throw new Error(`vision ${r.status}`)
-  return r.json()
+  // сервис распознавания обрабатывает по одной картинке: при 503 («занят») ждём и пробуем снова
+  for (let t = 0; t < 20; t++) {
+    const r = await fetch(`${vision}/analyze`, { method: 'POST', body: form })
+    if (r.status === 503) { await new Promise((ok) => setTimeout(ok, 2500 + Math.random() * 2500)); continue }
+    if (!r.ok) throw new Error(`vision ${r.status}`)
+    return r.json()
+  }
+  throw new Error('vision занят')
 }
 
-for (const e of list) {
-  if (have.has(e.id)) continue
+async function processOne(e) {
+  if (have.has(e.id)) return
   try {
-    const { bytes, credit } = await fetchImage(e)
-    const res = await analyze(bytes)
+    // сеть (VPN, туннель) иногда рвётся: повторяем до 4 раз
+    const retry = async (fn) => { for (let t = 0; ; t++) { try { return await fn() } catch (er) { if (t >= 3 || !/fetch failed|terminated|ECONN|socket/i.test(String(er.message ?? er) + String(er.cause ?? ''))) throw er; await new Promise((ok) => setTimeout(ok, 3000 * (t + 1))) } } }
+    const { bytes, credit } = await retry(() => fetchImage(e))
+    const res = await retry(() => analyze(bytes))
     const it = res.items?.[0]
-    if (!it) { rejected.push({ id: e.id, why: 'вещь не найдена' }); console.log('—', e.id, 'не найдена'); continue }
+    if (!it) { rejected.push({ id: e.id, why: 'вещь не найдена' }); console.log('—', e.id, 'не найдена'); return }
     // вид должен совпасть с заказанным (рюкзак и сумка считаем одним видом)
-    const ok = it.type === e.type || (e.category === it.category && ['сумка', 'рюкзак', 'шарф', 'кепка', 'шляпа'].includes(e.type))
-    if (!ok) { rejected.push({ id: e.id, why: `определили как ${it.type}` }); console.log('—', e.id, 'определили как', it.type); continue }
+    // близкие виды путаются (кеды и кроссовки, куртка и пальто, свитер и свитшот): принимаем их как тот же вид, название и вид берём из списка
+    const SAME = [['кеды', 'кроссовки', 'лоферы', 'ботинки'], ['куртка', 'пальто', 'тренч', 'пиджак'], ['свитер', 'свитшот', 'худи', 'лонгслив'], ['футболка', 'рубашка'], ['джинсы', 'брюки']]
+    const ok = it.type === e.type || (e.category === it.category && ['сумка', 'рюкзак', 'шарф', 'кепка', 'шляпа'].includes(e.type)) || SAME.some((g) => g.includes(it.type) && g.includes(e.type))
+    if (!ok) { rejected.push({ id: e.id, why: `определили как ${it.type}` }); console.log('—', e.id, 'определили как', it.type); return }
     const b64 = it.cutout.split(',')[1]
     writeFileSync(join(out, `${e.id}.webp`), Buffer.from(b64, 'base64'))
     const { query, prompt, ...entry } = e
@@ -106,5 +130,8 @@ for (const e of list) {
     console.log('✓', e.id)
   } catch (err) { rejected.push({ id: e.id, why: String(err.message ?? err) }); console.log('✗', e.id, String(err.message ?? err).slice(0, 100)) }
 }
+// несколько запросов одновременно (по умолчанию 4): генерация одной картинки занимает секунд 20–40
+const queue = list.slice()
+await Promise.all(Array.from({ length: Number(args.jobs ?? 4) }, async () => { while (queue.length) await processOne(queue.shift()) }))
 writeFileSync(join(here, 'rejected.json'), JSON.stringify(rejected, null, 1))
 console.log(`готово: в каталоге ${index.length}, отклонено ${rejected.length}`)

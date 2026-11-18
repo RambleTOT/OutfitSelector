@@ -71,7 +71,7 @@ export function Catalog() {
             )
             : (
               <div className="grid3">
-                {found.slice(0, 60).map((e) => (
+                {found.slice(0, 240).map((e) => (
                   <ItemTile key={e.id} item={toItem(e)} label={e.title} selected={picked.includes(e.id)} onClick={() => toggle(e.id)} />
                 ))}
               </div>
