@@ -136,7 +136,7 @@ const adj = (ruColor, rod) => {
   if (rod === 'p') return base + (soft ? 'ие' : 'ые')
   return base + (soft ? 'ее' : 'ое')
 }
-const SKIP = new Set(['dress-shirt-dress-with-belt-white', 'dress-shirt-dress-with-belt-beige', 'outer-lightweight-nylon-windbreaker-navy', 'outer-fleece-zip-up-jacket-gray', 'accessory-bucket-hat-black'])
+const SKIP = new Set(['dress-shirt-dress-with-belt-white', 'dress-shirt-dress-with-belt-beige', 'outer-lightweight-nylon-windbreaker-navy', 'outer-fleece-zip-up-jacket-gray', 'accessory-bucket-hat-black', 'top-fitted-turtleneck-top-beige'])
 const list = []
 for (const [category, type, ru, rod, en, fit, sex, material, warmth, formality, colors] of T) {
   for (const ck of colors) {
