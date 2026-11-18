@@ -17,6 +17,12 @@ initMetrika()
 void initNative()
 void loadCaps().then(() => startSync())
 
+// только для разработки: ?skip пропускает онбординг (проверка в симуляторе iPhone без прохода анкеты)
+if (import.meta.env.DEV && new URLSearchParams(location.search).has('skip')) {
+  useApp.getState().skipOnboarding()
+  if (!location.hash.startsWith('#/outfit')) location.hash = '#/outfit'
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
