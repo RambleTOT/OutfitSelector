@@ -84,6 +84,48 @@ const T = [
   ['accessory', 'кепка', 'кепка', 'f', 'plain baseball cap', 'прямой', 'u', 'хлопок', 'лёгкая', 'спорт', ['black', 'white', 'navy', 'beige', 'green', 'gray']],
   ['accessory', 'шляпа', 'шапка-бини', 'f', 'ribbed knit beanie', 'прямой', 'u', 'шерсть', 'тёплая', 'кэжуал', ['black', 'gray', 'beige', 'burgundy', 'green', 'navy']],
   ['accessory', 'шляпа', 'панама', 'f', 'bucket hat', 'прямой', 'u', 'хлопок', 'лёгкая', 'кэжуал', ['black', 'beige', 'green']],
+  // --- вторая партия (18 ноября): больше кроев, цветов и обуви ---
+  ['top', 'лонгслив', 'водолазка', 'f', 'fitted turtleneck top', 'приталенный', 'u', 'трикотаж', 'демисезон', 'смарт-кэжуал', ['black', 'white', 'gray', 'beige', 'brown']],
+  ['top', 'свитер', 'свитер с молнией у ворота', 'm', 'quarter-zip knit sweater', 'прямой', 'u', 'шерсть', 'тёплая', 'смарт-кэжуал', ['navy', 'gray', 'green', 'black']],
+  ['top', 'худи', 'укороченное худи', 'n', 'cropped boxy hoodie', 'оверсайз', 'f', 'хлопок', 'демисезон', 'спорт', ['pink', 'gray', 'black', 'white']],
+  ['top', 'рубашка', 'льняная рубашка', 'f', 'relaxed linen shirt', 'оверсайз', 'u', 'лён', 'лёгкая', 'кэжуал', ['white', 'beige', 'lightblue', 'green']],
+  ['top', 'футболка', 'футболка оверсайз', 'f', 'oversized boxy heavyweight cotton t-shirt', 'оверсайз', 'u', 'хлопок', 'лёгкая', 'кэжуал', ['beige', 'red', 'lightblue', 'pink', 'burgundy']],
+  ['top', 'свитшот', 'свитшот', 'm', 'boxy crewneck sweatshirt', 'оверсайз', 'u', 'хлопок', 'демисезон', 'кэжуал', ['beige', 'brown', 'pink']],
+  ['top', 'свитер', 'вязаный свитер', 'm', 'chunky knit sweater', 'оверсайз', 'u', 'шерсть', 'тёплая', 'кэжуал', ['navy', 'white', 'pink', 'lightblue']],
+  ['bottom', 'джинсы', 'джинсы мом', 'p', 'high-waisted mom jeans', 'прямой', 'f', 'деним', 'демисезон', 'кэжуал', ['lightblue', 'blue', 'black', 'white']],
+  ['bottom', 'джинсы', 'джинсы-бочонки', 'p', 'barrel leg jeans', 'оверсайз', 'u', 'деним', 'демисезон', 'кэжуал', ['blue', 'black', 'lightblue']],
+  ['bottom', 'брюки', 'чиносы', 'p', 'straight chino pants', 'прямой', 'u', 'хлопок', 'демисезон', 'смарт-кэжуал', ['beige', 'navy', 'green', 'gray', 'black']],
+  ['bottom', 'брюки', 'джоггеры', 'p', 'tapered joggers with cuffs', 'прямой', 'u', 'хлопок', 'демисезон', 'спорт', ['gray', 'black', 'navy', 'beige']],
+  ['bottom', 'юбка', 'юбка-карго', 'f', 'long cargo midi skirt', 'прямой', 'f', 'хлопок', 'демисезон', 'кэжуал', ['green', 'black', 'beige']],
+  ['bottom', 'юбка', 'плиссированная юбка миди', 'f', 'pleated midi skirt', 'прямой', 'f', 'вискоза', 'демисезон', 'смарт-кэжуал', ['black', 'beige', 'green', 'navy', 'burgundy']],
+  ['bottom', 'юбка', 'джинсовая мини-юбка', 'f', 'denim mini skirt', 'прямой', 'f', 'деним', 'лёгкая', 'кэжуал', ['blue', 'black', 'lightblue']],
+  ['bottom', 'шорты', 'шорты карго', 'p', 'knee-length cargo shorts', 'оверсайз', 'u', 'хлопок', 'лёгкая', 'кэжуал', ['green', 'beige', 'black']],
+  ['dress', 'платье', 'платье в рубчик', 'n', 'ribbed knit mini dress', 'приталенный', 'f', 'трикотаж', 'демисезон', 'кэжуал', ['black', 'white', 'pink', 'brown']],
+  ['dress', 'платье', 'платье-свитер', 'n', 'oversized sweater dress', 'оверсайз', 'f', 'шерсть', 'тёплая', 'кэжуал', ['gray', 'beige', 'black', 'green']],
+  ['outer', 'куртка', 'куртка харрингтон', 'f', 'harrington jacket', 'прямой', 'u', 'хлопок', 'демисезон', 'кэжуал', ['beige', 'navy', 'black', 'green']],
+  ['outer', 'куртка', 'университетская куртка', 'f', 'varsity bomber jacket with leather sleeves, no letters', 'прямой', 'u', 'шерсть', 'демисезон', 'кэжуал', ['navy', 'green', 'burgundy', 'black']],
+  ['outer', 'куртка', 'куртка-рубашка', 'f', 'oversized overshirt shacket', 'оверсайз', 'u', 'хлопок', 'демисезон', 'кэжуал', ['brown', 'green', 'black', 'beige', 'navy']],
+  ['outer', 'куртка', 'замшевая куртка', 'f', 'suede trucker jacket', 'прямой', 'u', 'замша', 'демисезон', 'кэжуал', ['brown', 'beige', 'black']],
+  ['outer', 'куртка', 'куртка тедди', 'f', 'sherpa teddy fleece jacket', 'оверсайз', 'u', 'флис', 'тёплая', 'кэжуал', ['beige', 'white', 'brown', 'gray']],
+  ['outer', 'куртка', 'анорак', 'm', 'half-zip anorak windbreaker', 'прямой', 'u', 'нейлон', 'лёгкая', 'спорт', ['black', 'green', 'beige', 'blue']],
+  ['outer', 'пальто', 'двубортное пальто', 'n', 'double-breasted wool coat', 'прямой', 'u', 'шерсть', 'тёплая', 'смарт-кэжуал', ['black', 'gray', 'beige', 'brown', 'burgundy']],
+  ['outer', 'пальто', 'дублёнка', 'f', 'shearling aviator coat', 'прямой', 'u', 'овчина', 'тёплая', 'кэжуал', ['brown', 'beige', 'black']],
+  ['outer', 'пиджак', 'двубортный пиджак', 'm', 'double-breasted blazer', 'прямой', 'f', 'шерсть', 'демисезон', 'смарт-кэжуал', ['black', 'gray', 'beige']],
+  ['shoes', 'кроссовки', 'кожаные кроссовки', 'p', 'minimalist leather court sneakers', 'прямой', 'u', 'кожа', 'демисезон', 'кэжуал', ['white', 'black', 'beige', 'green']],
+  ['shoes', 'кроссовки', 'беговые кроссовки', 'p', 'technical running sneakers with mesh upper', 'прямой', 'u', 'текстиль', 'демисезон', 'спорт', ['gray', 'black', 'white', 'blue', 'pink']],
+  ['shoes', 'кеды', 'низкие кеды', 'p', 'low-top canvas sneakers', 'прямой', 'u', 'текстиль', 'демисезон', 'кэжуал', ['white', 'black', 'navy', 'red', 'green']],
+  ['shoes', 'ботинки', 'ботинки на каблуке', 'p', 'heeled ankle boots', 'прямой', 'f', 'кожа', 'демисезон', 'смарт-кэжуал', ['black', 'brown', 'beige']],
+  ['shoes', 'ботинки', 'сапоги', 'p', 'knee-high leather boots with flat heel', 'прямой', 'f', 'кожа', 'тёплая', 'смарт-кэжуал', ['black', 'brown']],
+  ['shoes', 'ботинки', 'зимние ботинки', 'p', 'insulated winter boots with lug sole', 'прямой', 'u', 'нейлон', 'тёплая', 'кэжуал', ['black', 'beige', 'gray']],
+  ['shoes', 'лоферы', 'лоферы', 'p', 'classic leather loafers', 'прямой', 'u', 'кожа', 'демисезон', 'смарт-кэжуал', ['black', 'brown', 'burgundy']],
+  ['shoes', 'лоферы', 'балетки', 'p', 'leather ballet flats', 'прямой', 'f', 'кожа', 'демисезон', 'смарт-кэжуал', ['black', 'beige', 'red', 'white']],
+  ['bag', 'сумка', 'сумка-тоут', 'f', 'structured leather tote bag with two handles', 'прямой', 'f', 'кожа', 'демисезон', 'смарт-кэжуал', ['black', 'brown', 'beige']],
+  ['bag', 'сумка', 'мини-сумка', 'f', 'mini top-handle bag', 'прямой', 'f', 'кожа', 'демисезон', 'вечерний', ['black', 'pink', 'red', 'white']],
+  ['bag', 'сумка', 'сумка-хобо', 'f', 'soft slouchy hobo shoulder bag', 'прямой', 'f', 'кожа', 'демисезон', 'кэжуал', ['black', 'brown', 'beige']],
+  ['accessory', 'шарф', 'вязаный шарф', 'm', 'chunky knit scarf', 'прямой', 'u', 'шерсть', 'тёплая', 'кэжуал', ['navy', 'brown', 'pink']],
+  ['accessory', 'кепка', 'кепка', 'f', 'plain baseball cap', 'прямой', 'u', 'хлопок', 'лёгкая', 'спорт', ['brown', 'red', 'burgundy']],
+  ['accessory', 'шляпа', 'шапка-бини', 'f', 'ribbed knit beanie', 'прямой', 'u', 'шерсть', 'тёплая', 'кэжуал', ['pink', 'brown', 'white']],
+  ['accessory', 'шляпа', 'панама', 'f', 'bucket hat', 'прямой', 'u', 'хлопок', 'лёгкая', 'кэжуал', ['white', 'navy']],
 ]
 
 const adj = (ruColor, rod) => {
@@ -94,12 +136,15 @@ const adj = (ruColor, rod) => {
   if (rod === 'p') return base + (soft ? 'ие' : 'ые')
   return base + (soft ? 'ее' : 'ое')
 }
+const SKIP = new Set(['dress-shirt-dress-with-belt-white', 'dress-shirt-dress-with-belt-beige', 'outer-lightweight-nylon-windbreaker-navy', 'outer-fleece-zip-up-jacket-gray', 'accessory-bucket-hat-black'])
 const list = []
 for (const [category, type, ru, rod, en, fit, sex, material, warmth, formality, colors] of T) {
   for (const ck of colors) {
     const [colorName, color, ruColor, enColor] = C[ck]
     const cn = adj(ruColor, rod)
     const who = sex === 'f' ? "women's " : ''
+    const id0 = `${category}-${en.split(/[ ,]+/).slice(0, 4).join('-').replace(/[^a-z-]+/g, '')}-${ck}`
+    if (SKIP.has(id0)) continue
     list.push({
       id: `${category}-${en.split(/[ ,]+/).slice(0, 4).join('-').replace(/[^a-z-]+/g, '')}-${ck}`,
       category, type, title: `${cn[0].toUpperCase()}${cn.slice(1)} ${ru}`.replace(/(Белая|Чёрная|Серая|Бежевая) (\S+)/, (m) => m), colorName, color, gender: sex,
