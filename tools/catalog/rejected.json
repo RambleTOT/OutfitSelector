@@ -1,34 +1,14 @@
 [
  {
-  "id": "dress-oversized-sweater-dress-gray",
+  "id": "outer-fleece-zip-up-jacket-green",
   "why": "определили как свитер"
  },
  {
-  "id": "dress-oversized-sweater-dress-beige",
+  "id": "outer-fleece-zip-up-jacket-navy",
   "why": "определили как свитер"
  },
  {
-  "id": "dress-oversized-sweater-dress-green",
-  "why": "определили как свитшот"
- },
- {
-  "id": "dress-oversized-sweater-dress-black",
+  "id": "outer-fleece-zip-up-jacket-brown",
   "why": "определили как свитер"
- },
- {
-  "id": "outer-half-zip-anorak-windbreaker-green",
-  "why": "определили как лонгслив"
- },
- {
-  "id": "outer-half-zip-anorak-windbreaker-blue",
-  "why": "определили как худи"
- },
- {
-  "id": "shoes-heeled-ankle-boots-beige",
-  "why": "определили как свитер"
- },
- {
-  "id": "shoes-leather-ballet-flats-white",
-  "why": "определили как шорты"
  }
 ]
