@@ -139,7 +139,10 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
     if (path.startsWith('/api/admin/')) {
       const tok = String(req.headers['x-admin-token'] ?? '')
       // неверный токен считаем строже: 20 попыток в час с одного адреса, дальше 429
-      if (!config.supportAdminToken || tok.length !== config.supportAdminToken.length || !timingSafeEqual(Buffer.from(tok), Buffer.from(config.supportAdminToken))) { limit(`admfail:${ip(req)}`, 20, 3600000); throw new HttpError(401, 'unauthorized') }
+      // слабый токен (короче 16 знаков) не принимаем вообще: админка закрыта, пока его не заменят
+      const good = config.supportAdminToken.length >= 16 && tok.length === config.supportAdminToken.length && timingSafeEqual(Buffer.from(tok), Buffer.from(config.supportAdminToken))
+      if (!good) { console.warn(`[admin] отказ ${m} ${path} с ${ip(req)}`); limit(`admfail:${ip(req)}`, 20, 3600000); throw new HttpError(401, 'unauthorized') }
+      if (m !== 'GET') console.log(`[admin] ${m} ${path} с ${ip(req)}`)
       limit(`adm:${ip(req)}`, 600, 3600000)
 
       if (m === 'GET' && path === '/api/admin/overview') return send(res, 200, { ...overview(store), log: recentLog(store) })

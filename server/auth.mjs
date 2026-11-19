@@ -45,5 +45,6 @@ export function checkCode(store, email, code) {
   return 'ok'
 }
 
-export const emailOk = (v) => typeof v === 'string' && v.length <= 120 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
+// символы, которым нечего делать в адресе, отсекаем сразу: так они не попадут ни в письмо, ни в админку
+export const emailOk = (v) => typeof v === 'string' && v.length <= 120 && /^[^\s@<>"'`\\&;()]+@[^\s@<>"'`\\&;()]+\.[^\s@<>"'`\\&;()]+$/.test(v)
 export const normEmail = (v) => String(v).trim().toLowerCase()

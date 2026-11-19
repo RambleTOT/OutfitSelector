@@ -9,8 +9,10 @@
     "dev": "node --watch --env-file=.env index.mjs",
     "test": "node --test \"test/*.test.mjs\""
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
-    "nodemailer": "^6.10.0"
+    "nodemailer": "^10.6.0"
   }
 }

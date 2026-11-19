@@ -394,3 +394,10 @@ test('админка: без токена закрыта, список и кар
   assert.equal((await t.call('GET', '/api/admin/users', undefined, admin)).body.total, 1)
   t.server.close()
 })
+
+test('почта с разметкой и кавычками отклоняется, обычная проходит', async () => {
+  const t = await boot()
+  for (const bad of ['"><svg/onload=alert(1)>@x.ru', 'a<b@x.ru', "o'x@x.ru", 'a&b@x.ru', 'a`b@x.ru']) assert.equal((await t.call('POST', '/api/auth/request', { email: bad })).status, 400, bad)
+  assert.equal((await t.call('POST', '/api/auth/request', { email: 'ivan.petrov+t@mail.ru' })).status, 200)
+  t.server.close()
+})
