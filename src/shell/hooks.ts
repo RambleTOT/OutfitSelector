@@ -54,3 +54,38 @@ export function useRealNetwork() {
     return () => { window.removeEventListener('offline', off); window.removeEventListener('online', on) }
   }, [])
 }
+
+/**
+ * iPhone Safari при открытой клавиатуре сдвигает всю страницу вверх (логотип уезжает под часы).
+ * Пока клавиатура открыта, подгоняем высоту экрана под видимую область и возвращаем экран на место (--vvh, --vvt в .phone).
+ * Без клавиатуры (адресная строка, поворот) ничего не меняем
+ */
+export function useKeyboardViewport(enabled: boolean) {
+  useEffect(() => {
+    const vv = window.visualViewport
+    if (!enabled || !vv) return
+    const root = document.documentElement
+    const update = () => {
+      const open = window.innerHeight - vv.height > 120 // клавиатура
+      if (open) {
+        root.style.setProperty('--vvh', `${Math.round(vv.height)}px`)
+        root.style.setProperty('--vvt', `${Math.round(vv.offsetTop)}px`)
+        root.setAttribute('data-kb', '')
+      } else {
+        root.style.removeProperty('--vvh')
+        root.style.removeProperty('--vvt')
+        root.removeAttribute('data-kb')
+      }
+    }
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    update()
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+      root.style.removeProperty('--vvh')
+      root.style.removeProperty('--vvt')
+      root.removeAttribute('data-kb')
+    }
+  }, [enabled])
+}

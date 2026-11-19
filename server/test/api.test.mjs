@@ -264,6 +264,12 @@ test('AI: сервер дополняет забытую обувь и верх�
   // жара: пальто убираем
   const hot = repairOutfit({ ...base, ids: ['t', 'b', 'o'] }, items, { weather: { temp: 30 }, occasion: 'every', nogo: [] })
   assert.ok(!hot.ids.includes('o'))
+  // +1°: бомбер (демисезон) меняется на тёплое пальто, пояснение сбрасывается; если тёплого нет, остаётся бомбер
+  const bomber = { id: 'bm', category: 'outer', title: 'Чёрный бомбер', warmth: 'демисезон', formality: 'кэжуал' }
+  const swapped = repairOutfit({ ids: ['t', 'b', 's1', 'bm'], name: 'x', explanation: 'Бомбер согреет' }, [...items, bomber], { weather: { temp: 1 }, occasion: 'every', nogo: [] })
+  assert.ok(swapped.ids.includes('o') && !swapped.ids.includes('bm') && swapped.explanation === '')
+  const noWarm = repairOutfit({ ids: ['t', 'b', 's1', 'bm'], name: 'x', explanation: 'ok' }, [...items.filter((i) => i.id !== 'o'), bomber], { weather: { temp: 1 }, occasion: 'every', nogo: [] })
+  assert.ok(noWarm.ids.includes('bm') && noWarm.explanation === 'ok')
   // «не носит» кроссовки: они не добавляются и считаются проблемой, если модель их взяла
   assert.ok(!repairOutfit(base, items, { weather: { temp: 15 }, occasion: 'every', nogo: ['кроссовки'] }).ids.includes('s1'))
   assert.deepEqual(outfitProblems({ ids: ['t', 'b', 's1'] }, items, { weather: { temp: 15 }, occasion: 'study', nogo: [] }), ['s1'])

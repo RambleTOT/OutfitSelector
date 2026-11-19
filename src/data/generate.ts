@@ -42,6 +42,8 @@ function score(i: Item, occasion: OccasionId): number {
   const f = target.indexOf(i.formality)
   let s = f === 0 ? 3 : f === 1 ? 2 : 0
   if (nowTemp() < 12 && i.warmth !== 'лёгкая') s += 1
+  // мороз: самая тёплая верхняя одежда идёт первой
+  if (nowTemp() <= 3 && i.category === 'outer' && i.warmth === 'тёплая') s += 4
   return s
 }
 
@@ -133,11 +135,14 @@ export function generateOutfit(items: Item[], occasion: OccasionId, variant: num
 
 /**
  * Если для погоды в гардеробе не хватает вещи, говорим об этом прямо и обещаем рекомендации из магазинов партнёров (их пока нет).
- * Сейчас проверяем одно: холодно, а верхней одежды нет совсем. Если она есть в гардеробе, подбор уже её учёл, подсказка не нужна
+ * Проверяем одно: холодно, а подходящей верхней одежды нет (до +8° любая, до +3° только тёплая). Если она есть, подбор уже её учёл, подсказка не нужна
  */
 export function weatherGap(items: Item[]): string | null {
   const wx = currentWeather()
   if (!wx || wx.temp > 8) return null
-  if (items.some((i) => i.category === 'outer' && i.available)) return null
+  const outers = items.filter((i) => i.category === 'outer' && i.available)
+  // до +3° демисезонная куртка не спасает: нужна именно тёплая
+  const ok = wx.temp <= 3 ? outers.some((i) => i.warmth === 'тёплая') : outers.length > 0
+  if (ok) return null
   return `Для ${tempText(wx.temp)} не хватает тёплой верхней одежды: куртки или пальто. Добавь её в гардероб, а совсем скоро мы начнём подсказывать, где купить подходящую у партнёров`
 }

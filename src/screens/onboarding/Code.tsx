@@ -35,7 +35,7 @@ export function Code() {
         navigate(next ?? (r.state || res === 'returning' ? '/outfit' : firstStep()), { replace: true })
       } catch (e) {
         if (e instanceof ApiError && e.code === 'code_wrong') setError(true)
-        else toast(authErrorText(e), 'error')
+        else { toast(authErrorText(e), 'error'); setCode('') }
       } finally { setBusy(false) }
       return
     }
@@ -67,7 +67,7 @@ export function Code() {
         try { const t = (await navigator.clipboard.readText()).replace(/\D/g, '').slice(0, 4); if (t.length === 4) change(t) } catch { toast('Не получилось вставить, введи код вручную', 'neutral') }
       }}>Вставить код из письма</Button>
       {HAS_API
-        ? <Button variant="text" style={{ alignSelf: 'flex-start' }} onClick={() => requestCode(email).then(() => toast('Отправили новый код', 'success'), (e) => toast(authErrorText(e), 'error'))}>Отправить код ещё раз</Button>
+        ? <Button variant="text" style={{ alignSelf: 'flex-start' }} onClick={() => requestCode(email).then(() => { setCode(''); setError(false); toast('Отправили новый код', 'success') }, (e) => toast(authErrorText(e), 'error'))}>Отправить код ещё раз</Button>
         : <span className="t-caption muted">Для демо подойдёт код {DEMO_CODE}</span>}
       <div style={{ marginTop: 'auto' }}>
         <Button full disabled={code.length < 4} loading={busy} onClick={() => submit()}>Войти</Button>

@@ -81,7 +81,16 @@ export function repairOutfit(outfit, items, ctx = {}) {
   }
   if (!cats().includes('shoes')) { const s = pickFor('shoes'); if (s) ids.push(s.id) }
   if (Number.isFinite(t) && t <= 6 && !cats().includes('outer')) { const o = pickFor('outer'); if (o) ids.push(o.id) }
-  return { ...outfit, ids }
+  // мороз (до +3°): демисезонная куртка не греет, меняем на самую тёплую, если такая есть. Пояснение модели было про старую вещь, сбрасываем его
+  let explanation = outfit.explanation
+  if (Number.isFinite(t) && t <= 3) {
+    const cur = ids.find((id) => byId.get(id).category === 'outer')
+    if (cur && byId.get(cur).warmth !== 'тёплая') {
+      const warm = items.find((i) => i.category === 'outer' && i.warmth === 'тёплая' && allowedItem(i, ctx))
+      if (warm) { ids = ids.map((id) => (id === cur ? warm.id : id)); explanation = '' }
+    }
+  }
+  return { ...outfit, ids, explanation }
 }
 
 /** Что в образе всё ещё нарушает правила (то, что код сам не чинит). Пусто = образ хороший. */

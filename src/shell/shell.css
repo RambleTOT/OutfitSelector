@@ -1,6 +1,7 @@
 /* Оболочка: телефон на весь экран / рамка iPhone на десктопе + панель демо */
 html, body, #root { height: 100%; }
-.phone { width: 100vw; height: 100dvh; min-width: 360px; position: relative; }
+.phone { width: 100vw; height: var(--vvh, 100dvh); min-width: 360px; position: relative; }
+html[data-kb] .phone { transform: translateY(var(--vvt, 0px)); }
 
 .stage { min-height: 100%; height: 100%; display: flex; align-items: center; justify-content: center; gap: 48px; padding: 24px; background: var(--bg-sunken); overflow: auto; }
 .frame-slot { flex-shrink: 0; }

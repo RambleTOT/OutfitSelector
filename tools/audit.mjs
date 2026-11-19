@@ -23,7 +23,7 @@ const APP = existsSync('dist/app/index.html') ? '/app/' : '/'
 const axeSrc = readFileSync('node_modules/axe-core/axe.min.js', 'utf8')
 const ROUTES = [
   '#/login', '#/outfit', '#/wardrobe', '#/favorites', '#/profile', '#/item/i01', '#/profile/data', '#/profile/docs', '#/profile/subscription',
-  '#/profile/delete', '#/paywall', '#/paywall/success', '#/paywall/error', '#/constructor', '#/add/template', '#/add/photo', '#/install', '#/install/notify',
+  '#/profile/delete', '#/paywall', '#/paywall/success', '#/paywall/error', '#/constructor', '#/add/catalog', '#/support', '#/onboarding/geo', '#/add/photo', '#/install', '#/install/notify',
   '#/favorites/seed1', '#/onboarding/quiz', '#/onboarding/items',
 ]
 
