@@ -21,9 +21,11 @@ $SSH "$HOST" "cd /opt/atelier/server && npm ci --omit=dev --silent && sudo syste
 if [ -f deploy/atelier-monitor.service ] && [ -f deploy/atelier-backup.service ]; then
   rsync -az -e "$SSH" deploy/atelier-monitor.service deploy/atelier-monitor.timer deploy/atelier-backup.service deploy/atelier-backup.timer deploy/set-ops.sh deploy/set-admins.sh "$HOST:/tmp/atelier-ops/" 2>/dev/null \
     || { $SSH "$HOST" "mkdir -p /tmp/atelier-ops"; rsync -az -e "$SSH" deploy/atelier-monitor.service deploy/atelier-monitor.timer deploy/atelier-backup.service deploy/atelier-backup.timer deploy/set-ops.sh deploy/set-admins.sh "$HOST:/tmp/atelier-ops/"; }
-  $SSH "$HOST" "sudo mkdir -p /opt/atelier/backups && sudo chown atelier:atelier /opt/atelier/backups && sudo chmod 700 /opt/atelier/backups \
+  # пользователь atelier без sudo: если установка не прошла, выполни этот блок под root (docs/OPS.md), выкладка к этому моменту уже завершена
+  $SSH "$HOST" "sudo -n true" 2>/dev/null && $SSH "$HOST" "sudo mkdir -p /opt/atelier/backups && sudo chown atelier:atelier /opt/atelier/backups && sudo chmod 700 /opt/atelier/backups \
     && sudo install -m 644 /tmp/atelier-ops/atelier-monitor.service /tmp/atelier-ops/atelier-monitor.timer /tmp/atelier-ops/atelier-backup.service /tmp/atelier-ops/atelier-backup.timer /etc/systemd/system/ \
     && sudo install -m 755 -o atelier -g atelier /tmp/atelier-ops/set-ops.sh /tmp/atelier-ops/set-admins.sh /opt/atelier/ \
-    && sudo systemctl daemon-reload && sudo systemctl enable --now atelier-monitor.timer atelier-backup.timer && rm -rf /tmp/atelier-ops"
+    && sudo systemctl daemon-reload && sudo systemctl enable --now atelier-monitor.timer atelier-backup.timer && rm -rf /tmp/atelier-ops" \
+    || echo "Таймеры мониторинга и бэкапа не установлены (нужен root): ssh atelier, затем команды из docs/OPS.md, раздел «Установка»"
 fi
 echo "Готово"

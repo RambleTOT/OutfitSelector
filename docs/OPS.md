@@ -43,3 +43,15 @@ ls -la /opt/atelier/backups
 - Ключ шифрования хранить вне сервера. Файл `.env` на сервере тоже не бэкапится в Telegram: секреты (пароли Robokassa, ключи AI и почты) держи в менеджере паролей.
 - Бэкап раз в сутки: в худшем случае теряется работа за последние 24 часа.
 - Бэкапы на сервере лежат на том же диске, что и данные, поэтому защищают от ошибок и порчи, но не от потери сервера. От потери сервера защищает копия в Telegram.
+
+## Установка таймеров на сервере (один раз, под root)
+
+`deploy.sh` идёт под пользователем `atelier` без sudo, поэтому юниты ставятся вручную: `ssh atelier` (это root), затем:
+
+```
+mkdir -p /opt/atelier/backups && chown atelier:atelier /opt/atelier/backups && chmod 700 /opt/atelier/backups
+cd /opt/atelier/server/../ && install -m 644 <файлы atelier-monitor.* и atelier-backup.* из deploy/> /etc/systemd/system/
+systemctl daemon-reload && systemctl enable --now atelier-monitor.timer atelier-backup.timer
+```
+
+Скрипты `set-ops.sh` и `set-admins.sh` кладутся в `/opt/atelier/` (владелец `atelier`, права 755). На боевом сервере всё это уже сделано 19 ноября 2026.
