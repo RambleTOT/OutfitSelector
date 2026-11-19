@@ -13,6 +13,7 @@ import { spend, spendPhoto, usageSnapshot } from './plans.mjs'
 import { createWeather } from './weather.mjs'
 import { buildRobokassaUrl, handleRobokassaResult, returnPage, robokassaEnabled } from './robokassa.mjs'
 import { addMessage, notifyTeam, view as supportView } from './support.mjs'
+import { listUsers, logDelete, overview, paymentsList, recentLog, subAction, userDetail } from './admin.mjs'
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain', '.xml': 'application/xml', '.ico': 'image/x-icon' }
 const PHOTO_ID = /^[a-f0-9]{32}$/
@@ -110,6 +111,7 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
       if (r !== 'ok') throw new HttpError(r === 'wrong' ? 401 : 410, `code_${r}`)
       const existing = store.userByEmail(email)
       const u = existing ?? store.createUser(email)
+      store.event({ event: existing ? 'login' : 'signup', uid: u.id, t: Date.now() })
       return send(res, 200, { token: signToken(u.id), user: me(u), isNew: !existing, state: u.state, stateAt: u.stateAt })
     }
 
@@ -133,11 +135,43 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
       return res.end(returnPage(path.endsWith('success')))
     }
 
-    // ===== поддержка: ответы команды (по токену администратора из .env, SUPPORT_ADMIN_TOKEN)
-    if (path.startsWith('/api/admin/support')) {
+    // ===== админка и ответы поддержки (по токену администратора из .env, SUPPORT_ADMIN_TOKEN)
+    if (path.startsWith('/api/admin/')) {
       const tok = String(req.headers['x-admin-token'] ?? '')
-      if (!config.supportAdminToken || tok.length !== config.supportAdminToken.length || !timingSafeEqual(Buffer.from(tok), Buffer.from(config.supportAdminToken))) throw new HttpError(401, 'unauthorized')
-      limit(`adm:${ip(req)}`, 120, 3600000)
+      // неверный токен считаем строже: 20 попыток в час с одного адреса, дальше 429
+      if (!config.supportAdminToken || tok.length !== config.supportAdminToken.length || !timingSafeEqual(Buffer.from(tok), Buffer.from(config.supportAdminToken))) { limit(`admfail:${ip(req)}`, 20, 3600000); throw new HttpError(401, 'unauthorized') }
+      limit(`adm:${ip(req)}`, 600, 3600000)
+
+      if (m === 'GET' && path === '/api/admin/overview') return send(res, 200, { ...overview(store), log: recentLog(store) })
+      if (m === 'GET' && path === '/api/admin/users') {
+        const q = url.searchParams
+        return send(res, 200, listUsers(store, { q: q.get('q') ?? '', plan: q.get('plan') ?? '', sort: q.get('sort') ?? 'new' }))
+      }
+      if (m === 'GET' && path === '/api/admin/payments') return send(res, 200, { payments: paymentsList(store) })
+      const au = path.match(/^\/api\/admin\/users\/([a-f0-9]{24})(\/sub)?$/)
+      if (au) {
+        const target = store.user(au[1])
+        if (!target) throw new HttpError(404, 'no_user')
+        if (m === 'GET' && !au[2]) return send(res, 200, userDetail(store, target.id))
+        if (m === 'POST' && au[2]) {
+          const b = await json(req, 2000)
+          // снятие и отключение автопродления доходят и до платёжной системы, иначе деньги продолжат списываться
+          if ((b.action === 'cancel' || b.action === 'revoke') && target.sub?.subscriptionId && cpEnabled()) {
+            try { await cancelSubscription(store, target, fetchImpl) } catch (e) { console.error('[admin] отмена в CloudPayments:', e.message); throw new HttpError(502, 'cancel_failed') }
+          }
+          const r = subAction(store, target, b)
+          if (r.error) throw new HttpError(400, r.error)
+          return send(res, 200, userDetail(store, target.id))
+        }
+        if (m === 'DELETE' && !au[2]) {
+          if (target.sub?.subscriptionId && cpEnabled()) await cancelSubscription(store, target, fetchImpl).catch(() => {})
+          logDelete(store, target)
+          store.deleteUser(target.id)
+          return send(res, 200, { ok: true })
+        }
+      }
+    }
+    if (path.startsWith('/api/admin/support')) {
       if (m === 'GET') {
         const email = normEmail(url.searchParams.get('email') ?? '')
         if (email) {
@@ -242,6 +276,7 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
         // лимит списываем только за удачный образ: ошибка модели не должна стоить человеку попытки
         if (!outfit) { console.error('[ai] не удалось:', lastErr?.message); throw new HttpError(502, 'ai_failed') }
         sp.commit()
+        store.event({ event: 'outfit_ok', uid: u.id, t: Date.now() })
         return send(res, 200, outfit)
       }
 
@@ -265,7 +300,7 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
           if (!r.ok) throw new HttpError(r.status >= 500 ? 502 : 422, 'analyze_failed')
           const out = await r.json()
           // фото тратится только если что-то нашли: «не одежда» и ошибки лимит не уменьшают
-          if (Array.isArray(out.items) && out.items.length) sp.commit()
+          if (Array.isArray(out.items) && out.items.length) { sp.commit(); store.event({ event: 'photo_ok', uid: u.id, t: Date.now() }) }
           return send(res, 200, out)
         } finally { inflight-- }
       }

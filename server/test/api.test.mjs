@@ -351,3 +351,46 @@ test('поддержка: человек пишет, команда отвеча
   assert.equal(t.store.db.support?.[Object.keys(t.store.db.support ?? {})[0]], undefined) // переписка удаляется вместе с аккаунтом
   t.server.close()
 })
+
+test('админка: без токена закрыта, список и карточка, выдать, продлить, отменить, снять тариф, удалить', async () => {
+  const t = await boot()
+  const a = await t.login('a@x.ru')
+  await t.login('b@x.ru')
+  const admin = { 'X-Admin-Token': 'admin-secret-token' }
+  for (const p of ['/api/admin/overview', '/api/admin/users', '/api/admin/payments']) assert.equal((await t.call('GET', p)).status, 401)
+  assert.equal((await t.call('GET', '/api/admin/users', undefined, { 'X-Admin-Token': 'nope' })).status, 401)
+
+  const list = await t.call('GET', '/api/admin/users', undefined, admin)
+  assert.equal(list.body.total, 2)
+  assert.equal((await t.call('GET', '/api/admin/users?q=b@x', undefined, admin)).body.total, 1)
+  const id = a.user.id
+  const sub = (body) => t.call('POST', `/api/admin/users/${id}/sub`, body, admin)
+
+  assert.equal((await sub({ action: 'extend', days: 5 })).status, 400) // на Free продлевать нечего
+  assert.equal((await sub({ action: 'grant', plan: 'gold', days: 30 })).status, 400)
+  const g = await sub({ action: 'grant', plan: 'plus', days: 30 })
+  assert.equal(g.status, 200)
+  assert.equal(g.body.plan, 'plus')
+  assert.equal((await t.call('GET', '/api/me', undefined, a.auth)).body.sub.plan, 'plus') // в приложении тариф уже виден
+  const end1 = g.body.endsAt
+  const e = await sub({ action: 'extend', days: 10 })
+  assert.equal(e.body.endsAt - end1, 10 * 86400000)
+  assert.equal((await sub({ action: 'cancel' })).body.cancelled, true)
+  assert.equal((await t.call('GET', '/api/admin/users?plan=paid', undefined, admin)).body.total, 1)
+
+  const ov = await t.call('GET', '/api/admin/overview', undefined, admin)
+  assert.equal(ov.body.totals.users, 2)
+  assert.equal(ov.body.totals.plus, 1)
+  assert.equal(ov.body.signupsByDay.length, 30)
+  assert.ok(ov.body.log.length >= 3)
+
+  const r = await sub({ action: 'revoke' })
+  assert.equal(r.body.plan, 'free')
+  assert.equal((await t.call('GET', '/api/me', undefined, a.auth)).body.sub.plan, 'free')
+  assert.equal((await sub({ action: 'reset_usage' })).status, 200)
+
+  assert.equal((await t.call('GET', '/api/admin/users/' + 'f'.repeat(24), undefined, admin)).status, 404)
+  assert.equal((await t.call('DELETE', `/api/admin/users/${id}`, undefined, admin)).status, 200)
+  assert.equal((await t.call('GET', '/api/admin/users', undefined, admin)).body.total, 1)
+  t.server.close()
+})
