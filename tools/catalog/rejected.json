@@ -1,14 +1,26 @@
 [
  {
-  "id": "outer-fleece-zip-up-jacket-green",
-  "why": "определили как свитер"
+  "id": "outer-quilted-puffer-vest-without-black",
+  "why": "images 400 {\"error\":{\"message\":\"Я не могу сгенерировать это изображение. Давайте попробуем другую тему.\",\"type\":\"invalid_request_er"
  },
  {
-  "id": "outer-fleece-zip-up-jacket-navy",
-  "why": "определили как свитер"
+  "id": "outer-quilted-puffer-vest-without-beige",
+  "why": "images 400 {\"error\":{\"message\":\"Я не могу сгенерировать это изображение. Давайте попробуем другую тему.\",\"type\":\"invalid_request_er"
  },
  {
-  "id": "outer-fleece-zip-up-jacket-brown",
-  "why": "определили как свитер"
+  "id": "outer-quilted-puffer-vest-without-green",
+  "why": "images 400 {\"error\":{\"message\":\"Я не могу сгенерировать это изображение. Давайте попробуем другую тему.\",\"type\":\"invalid_request_er"
+ },
+ {
+  "id": "top-ribbed-tank-top-white",
+  "why": "images 400 {\"error\":{\"message\":\"Я не могу сгенерировать это изображение. Давайте попробуем другую тему.\",\"type\":\"invalid_request_er"
+ },
+ {
+  "id": "top-ribbed-tank-top-black",
+  "why": "images 400 {\"error\":{\"message\":\"Я не могу сгенерировать это изображение. Давайте попробуем другую тему.\",\"type\":\"invalid_request_er"
+ },
+ {
+  "id": "top-ribbed-tank-top-gray",
+  "why": "images 400 {\"error\":{\"message\":\"Я не могу сгенерировать это изображение. Давайте попробуем другую тему.\",\"type\":\"invalid_request_er"
  }
 ]

@@ -2091,6 +2091,7 @@
  },
  {
   "id": "dress-shirt-dress-with-belt-lightblue",
+  "force": true,
   "category": "dress",
   "type": "платье",
   "title": "Голубое платье-рубашка",
@@ -5339,6 +5340,86 @@
   "prompt": "Studio product photo of a single chocolate brown women's ribbed knit mini dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
  },
  {
+  "id": "dress-oversized-sweater-dress-gray",
+  "force": true,
+  "category": "dress",
+  "type": "платье",
+  "title": "Серое платье-свитер",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single heather gray women's oversized sweater dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-oversized-sweater-dress-beige",
+  "force": true,
+  "category": "dress",
+  "type": "платье",
+  "title": "Бежевое платье-свитер",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single beige women's oversized sweater dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-oversized-sweater-dress-black",
+  "force": true,
+  "category": "dress",
+  "type": "платье",
+  "title": "Чёрное платье-свитер",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single black women's oversized sweater dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-oversized-sweater-dress-green",
+  "force": true,
+  "category": "dress",
+  "type": "платье",
+  "title": "Оливковое платье-свитер",
+  "colorName": "Оливковый",
+  "color": "#5E7048",
+  "gender": "f",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single olive green women's oversized sweater dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
   "id": "outer-harrington-jacket-beige",
   "category": "outer",
   "type": "куртка",
@@ -5738,6 +5819,26 @@
   "prompt": "Studio product photo of a single black half-zip anorak windbreaker, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
  },
  {
+  "id": "outer-half-zip-anorak-windbreaker-green",
+  "force": true,
+  "category": "outer",
+  "type": "куртка",
+  "title": "Оливковый анорак",
+  "colorName": "Оливковый",
+  "color": "#5E7048",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "спорт"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single olive green half-zip anorak windbreaker, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
   "id": "outer-half-zip-anorak-windbreaker-beige",
   "category": "outer",
   "type": "куртка",
@@ -5755,6 +5856,26 @@
   "warmth": "лёгкая",
   "formality": "спорт",
   "prompt": "Studio product photo of a single beige half-zip anorak windbreaker, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "outer-half-zip-anorak-windbreaker-blue",
+  "force": true,
+  "category": "outer",
+  "type": "куртка",
+  "title": "Синий анорак",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "спорт"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single mid-blue washed half-zip anorak windbreaker, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
  },
  {
   "id": "outer-double-breasted-wool-coat-black",
@@ -6477,6 +6598,26 @@
   "warmth": "демисезон",
   "formality": "смарт-кэжуал",
   "prompt": "Studio product photo of a single red women's leather ballet flats, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "shoes-leather-ballet-flats-white",
+  "force": true,
+  "category": "shoes",
+  "type": "лоферы",
+  "title": "Белые балетки",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "смарт-кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "prompt": "Studio product photo of a single white women's leather ballet flats, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
  },
  {
   "id": "bag-structured-leather-tote-bag-black",
@@ -8399,6 +8540,7 @@
  },
  {
   "id": "outer-fleece-zip-up-jacket-green",
+  "force": true,
   "category": "outer",
   "type": "куртка",
   "title": "Оливковая флисовая куртка",
@@ -8418,6 +8560,7 @@
  },
  {
   "id": "outer-fleece-zip-up-jacket-navy",
+  "force": true,
   "category": "outer",
   "type": "куртка",
   "title": "Тёмно-синяя флисовая куртка",
@@ -8437,6 +8580,7 @@
  },
  {
   "id": "outer-fleece-zip-up-jacket-brown",
+  "force": true,
   "category": "outer",
   "type": "куртка",
   "title": "Коричневая флисовая куртка",
@@ -8968,25 +9112,6 @@
   "prompt": "Studio product photo of a single beige hiking boots, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
  },
  {
-  "id": "shoes-hiking-boots-green",
-  "category": "shoes",
-  "type": "ботинки",
-  "title": "Оливковые трекинговые ботинки",
-  "colorName": "Оливковый",
-  "color": "#5E7048",
-  "gender": "u",
-  "tags": [
-   "прямой",
-   "кожа",
-   "спорт"
-  ],
-  "material": "кожа",
-  "fit": "прямой",
-  "warmth": "тёплая",
-  "formality": "спорт",
-  "prompt": "Studio product photo of a single olive green hiking boots, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
- },
- {
   "id": "shoes-suede-shearling-boots-gray",
   "category": "shoes",
   "type": "ботинки",
@@ -9367,25 +9492,6 @@
   "prompt": "Studio product photo of a single heather gray women's structured leather tote bag with two handles, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
  },
  {
-  "id": "bag-structured-leather-tote-bag-white",
-  "category": "bag",
-  "type": "сумка",
-  "title": "Белая сумка-тоут",
-  "colorName": "Белый",
-  "color": "#F3F3F0",
-  "gender": "f",
-  "tags": [
-   "прямой",
-   "кожа",
-   "смарт-кэжуал"
-  ],
-  "material": "кожа",
-  "fit": "прямой",
-  "warmth": "демисезон",
-  "formality": "смарт-кэжуал",
-  "prompt": "Studio product photo of a single white women's structured leather tote bag with two handles, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
- },
- {
   "id": "accessory-large-plaid-wool-scarf-navy",
   "category": "accessory",
   "type": "шарф",
@@ -9650,5 +9756,825 @@
   "warmth": "лёгкая",
   "formality": "кэжуал",
   "prompt": "Studio product photo of a single chocolate brown bucket hat, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-oversized-sweater-dress-brown",
+  "force": true,
+  "category": "dress",
+  "type": "платье",
+  "title": "Коричневое платье-свитер",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "оверсайз",
+   "шерсть",
+   "кэжуал"
+  ],
+  "material": "шерсть",
+  "fit": "оверсайз",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single chocolate brown women's oversized sweater dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-shirt-dress-with-belt-white",
+  "force": true,
+  "category": "dress",
+  "type": "платье",
+  "title": "Белое платье-рубашка",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "prompt": "Studio product photo of a single white women's shirt dress with belt, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-shirt-dress-with-belt-beige",
+  "force": true,
+  "category": "dress",
+  "type": "платье",
+  "title": "Бежевое платье-рубашка",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "prompt": "Studio product photo of a single beige women's shirt dress with belt, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-shirt-dress-with-belt-black",
+  "force": true,
+  "category": "dress",
+  "type": "платье",
+  "title": "Чёрное платье-рубашка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "смарт-кэжуал",
+  "prompt": "Studio product photo of a single black women's shirt dress with belt, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-simple-fitted-mini-dress-burgundy",
+  "category": "dress",
+  "type": "платье",
+  "title": "Бордовое мини-платье",
+  "colorName": "Бордовый",
+  "color": "#6E2A35",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single burgundy women's simple fitted mini dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-simple-fitted-mini-dress-green",
+  "category": "dress",
+  "type": "платье",
+  "title": "Оливковое мини-платье",
+  "colorName": "Оливковый",
+  "color": "#5E7048",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single olive green women's simple fitted mini dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-simple-fitted-mini-dress-beige",
+  "category": "dress",
+  "type": "платье",
+  "title": "Бежевое мини-платье",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single beige women's simple fitted mini dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-simple-fitted-mini-dress-gray",
+  "category": "dress",
+  "type": "платье",
+  "title": "Серое мини-платье",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "вискоза",
+   "вечерний"
+  ],
+  "material": "вискоза",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single heather gray women's simple fitted mini dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-satin-slip-dress-navy",
+  "category": "dress",
+  "type": "платье",
+  "title": "Тёмно-синее атласное платье-комбинация",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "атлас",
+   "вечерний"
+  ],
+  "material": "атлас",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single navy blue women's satin slip dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-satin-slip-dress-pink",
+  "category": "dress",
+  "type": "платье",
+  "title": "Розовое атласное платье-комбинация",
+  "colorName": "Розовый",
+  "color": "#E8A5B3",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "атлас",
+   "вечерний"
+  ],
+  "material": "атлас",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single soft pink women's satin slip dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-satin-slip-dress-white",
+  "category": "dress",
+  "type": "платье",
+  "title": "Белое атласное платье-комбинация",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "атлас",
+   "вечерний"
+  ],
+  "material": "атлас",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single white women's satin slip dress, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-denim-midi-dress-with-blue",
+  "category": "dress",
+  "type": "платье",
+  "title": "Синее джинсовое платье",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single mid-blue washed women's denim midi dress with buttons, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-denim-midi-dress-with-lightblue",
+  "category": "dress",
+  "type": "платье",
+  "title": "Голубое джинсовое платье",
+  "colorName": "Голубой",
+  "color": "#A9C4E2",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "деним",
+   "кэжуал"
+  ],
+  "material": "деним",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single light blue washed women's denim midi dress with buttons, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-light-midi-dress-with-pink",
+  "category": "dress",
+  "type": "платье",
+  "title": "Розовое платье в цветочек",
+  "colorName": "Розовый",
+  "color": "#E8A5B3",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single soft pink women's light midi dress with small floral print, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "dress-light-midi-dress-with-blue",
+  "category": "dress",
+  "type": "платье",
+  "title": "Синее платье в цветочек",
+  "colorName": "Синий",
+  "color": "#3D5A99",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "вискоза",
+   "кэжуал"
+  ],
+  "material": "вискоза",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single mid-blue washed women's light midi dress with small floral print, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "outer-fleece-zip-up-jacket-gray",
+  "force": true,
+  "category": "outer",
+  "type": "куртка",
+  "title": "Серая флисовая куртка",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "флис",
+   "спорт"
+  ],
+  "material": "флис",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single heather gray fleece zip-up jacket, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "top-cropped-ribbed-top-with-white",
+  "force": true,
+  "category": "top",
+  "type": "футболка",
+  "title": "Белый топ",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "трикотаж",
+   "кэжуал"
+  ],
+  "material": "трикотаж",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single white women's cropped ribbed top with short sleeves, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "top-cropped-ribbed-top-with-black",
+  "force": true,
+  "category": "top",
+  "type": "футболка",
+  "title": "Чёрный топ",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "трикотаж",
+   "кэжуал"
+  ],
+  "material": "трикотаж",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single black women's cropped ribbed top with short sleeves, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "top-cropped-ribbed-top-with-pink",
+  "force": true,
+  "category": "top",
+  "type": "футболка",
+  "title": "Розовый топ",
+  "colorName": "Розовый",
+  "color": "#E8A5B3",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "трикотаж",
+   "кэжуал"
+  ],
+  "material": "трикотаж",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single soft pink women's cropped ribbed top with short sleeves, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "top-oversized-vertical-striped-shirt-lightblue",
+  "category": "top",
+  "type": "рубашка",
+  "title": "Голубая рубашка в полоску",
+  "colorName": "Голубой",
+  "color": "#A9C4E2",
+  "gender": "u",
+  "tags": [
+   "оверсайз",
+   "хлопок",
+   "смарт-кэжуал"
+  ],
+  "material": "хлопок",
+  "fit": "оверсайз",
+  "warmth": "лёгкая",
+  "formality": "смарт-кэжуал",
+  "prompt": "Studio product photo of a single light blue washed oversized vertical striped shirt, thin stripes, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-high-waist-sport-leggings-gray",
+  "force": true,
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Серые легинсы",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "эластан",
+   "спорт"
+  ],
+  "material": "эластан",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single heather gray women's high-waist sport leggings, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-high-waist-sport-leggings-navy",
+  "force": true,
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Тёмно-синие легинсы",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "эластан",
+   "спорт"
+  ],
+  "material": "эластан",
+  "fit": "приталенный",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single navy blue women's high-waist sport leggings, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-track-pants-with-white-black",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Чёрные спортивные штаны с лампасами",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "полиэстер",
+   "спорт"
+  ],
+  "material": "полиэстер",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single black track pants with white side stripes, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-track-pants-with-white-navy",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Тёмно-синие спортивные штаны с лампасами",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "полиэстер",
+   "спорт"
+  ],
+  "material": "полиэстер",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single navy blue track pants with white side stripes, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-track-pants-with-white-green",
+  "category": "bottom",
+  "type": "брюки",
+  "title": "Оливковые спортивные штаны с лампасами",
+  "colorName": "Оливковый",
+  "color": "#5E7048",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "полиэстер",
+   "спорт"
+  ],
+  "material": "полиэстер",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single olive green track pants with white side stripes, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-biker-shorts-black",
+  "force": true,
+  "category": "bottom",
+  "type": "шорты",
+  "title": "Чёрные велосипедки",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "эластан",
+   "спорт"
+  ],
+  "material": "эластан",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single black women's biker shorts, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-biker-shorts-gray",
+  "force": true,
+  "category": "bottom",
+  "type": "шорты",
+  "title": "Серые велосипедки",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "f",
+  "tags": [
+   "приталенный",
+   "эластан",
+   "спорт"
+  ],
+  "material": "эластан",
+  "fit": "приталенный",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single heather gray women's biker shorts, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-faux-leather-mini-skirt-black",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Чёрная кожаная мини-юбка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "вечерний"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single black women's faux leather mini skirt, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bottom-faux-leather-mini-skirt-brown",
+  "category": "bottom",
+  "type": "юбка",
+  "title": "Коричневая кожаная мини-юбка",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "вечерний"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "вечерний",
+  "prompt": "Studio product photo of a single chocolate brown women's faux leather mini skirt, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "shoes-slip-on-canvas-sneakers-black",
+  "force": true,
+  "category": "shoes",
+  "type": "кеды",
+  "title": "Чёрные слипоны",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "кэжуал"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single black slip-on canvas sneakers, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "shoes-slip-on-canvas-sneakers-white",
+  "force": true,
+  "category": "shoes",
+  "type": "кеды",
+  "title": "Белые слипоны",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "кэжуал"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single white slip-on canvas sneakers, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "shoes-puffy-snow-boots-black",
+  "force": true,
+  "category": "shoes",
+  "type": "ботинки",
+  "title": "Чёрные дутики",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single black puffy snow boots, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "shoes-puffy-snow-boots-white",
+  "force": true,
+  "category": "shoes",
+  "type": "ботинки",
+  "title": "Белые дутики",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "кэжуал"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "тёплая",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single white puffy snow boots, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "shoes-platform-canvas-sneakers-white",
+  "force": true,
+  "category": "shoes",
+  "type": "кеды",
+  "title": "Белые кеды на платформе",
+  "colorName": "Белый",
+  "color": "#F3F3F0",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "кэжуал"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single white women's platform canvas sneakers, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "shoes-platform-canvas-sneakers-black",
+  "force": true,
+  "category": "shoes",
+  "type": "кеды",
+  "title": "Чёрные кеды на платформе",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "текстиль",
+   "кэжуал"
+  ],
+  "material": "текстиль",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single black women's platform canvas sneakers, pair of shoes, side three-quarter view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bag-drawstring-bucket-bag-with-black",
+  "category": "bag",
+  "type": "сумка",
+  "title": "Чёрная сумка-ведро",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single black women's drawstring bucket bag with a strap, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bag-drawstring-bucket-bag-with-brown",
+  "category": "bag",
+  "type": "сумка",
+  "title": "Коричневая сумка-ведро",
+  "colorName": "Коричневый",
+  "color": "#7A5A43",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single chocolate brown women's drawstring bucket bag with a strap, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bag-drawstring-bucket-bag-with-beige",
+  "category": "bag",
+  "type": "сумка",
+  "title": "Бежевая сумка-ведро",
+  "colorName": "Бежевый",
+  "color": "#D9C7AE",
+  "gender": "f",
+  "tags": [
+   "прямой",
+   "кожа",
+   "кэжуал"
+  ],
+  "material": "кожа",
+  "fit": "прямой",
+  "warmth": "демисезон",
+  "formality": "кэжуал",
+  "prompt": "Studio product photo of a single beige women's drawstring bucket bag with a strap, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bag-belt-bag-sling-nylon-black",
+  "force": true,
+  "category": "bag",
+  "type": "сумка",
+  "title": "Чёрная поясная сумка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "спорт"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single black belt bag sling, nylon, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bag-belt-bag-sling-nylon-gray",
+  "force": true,
+  "category": "bag",
+  "type": "сумка",
+  "title": "Серая поясная сумка",
+  "colorName": "Серый",
+  "color": "#8E9097",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "спорт"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single heather gray belt bag sling, nylon, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bag-duffle-gym-bag-with-black",
+  "force": true,
+  "category": "bag",
+  "type": "сумка",
+  "title": "Чёрная спортивная сумка",
+  "colorName": "Чёрный",
+  "color": "#2A2B30",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "спорт"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single black duffle gym bag with shoulder strap, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
+ },
+ {
+  "id": "bag-duffle-gym-bag-with-navy",
+  "force": true,
+  "category": "bag",
+  "type": "сумка",
+  "title": "Тёмно-синяя спортивная сумка",
+  "colorName": "Тёмно-синий",
+  "color": "#24304F",
+  "gender": "u",
+  "tags": [
+   "прямой",
+   "нейлон",
+   "спорт"
+  ],
+  "material": "нейлон",
+  "fit": "прямой",
+  "warmth": "лёгкая",
+  "formality": "спорт",
+  "prompt": "Studio product photo of a single navy blue duffle gym bag with shoulder strap, front view, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style"
  }
 ]

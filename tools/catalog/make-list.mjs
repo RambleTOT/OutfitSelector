@@ -182,6 +182,32 @@ const T = [
   ['accessory', 'шляпа', 'шапка-бини', 'f', 'ribbed knit beanie', 'прямой', 'u', 'шерсть', 'тёплая', 'кэжуал', ['red', 'lightblue']],
   ['accessory', 'шляпа', 'шапка с помпоном', 'f', 'knit hat with a pom pom', 'прямой', 'u', 'шерсть', 'тёплая', 'кэжуал', ['white', 'red', 'gray']],
   ['accessory', 'шляпа', 'панама', 'f', 'bucket hat', 'прямой', 'u', 'хлопок', 'лёгкая', 'кэжуал', ['gray', 'brown']],
+  // --- четвёртая партия (19 ноября): добираем платья и то, что распознавание путало; 'force' = принимаем по моей визуальной проверке ---
+  ['dress', 'платье', 'платье-свитер', 'n', 'oversized sweater dress', 'оверсайз', 'f', 'шерсть', 'тёплая', 'кэжуал', ['gray', 'beige', 'black', 'green', 'brown'], 'force'],
+  ['dress', 'платье', 'платье-рубашка', 'n', 'shirt dress with belt', 'прямой', 'f', 'хлопок', 'демисезон', 'смарт-кэжуал', ['white', 'lightblue', 'beige', 'black'], 'force'],
+  ['dress', 'платье', 'мини-платье', 'n', 'simple fitted mini dress', 'приталенный', 'f', 'вискоза', 'лёгкая', 'вечерний', ['burgundy', 'green', 'beige', 'gray']],
+  ['dress', 'платье', 'атласное платье-комбинация', 'n', 'satin slip dress', 'приталенный', 'f', 'атлас', 'лёгкая', 'вечерний', ['navy', 'pink', 'white']],
+  ['dress', 'платье', 'джинсовое платье', 'n', 'denim midi dress with buttons', 'прямой', 'f', 'деним', 'демисезон', 'кэжуал', ['blue', 'lightblue']],
+  ['dress', 'платье', 'платье в цветочек', 'n', 'light midi dress with small floral print', 'прямой', 'f', 'вискоза', 'лёгкая', 'кэжуал', ['pink', 'blue']],
+  ['outer', 'куртка', 'анорак', 'm', 'half-zip anorak windbreaker', 'прямой', 'u', 'нейлон', 'лёгкая', 'спорт', ['green', 'blue'], 'force'],
+  ['outer', 'куртка', 'флисовая куртка', 'f', 'fleece zip-up jacket', 'прямой', 'u', 'флис', 'тёплая', 'спорт', ['gray', 'green', 'navy', 'brown'], 'force'],
+  ['outer', 'куртка', 'стёганый жилет', 'm', 'quilted puffer vest without sleeves', 'прямой', 'u', 'нейлон', 'демисезон', 'кэжуал', ['black', 'beige', 'green'], 'force'],
+  ['top', 'футболка', 'майка', 'f', 'ribbed tank top', 'приталенный', 'u', 'хлопок', 'лёгкая', 'кэжуал', ['white', 'black', 'gray'], 'force'],
+  ['top', 'футболка', 'топ', 'm', 'cropped ribbed top with short sleeves', 'приталенный', 'f', 'трикотаж', 'лёгкая', 'кэжуал', ['white', 'black', 'pink'], 'force'],
+  ['top', 'рубашка', 'рубашка в полоску', 'f', 'oversized vertical striped shirt, thin stripes', 'оверсайз', 'u', 'хлопок', 'лёгкая', 'смарт-кэжуал', ['lightblue', 'navy']],
+  ['bottom', 'брюки', 'легинсы', 'p', 'high-waist sport leggings', 'приталенный', 'f', 'эластан', 'демисезон', 'спорт', ['black', 'gray', 'navy'], 'force'],
+  ['bottom', 'брюки', 'спортивные штаны с лампасами', 'p', 'track pants with white side stripes', 'прямой', 'u', 'полиэстер', 'демисезон', 'спорт', ['black', 'navy', 'green']],
+  ['bottom', 'шорты', 'велосипедки', 'p', 'biker shorts', 'приталенный', 'f', 'эластан', 'лёгкая', 'спорт', ['black', 'gray'], 'force'],
+  ['bottom', 'юбка', 'кожаная мини-юбка', 'f', 'faux leather mini skirt', 'прямой', 'f', 'кожа', 'демисезон', 'вечерний', ['black', 'brown']],
+  ['shoes', 'кеды', 'слипоны', 'p', 'slip-on canvas sneakers', 'прямой', 'u', 'текстиль', 'демисезон', 'кэжуал', ['black', 'white'], 'force'],
+  ['shoes', 'ботинки', 'дутики', 'p', 'puffy snow boots', 'прямой', 'u', 'нейлон', 'тёплая', 'кэжуал', ['black', 'white'], 'force'],
+  ['shoes', 'кеды', 'кеды на платформе', 'p', 'platform canvas sneakers', 'прямой', 'f', 'текстиль', 'демисезон', 'кэжуал', ['white', 'black'], 'force'],
+  ['shoes', 'ботинки', 'ботинки на каблуке', 'p', 'heeled ankle boots', 'прямой', 'f', 'кожа', 'демисезон', 'смарт-кэжуал', ['beige'], 'force'],
+  ['shoes', 'лоферы', 'балетки', 'p', 'leather ballet flats', 'прямой', 'f', 'кожа', 'демисезон', 'смарт-кэжуал', ['white'], 'force'],
+  ['bag', 'сумка', 'сумка-ведро', 'f', 'drawstring bucket bag with a strap', 'прямой', 'f', 'кожа', 'демисезон', 'кэжуал', ['black', 'brown', 'beige']],
+  ['bag', 'сумка', 'поясная сумка', 'f', 'belt bag sling, nylon', 'прямой', 'u', 'нейлон', 'лёгкая', 'спорт', ['black', 'gray'], 'force'],
+  ['bag', 'сумка', 'спортивная сумка', 'f', 'duffle gym bag with shoulder strap', 'прямой', 'u', 'нейлон', 'лёгкая', 'спорт', ['black', 'navy'], 'force'],
+  ['bag', 'сумка', 'сумка-тоут', 'f', 'structured leather tote bag with two handles, handles attached to the bag body', 'прямой', 'f', 'кожа', 'демисезон', 'смарт-кэжуал', ['white'], 'force'],
 ]
 
 const adj = (ruColor, rod) => {
@@ -192,26 +218,29 @@ const adj = (ruColor, rod) => {
   if (rod === 'p') return base + (soft ? 'ие' : 'ые')
   return base + (soft ? 'ее' : 'ое')
 }
-const SKIP = new Set(['dress-shirt-dress-with-belt-white', 'dress-shirt-dress-with-belt-beige', 'outer-lightweight-nylon-windbreaker-navy', 'outer-fleece-zip-up-jacket-gray', 'accessory-bucket-hat-black', 'top-fitted-turtleneck-top-beige', 'shoes-hiking-boots-green', 'bag-structured-leather-tote-bag-white'])
+const BAD = new Set(['shoes-heeled-ankle-boots-beige', 'top-oversized-vertical-striped-shirt-navy', 'bag-structured-leather-tote-bag-white', 'bottom-high-waist-sport-leggings-black', 'outer-quilted-puffer-vest-without-black', 'outer-quilted-puffer-vest-without-beige', 'outer-quilted-puffer-vest-without-green', 'top-ribbed-tank-top-white', 'top-ribbed-tank-top-black', 'top-ribbed-tank-top-gray'])
+const SKIP = new Set([...BAD, 'dress-shirt-dress-with-belt-white', 'dress-shirt-dress-with-belt-beige', 'outer-lightweight-nylon-windbreaker-navy', 'outer-fleece-zip-up-jacket-gray', 'accessory-bucket-hat-black', 'top-fitted-turtleneck-top-beige', 'shoes-heeled-ankle-boots-beige', 'top-oversized-vertical-striped-shirt-navy', 'bag-structured-leather-tote-bag-white', 'bottom-high-waist-sport-leggings-black', 'shoes-hiking-boots-green', 'bag-structured-leather-tote-bag-white'])
 import { existsSync, readFileSync } from 'node:fs'
 const rj = new URL('./rejected.json', import.meta.url)
 if (existsSync(rj)) for (const r of JSON.parse(readFileSync(rj, 'utf8'))) if (/определили/.test(r.why)) SKIP.add(r.id)
 const list = []
-for (const [category, type, ru, rod, en, fit, sex, material, warmth, formality, colors] of T) {
+for (const [category, type, ru, rod, en, fit, sex, material, warmth, formality, colors, force] of T) {
   for (const ck of colors) {
     const [colorName, color, ruColor, enColor] = C[ck]
     const cn = adj(ruColor, rod)
     const who = sex === 'f' ? "women's " : ''
     const id0 = `${category}-${en.split(/[ ,]+/).slice(0, 4).join('-').replace(/[^a-z-]+/g, '')}-${ck}`
-    if (SKIP.has(id0)) continue
+    if (SKIP.has(id0) && !(force && !BAD.has(id0))) continue
     list.push({
       id: `${category}-${en.split(/[ ,]+/).slice(0, 4).join('-').replace(/[^a-z-]+/g, '')}-${ck}`,
-      category, type, title: `${cn[0].toUpperCase()}${cn.slice(1)} ${ru}`.replace(/(Белая|Чёрная|Серая|Бежевая) (\S+)/, (m) => m), colorName, color, gender: sex,
+      force: force === 'force' || undefined, category, type, title: `${cn[0].toUpperCase()}${cn.slice(1)} ${ru}`.replace(/(Белая|Чёрная|Серая|Бежевая) (\S+)/, (m) => m), colorName, color, gender: sex,
       tags: [fit, material, formality], material, fit, warmth, formality,
       prompt: `Studio product photo of a single ${enColor} ${who}${en}, ${category === 'shoes' ? 'pair of shoes, side three-quarter view' : 'front view'}, centered, soft even daylight, plain light gray background, clean minimal design, no model, no text, no logo, no tag, realistic fabric texture, e-commerce style`,
     })
   }
 }
-writeFileSync(new URL('./list.json', import.meta.url), JSON.stringify(list, null, 1))
-console.log(`в списке ${list.length}`)
-const ids = new Set(list.map((e) => e.id)); if (ids.size !== list.length) console.log('ВНИМАНИЕ: повторяются id')
+const byId = new Map()
+for (const e of list) { const o = byId.get(e.id); if (!o || (e.force && !o.force)) byId.set(e.id, e) }
+const uniq = [...byId.values()]
+writeFileSync(new URL('./list.json', import.meta.url), JSON.stringify(uniq, null, 1))
+console.log(`в списке ${uniq.length}`)

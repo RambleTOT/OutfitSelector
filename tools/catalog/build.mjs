@@ -121,10 +121,10 @@ async function processOne(e) {
     // близкие виды путаются (кеды и кроссовки, куртка и пальто, свитер и свитшот): принимаем их как тот же вид, название и вид берём из списка
     const SAME = [['кеды', 'кроссовки', 'лоферы', 'ботинки'], ['куртка', 'пальто', 'тренч', 'пиджак'], ['свитер', 'свитшот', 'худи', 'лонгслив'], ['футболка', 'рубашка'], ['джинсы', 'брюки']]
     const ok = it.type === e.type || (e.category === it.category && ['сумка', 'рюкзак', 'шарф', 'кепка', 'шляпа'].includes(e.type)) || SAME.some((g) => g.includes(it.type) && g.includes(e.type))
-    if (!ok) { rejected.push({ id: e.id, why: `определили как ${it.type}` }); console.log('—', e.id, 'определили как', it.type); return }
+    if (!ok && !e.force) { rejected.push({ id: e.id, why: `определили как ${it.type}` }); console.log('—', e.id, 'определили как', it.type); return }
     const b64 = it.cutout.split(',')[1]
     writeFileSync(join(out, `${e.id}.webp`), Buffer.from(b64, 'base64'))
-    const { query, prompt, ...entry } = e
+    const { query, prompt, force, ...entry } = e
     index.push({ ...entry, img: `/catalog/${e.id}.webp`, ...(credit ? { credit } : {}) })
     writeFileSync(indexPath, JSON.stringify(index))
     console.log('✓', e.id)
