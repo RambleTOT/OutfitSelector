@@ -14,6 +14,21 @@ tg() { # метод [параметры curl]
   printf 'url = "https://api.telegram.org/bot%s/%s"\n' "$T" "$m" | curl -sS -m 20 -K - "$@"
 }
 
+# некоторые хостинги режут часть адресов Telegram (api.telegram.org по DNS отдаёт недоступный IP): ищем рабочий и закрепляем в /etc/hosts
+if ! curl -4 -sS -m 8 -o /dev/null https://api.telegram.org 2>/dev/null; then
+  echo "Telegram по адресу из DNS недоступен, ищу рабочий..."
+  for ip in 149.154.167.220 149.154.167.99 149.154.167.50 149.154.167.51 149.154.175.50 149.154.175.100; do
+    if curl -4 -sS -m 6 --resolve "api.telegram.org:443:$ip" -o /dev/null https://api.telegram.org 2>/dev/null; then
+      sed -i '/[[:space:]]api\.telegram\.org$/d' /etc/hosts
+      [ -n "$(tail -c1 /etc/hosts)" ] && echo >> /etc/hosts   # в конце файла может не быть перевода строки
+      echo "$ip api.telegram.org" >> /etc/hosts
+      echo "Закрепил api.telegram.org -> $ip в /etc/hosts"
+      break
+    fi
+  done
+fi
+
+read -rp "Твой ник в Telegram без @ (уведомления получит только он) [RambleTOT]: " OWNER; OWNER="${OWNER:-RambleTOT}"
 read -rsp "Токен бота от @BotFather: " T; echo
 [ -n "$T" ] || { echo "Токен не введён"; exit 1; }
 ME=$(tg getMe) || { echo "Нет связи с Telegram"; exit 1; }
@@ -23,8 +38,9 @@ echo "Бот найден: @$BOT"
 echo
 echo "Теперь открой Telegram, найди @$BOT и отправь ему сообщение /start (нажми «Запустить» или «Start»)."
 read -rp "Когда отправишь, нажми Enter: " _
-CHAT=$(tg getUpdates | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const r=(JSON.parse(s).result||[]).map(u=>u.message||u.my_chat_member).filter(m=>m&&m.chat&&m.chat.type==="private").pop();console.log(r?r.chat.id:"")})')
-[ -n "$CHAT" ] || { echo "Сообщения боту не видно. Отправь ему /start ещё раз и запусти скрипт снова"; exit 1; }
+# берём только сообщения от указанного ника: если бота нашёл кто-то посторонний, его чат игнорируется
+CHAT=$(tg getUpdates | OWNER="$OWNER" node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const o=process.env.OWNER.toLowerCase();const r=(JSON.parse(s).result||[]).map(u=>u.message).filter(m=>m&&m.chat&&m.chat.type==="private"&&m.from&&String(m.from.username||"").toLowerCase()===o).pop();console.log(r?r.chat.id:"")})')
+[ -n "$CHAT" ] || { echo "Не вижу сообщения боту от @$OWNER. Отправь ему /start со своего аккаунта и запусти скрипт снова"; exit 1; }
 setv ALERT_TG_BOT_TOKEN "$T"
 setv ALERT_TG_CHAT_ID "$CHAT"
 OKSEND=$(tg sendMessage --data-urlencode "chat_id=$CHAT" --data-urlencode "text=✅ Atelier: бот подключён. Сюда будут приходить тревоги мониторинга, ежедневный бэкап и уведомления о входе в админку" | grep -c '"ok":true' || true)
