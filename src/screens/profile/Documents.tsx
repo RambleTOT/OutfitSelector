@@ -5,6 +5,7 @@ const DOCS: [string, string][] = [
   ['Политика конфиденциальности', '/legal/privacy.html'],
   ['Оферта и условия оплаты', '/legal/offer.html'],
   ['Согласие на обработку данных', '/legal/consent.html'],
+  ['Пользовательское соглашение', '/legal/terms.html'],
 ]
 
 /** PRF-06 Documents: ссылки на веб-документы */

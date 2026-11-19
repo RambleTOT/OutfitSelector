@@ -50,8 +50,9 @@ export function Login() {
         <p className="t-caption muted" style={{ textWrap: 'pretty', paddingLeft: 36 }}>
           Читай{' '}
           <a href="/legal/consent.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>согласие</a>,{' '}
-          <a href="/legal/privacy.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>политику конфиденциальности</a>{' '}и{' '}
-          <a href="/legal/offer.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>оферту</a>. Продолжая, ты принимаешь оферту
+          <a href="/legal/privacy.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>политику конфиденциальности</a>,{' '}
+          <a href="/legal/terms.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>пользовательское соглашение</a>{' '}и{' '}
+          <a href="/legal/offer.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>оферту</a>. Продолжая, ты принимаешь соглашение и оферту
         </p>
         <Button full disabled={bad || !agree} loading={busy} onClick={next}>Получить код</Button>
       </div>
