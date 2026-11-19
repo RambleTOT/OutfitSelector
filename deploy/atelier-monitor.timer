@@ -1,0 +1,11 @@
+# /etc/systemd/system/atelier-monitor.timer
+[Unit]
+Description=Atelier: мониторинг раз в минуту
+
+[Timer]
+OnBootSec=60
+OnUnitActiveSec=60
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

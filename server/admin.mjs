@@ -157,9 +157,9 @@ export function paymentsList(store) {
   return Object.entries(store.db.payments ?? {}).map(([tx, p]) => ({ tx, ...p, email: store.user(p.userId)?.email ?? 'удалён' })).sort((a, b) => b.at - a.at).slice(0, 300)
 }
 
-function logAction(store, userId, email, text, now) {
+function logAction(store, userId, email, text, now, by = '') {
   const log = (store.db.adminLog ??= [])
-  log.push({ at: now, userId, email, text })
+  log.push({ at: now, userId, email, text, by })
   if (log.length > 500) log.splice(0, log.length - 500)
 }
 
@@ -170,7 +170,7 @@ export function recentLog(store) { return (store.db.adminLog ?? []).slice(-30).r
  * grant: выдать тариф на N дней с сегодняшнего дня; extend: добавить N дней к текущему сроку;
  * cancel: отключить автопродление, тариф доживает до конца срока; revoke: вернуть на Free сразу; reset_usage: обнулить счётчики лимитов
  */
-export function subAction(store, user, body, now = Date.now()) {
+export function subAction(store, user, body, now = Date.now(), by = '') {
   const act = String(body.action ?? '')
   const days = Math.round(Number(body.days))
   const sub = user.sub ?? (user.sub = { plan: 'free', status: 'none', subscriptionId: null, endsAt: null, cancelled: false })
@@ -178,28 +178,28 @@ export function subAction(store, user, body, now = Date.now()) {
     if (!['sub', 'plus'].includes(body.plan)) return { error: 'bad_plan' }
     if (!(days >= 1 && days <= 3650)) return { error: 'bad_days' }
     user.sub = { plan: body.plan, status: 'active', subscriptionId: null, endsAt: now + days * DAY, cancelled: true, manual: true }
-    logAction(store, user.id, user.email, `Выдан тариф ${body.plan === 'plus' ? 'Подписка+' : 'Подписка'} на ${days} дн.`, now)
+    logAction(store, user.id, user.email, `Выдан тариф ${body.plan === 'plus' ? 'Подписка+' : 'Подписка'} на ${days} дн.`, now, by)
   } else if (act === 'extend') {
     if (!(days >= 1 && days <= 3650)) return { error: 'bad_days' }
     if (sub.plan === 'free') return { error: 'no_plan' }
     const base = sub.endsAt && sub.endsAt > now ? sub.endsAt : now
     sub.endsAt = base + days * DAY
     sub.status = 'active'
-    logAction(store, user.id, user.email, `Срок продлён на ${days} дн.`, now)
+    logAction(store, user.id, user.email, `Срок продлён на ${days} дн.`, now, by)
   } else if (act === 'cancel') {
     if (sub.plan === 'free') return { error: 'no_plan' }
     sub.cancelled = true
-    logAction(store, user.id, user.email, 'Автопродление отключено', now)
+    logAction(store, user.id, user.email, 'Автопродление отключено', now, by)
   } else if (act === 'revoke') {
     if (sub.plan === 'free') return { error: 'no_plan' }
     user.sub = { plan: 'free', status: 'revoked', subscriptionId: null, endsAt: now, cancelled: true }
-    logAction(store, user.id, user.email, 'Тариф снят, вернулся Free', now)
+    logAction(store, user.id, user.email, 'Тариф снят, вернулся Free', now, by)
   } else if (act === 'reset_usage') {
     delete store.db.usage[user.id]
-    logAction(store, user.id, user.email, 'Лимиты обнулены', now)
+    logAction(store, user.id, user.email, 'Лимиты обнулены', now, by)
   } else return { error: 'bad_action' }
   store.save()
   return { ok: true }
 }
 
-export function logDelete(store, user, now = Date.now()) { logAction(store, user.id, user.email, 'Аккаунт удалён', now) }
+export function logDelete(store, user, now = Date.now(), by = '') { logAction(store, user.id, user.email, 'Аккаунт удалён', now, by) }

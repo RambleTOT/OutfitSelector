@@ -9,7 +9,7 @@ const base = process.env.API_URL ?? 'http://127.0.0.1:8787'
 const token = process.env.SUPPORT_ADMIN_TOKEN
 if (!token) { console.error('Задай SUPPORT_ADMIN_TOKEN (тот же, что в .env сервера)'); process.exit(1) }
 const call = async (method, path, body) => {
-  const r = await fetch(base + path, { method, headers: { 'Content-Type': 'application/json', 'X-Admin-Token': token }, body: body ? JSON.stringify(body) : undefined })
+  const r = await fetch(base + path, { method, headers: { 'Content-Type': 'application/json', 'X-Admin-Token': token, 'X-Requested-With': 'atelier-admin' }, body: body ? JSON.stringify(body) : undefined })
   const j = await r.json().catch(() => ({}))
   if (!r.ok) throw new Error(`${r.status} ${j.error ?? ''}`)
   return j

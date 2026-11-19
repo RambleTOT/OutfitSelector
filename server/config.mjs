@@ -19,7 +19,9 @@ const dev = e.NODE_ENV !== 'production'
 
 export const config = {
   dev,
-  supportAdminToken: e.SUPPORT_ADMIN_TOKEN ?? '',
+  supportAdminToken: e.SUPPORT_ADMIN_TOKEN ?? '', // только для support-cli на самом сервере
+  // кто может входить в админку: почты через запятую; вход по коду из письма и приложению-аутентификатору
+  adminEmails: (e.ADMIN_EMAILS ?? '').split(',').map((x) => x.trim().toLowerCase()).filter(Boolean),
   port: Number(e.PORT ?? 8787),
   corsOrigin: e.CORS_ORIGIN ?? '',
   // в разработке секрет случайный на каждый запуск: токены живут до перезапуска. В проде секрет обязателен

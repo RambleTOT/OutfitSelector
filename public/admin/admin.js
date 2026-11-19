@@ -1,8 +1,7 @@
-// Админка Atelier: одна страница без сборки. Токен администратора (SUPPORT_ADMIN_TOKEN из .env сервера) хранится только в браузере.
+// Админка Atelier: одна страница без сборки. Вход: код из письма + код из приложения-аутентификатора, сессия в HttpOnly-cookie (JS её не видит).
 const $ = (s, r = document) => r.querySelector(s)
 const root = $('#root')
-const KEY = 'atelier-admin-token'
-let token = sessionStorage.getItem(KEY) || localStorage.getItem(KEY) || ''
+let me = '' // почта вошедшего админа
 
 const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
 const PLAN = { free: 'Free', sub: 'Подписка', plus: 'Подписка+' }
@@ -34,6 +33,7 @@ const IC = {
   crown: '<path d="M4 18h16l1.5-10-5 3.5L12 5 7.5 11.5l-5-3.5z"/>',
   wallet: '<path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><rect x="3.5" y="8" width="17" height="11.5" rx="3"/><circle cx="16.5" cy="13.8" r="1.1"/>',
   send: '<path d="M20 4 10 14M20 4l-6 16-4-6-6-4z"/>',
+  shield: '<path d="M12 3.5 5 6v5.5c0 4.2 2.8 7.4 7 9 4.2-1.6 7-4.8 7-9V6z"/><path d="m9 12 2.2 2.2L15.5 10"/>',
 }
 const icon = (n) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`
 
@@ -46,44 +46,105 @@ function toast(text, err) {
 }
 
 class AuthError extends Error {}
+const HDR = { 'X-Requested-With': 'atelier-admin' }
 async function api(path, method = 'GET', body) {
-  const r = await fetch('/api/admin' + path, { method, headers: { 'X-Admin-Token': token, ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined })
+  const r = await fetch('/api/admin' + path, { method, credentials: 'same-origin', headers: { ...HDR, ...(body ? { 'Content-Type': 'application/json' } : {}) }, body: body ? JSON.stringify(body) : undefined })
   const j = await r.json().catch(() => ({}))
   if (r.status === 401) throw new AuthError()
   if (r.status === 429) throw new Error('Слишком много запросов, подожди минуту')
   if (!r.ok) throw new Error(ERR[j.error] ?? j.error ?? `Ошибка ${r.status}`)
   return j
 }
-const ERR = { no_plan: 'У человека нет платного тарифа', bad_days: 'Срок: от 1 до 3650 дней', bad_plan: 'Выбери тариф', cancel_failed: 'Платёжная система не отменила автопродление', no_user: 'Пользователь не найден' }
+// шаги входа: ответы 401 и 429 здесь не значат «сессия закончилась», это ошибки ввода
+async function authApi(step, body) {
+  const r = await fetch('/api/admin/auth/' + step, { method: 'POST', credentials: 'same-origin', headers: { ...HDR, 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+  return { status: r.status, body: await r.json().catch(() => ({})) }
+}
+const ERR = { no_plan: 'У человека нет платного тарифа', bad_days: 'Срок: от 1 до 3650 дней', bad_plan: 'Выбери тариф', cancel_failed: 'Платёжная система не отменила автопродление', no_user: 'Пользователь не найден', forbidden: 'Запрос отклонён, обнови страницу' }
 
 // ---------- вход
+const lg = { step: 'email', email: '', ticket: '', secret: '', otpauth: '', recovery: [], useRecovery: false, error: '' }
+const loginCard = (title, sub, body) => `<div class="login"><form class="card" id="lf" autocomplete="off">
+  <div class="brand"><img src="../favicon.svg" alt="" /><b>Atelier</b></div>
+  <div><h1 style="font:800 24px/30px var(--font-ui)">${title}</h1>${sub ? `<p class="muted" style="margin-top:6px">${sub}</p>` : ''}</div>
+  ${body}<div class="err" id="er" role="alert">${esc(lg.error)}</div></form></div>`
+const codeInput = (id, ph, mode = 'numeric') => `<input type="text" id="${id}" inputmode="${mode}" autocomplete="one-time-code" placeholder="${ph}" aria-label="${ph}" maxlength="${mode === 'numeric' ? 6 : 9}" class="codefield" required />`
+const submitBtn = (t) => `<button class="btn primary" style="justify-content:center;height:52px" type="submit">${t}</button>`
+
 function renderLogin(msg = '') {
-  root.innerHTML = `<div class="login"><form class="card" id="lf">
-    <div class="brand"><img src="../favicon.svg" alt="" /><b>Atelier</b></div>
-    <div><h1 style="font:800 24px/30px var(--font-ui)">Вход в админку</h1><p class="muted" style="margin-top:6px">Вставь токен администратора, он лежит в настройках сервера</p></div>
-    <input type="password" id="tk" placeholder="Токен" autocomplete="current-password" aria-label="Токен администратора" required />
-    <label class="chk"><input type="checkbox" id="rem" /> Запомнить на этом устройстве</label>
-    <div class="err" id="er">${esc(msg)}</div>
-    <button class="btn primary" style="justify-content:center;height:52px" type="submit">Войти</button>
-  </form></div>`
-  $('#tk').focus()
-  $('#lf').onsubmit = async (e) => {
-    e.preventDefault()
-    token = $('#tk').value.trim()
-    try {
-      await api('/overview')
-      sessionStorage.setItem(KEY, token)
-      if ($('#rem').checked) localStorage.setItem(KEY, token)
-      start()
-    } catch (er) { token = ''; $('#er').textContent = er instanceof AuthError ? 'Токен не подошёл' : er.message }
+  if (msg) lg.error = msg
+  const st = lg.step
+  if (st === 'email') {
+    root.innerHTML = loginCard('Вход в админку', 'Введи свою почту, пришлём код', `<input type="email" id="em" placeholder="name@mail.ru" autocomplete="username" aria-label="Почта" value="${esc(lg.email)}" required />${submitBtn('Получить код')}`)
+    $('#em').focus()
+  } else if (st === 'code') {
+    root.innerHTML = loginCard('Код из письма', `Отправили на ${esc(lg.email)}. Если письма нет, проверь спам. Код действует 5 минут`, `${codeInput('cd', '123456')}${submitBtn('Дальше')}<button type="button" class="btn" data-lg="back" style="justify-content:center">Другая почта</button>`)
+    $('#cd').focus()
+  } else if (st === 'totp') {
+    root.innerHTML = loginCard('Код из приложения', lg.useRecovery ? 'Введи один из резервных кодов, он сработает один раз' : 'Открой приложение-аутентификатор и введи шестизначный код для Atelier', `${lg.useRecovery ? codeInput('cd', 'xxxx-xxxx', 'text') : codeInput('cd', '123456')}${submitBtn('Войти')}<button type="button" class="btn" data-lg="recovery" style="justify-content:center">${lg.useRecovery ? 'Ввести код из приложения' : 'Нет доступа к приложению'}</button>`)
+    $('#cd').focus()
+  } else if (st === 'setup') {
+    root.innerHTML = loginCard('Настрой аутентификатор', 'Двухфакторный вход обязателен. Отсканируй код в приложении (Google Authenticator, Яндекс Ключ, 1Password), затем введи код из него',
+      `<div class="qr" id="qr" aria-label="QR-код для приложения-аутентификатора"></div><p class="muted" style="font-size:12px;text-align:center">Нет камеры? Введи ключ вручную:<br><code class="key">${esc(lg.secret.match(/.{1,4}/g).join(' '))}</code></p>${codeInput('cd', '123456')}${submitBtn('Проверить и включить')}`)
+    try { const q = window.qrcode(0, 'M'); q.addData(lg.otpauth); q.make(); $('#qr').innerHTML = q.createSvgTag({ cellSize: 5, margin: 2, scalable: true }) } catch { $('#qr').textContent = 'Не удалось нарисовать QR, введи ключ вручную' }
+    $('#cd').focus()
+  } else if (st === 'recovery') {
+    root.innerHTML = loginCard('Резервные коды', 'Если потеряешь телефон, зайдёшь по одному из них. Каждый работает один раз. Сохрани их сейчас, больше мы их не покажем', `<pre class="rec" id="rc">${lg.recovery.map(esc).join('\n')}</pre><div class="acts"><button type="button" class="btn" data-lg="copy">Скопировать</button></div><label class="chk"><input type="checkbox" id="ok" /> Я сохранил(а) коды в надёжном месте</label><button class="btn primary" style="justify-content:center;height:52px" type="submit" id="go" disabled>Открыть админку</button>`)
+    $('#ok').onchange = (e) => { $('#go').disabled = !e.target.checked }
   }
+  const f = $('#lf'); if (f) f.onsubmit = onLogin
 }
-function logout(msg) { token = ''; sessionStorage.removeItem(KEY); localStorage.removeItem(KEY); renderLogin(msg) }
+
+async function onLogin(e) {
+  e.preventDefault()
+  lg.error = ''
+  const st = lg.step
+  const val = ($('#cd')?.value ?? '').trim()
+  const fail = (t) => { lg.error = t; $('#er').textContent = t }
+  const btn = e.submitter; if (btn) btn.disabled = true
+  try {
+    if (st === 'email') {
+      lg.email = $('#em').value.trim().toLowerCase()
+      const r = await authApi('request', { email: lg.email })
+      if (r.status !== 200) return fail(r.status === 429 ? 'Слишком много попыток, подожди немного' : 'Проверь почту')
+      lg.step = 'code'; return renderLogin()
+    }
+    if (st === 'code') {
+      const r = await authApi('verify', { email: lg.email, code: val })
+      if (r.status === 401) return fail('Неверный код или он устарел')
+      if (r.status !== 200) return fail('Слишком много попыток, подожди немного')
+      Object.assign(lg, { step: r.body.step, ticket: r.body.ticket, secret: r.body.secret ?? '', otpauth: r.body.otpauth ?? '', useRecovery: false })
+      return renderLogin()
+    }
+    if (st === 'totp' || st === 'setup') {
+      const r = await authApi('totp', { ticket: lg.ticket, code: val })
+      if (r.status === 429) return fail('Слишком много неверных кодов, вход закрыт на 15 минут')
+      if (r.status === 401 && r.body.error === 'ticket_invalid') { lg.step = 'email'; return renderLogin('Время вышло, начни заново') }
+      if (r.status !== 200) return fail('Неверный код')
+      me = r.body.email
+      if (r.body.recovery) { lg.recovery = r.body.recovery; lg.step = 'recovery'; return renderLogin() }
+      return start()
+    }
+    if (st === 'recovery') return start()
+  } catch { fail('Нет связи с сервером') } finally { if (btn) btn.disabled = false }
+}
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-lg]')
+  if (!t) return
+  if (t.dataset.lg === 'back') { lg.step = 'email'; lg.error = ''; renderLogin() }
+  if (t.dataset.lg === 'recovery') { lg.useRecovery = !lg.useRecovery; lg.error = ''; renderLogin() }
+  if (t.dataset.lg === 'copy') navigator.clipboard?.writeText(lg.recovery.join('\n')).then(() => toast('Скопировано'), () => toast('Выдели и скопируй вручную', true))
+})
+async function logout(msg, all) {
+  try { await fetch(all ? '/api/admin/logout-all' : '/api/admin/auth/logout', { method: 'POST', credentials: 'same-origin', headers: HDR }) } catch { /* всё равно выходим */ }
+  me = ''; Object.assign(lg, { step: 'email', ticket: '', secret: '', recovery: [], error: '' })
+  renderLogin(typeof msg === 'string' ? msg : '')
+}
 
 // ---------- оболочка
 let page = 'home'
 let counts = { support: 0 }
-const NAV = [['home', 'grid', 'Обзор'], ['users', 'users', 'Пользователи'], ['payments', 'card', 'Платежи'], ['support', 'chat', 'Поддержка']]
+const NAV = [['home', 'grid', 'Обзор'], ['users', 'users', 'Пользователи'], ['payments', 'card', 'Платежи'], ['support', 'chat', 'Поддержка'], ['admins', 'shield', 'Админы']]
 
 function shell(title, sub, body, actions = '') {
   const nav = NAV.map(([id, ic, name]) => `<a class="nav ${page === id ? 'on' : ''}" href="#/${id === 'home' ? '' : id}">${icon(ic)}<span class="t">${name}</span>${id === 'support' && counts.support ? `<span class="badge hot">${counts.support}</span>` : ''}</a>`).join('')
@@ -92,7 +153,7 @@ function shell(title, sub, body, actions = '') {
       <div class="brand"><img src="../favicon.svg" alt="" /><b>Atelier</b></div>
       <div class="group">Меню</div>${nav}
       <div class="spacer"></div>
-      <div class="me"><b>Админка</b><span>Тестовый запуск · данные с боевого сервера</span><button data-act="logout">${icon('out')}Выйти</button></div>
+      <div class="me"><b>Админка</b><span>${esc(me)}</span><button data-act="logout">${icon('out')}Выйти</button><button data-act="logout-all" class="ghost">Выйти на всех устройствах</button></div>
     </aside>
     <main class="main">
       <div class="top"><h1>${title}${sub ? ` <span>${sub}</span>` : ''}</h1><div class="grow"></div>${actions}</div>
@@ -158,7 +219,7 @@ async function renderHome() {
       ${ov.recentPayments.length ? `<div class="tbl-wrap"><table style="min-width:0"><tbody>${ov.recentPayments.map((p) => `<tr><td><div class="who"><div class="av">₽</div><div><b>${esc(p.email)}</b><span>${fTime(p.at)}</span></div></div></td><td>${payTag(p)}</td><td class="num" style="text-align:right;font-weight:700">${rub(p.amount)}</td></tr>`).join('')}</tbody></table></div>` : '<div class="empty">Оплат ещё не было</div>'}</div>
   </div>
   <div class="card"><div class="card-head"><div class="grow"><h2>Журнал действий</h2><p class="sub">Что менялось вручную через админку</p></div></div>
-    ${ov.log.length ? `<div class="list">${ov.log.map((l) => `<div class="logrow"><small>${fTime(l.at)}</small><span><b>${esc(l.email)}</b> · ${esc(l.text)}</span></div>`).join('')}</div>` : '<div class="empty">Пока пусто</div>'}</div>`
+    ${ov.log.length ? `<div class="list">${ov.log.map((l) => `<div class="logrow"><small>${fTime(l.at)}</small><span><b>${esc(l.email)}</b> · ${esc(l.text)}${l.by ? ` <span class="muted">· ${esc(l.by)}</span>` : ''}</span></div>`).join('')}</div>` : '<div class="empty">Пока пусто</div>'}</div>`
   shell('Привет, команда', '', body, `<span class="pill">${icon('cal')}${new Date().toLocaleDateString('ru-RU', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' })}</span><button class="pill dark" data-act="reload">${icon('refresh')}Обновить</button>`)
 }
 const payTag = (p) => (p.status === 'refunded' ? '<span class="tag bad">Возврат</span>' : p.test ? '<span class="tag warn">Тест</span>' : '<span class="tag ok"><i class="dot"></i>Оплачен</span>')
@@ -203,6 +264,17 @@ async function renderSupport() {
   const m = $('#msgs'); if (m) m.scrollTop = m.scrollHeight
 }
 
+// ---------- админы
+async function renderAdmins() {
+  const { admins } = await api('/admins')
+  const rows = admins.map((a) => `<tr><td><div class="who"><div class="av">${esc(a.email[0])}</div><div><b>${esc(a.email)}</b><span>${a.email === me ? 'это ты' : ''}</span></div></div></td>
+    <td>${a.locked ? '<span class="tag bad">Заблокирован</span>' : a.totp ? '<span class="tag ok"><i class="dot"></i>Включена</span>' : '<span class="tag warn">Не настроена</span>'}</td>
+    <td class="num">${a.totp ? a.recoveryLeft : '—'}</td><td>${a.lastLoginAt ? fTime(a.lastLoginAt) : 'не входил'}${a.lastIp ? ` <span class="muted">· ${esc(a.lastIp)}</span>` : ''}</td><td class="num">${a.sessions}</td></tr>`).join('')
+  shell('Админы', `<span>${admins.length}</span>`, `<div class="card"><div class="card-head"><div class="ico acc">${icon('shield')}</div><div class="grow"><h2>Кто может входить</h2><p class="sub">Список задаётся на сервере (ADMIN_EMAILS). Вход: код из письма и код из приложения-аутентификатора</p></div></div>
+    <div class="tbl-wrap"><table><thead><tr><th>Админ</th><th>Двухфакторный вход</th><th>Резервных кодов</th><th>Последний вход</th><th>Сессий</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <p class="muted" style="margin-top:16px">Сессия закрывается через 30 минут без действий и через 8 часов в любом случае. О каждом входе и блокировке приходит сообщение в Telegram.</p></div>`)
+}
+
 // ---------- карточка пользователя
 let drawer = null
 async function openUser(id) {
@@ -223,7 +295,7 @@ async function openUser(id) {
       <div class="acts"><button class="btn" data-act="reset">Обнулить лимиты</button></div></div>
     <div class="sect"><h3>Платежи</h3>${d.payments.length ? `<div class="hist">${d.payments.map((p) => `<div><span>${fShort(p.at)} · ${PLAN[p.plan] ?? p.plan} ${payTag(p)}</span><b class="num">${rub(p.amount)}</b></div>`).join('')}</div>` : '<p class="muted">Оплат не было</p>'}</div>
     <div class="sect"><h3>Поддержка</h3>${d.messages.length ? `<div class="hist">${d.messages.slice(-3).map((m) => `<div><span>${m.from === 'team' ? 'Мы: ' : ''}${esc(m.text.slice(0, 90))}</span><small>${ago(m.at)}</small></div>`).join('')}</div><div class="acts"><a class="btn" href="#/support" data-sup="${esc(d.email)}" style="text-decoration:none">Открыть чат</a></div>` : '<p class="muted">Переписки нет</p>'}</div>
-    ${d.log.length ? `<div class="sect"><h3>Что менялось вручную</h3><div class="hist">${d.log.map((l) => `<div><span>${esc(l.text)}</span><small>${fTime(l.at)}</small></div>`).join('')}</div></div>` : ''}
+    ${d.log.length ? `<div class="sect"><h3>Что менялось вручную</h3><div class="hist">${d.log.map((l) => `<div><span>${esc(l.text)}${l.by ? ` <span class="muted">· ${esc(l.by)}</span>` : ''}</span><small>${fTime(l.at)}</small></div>`).join('')}</div></div>` : ''}
     <div class="sect"><h3>Опасная зона</h3><p class="muted">Удалит аккаунт, гардероб и фото. Вернуть нельзя</p><div class="acts"><button class="btn danger" data-act="delete">${icon('trash')}Удалить аккаунт</button></div></div>
   </aside>`
   document.body.append(el)
@@ -247,6 +319,7 @@ document.addEventListener('click', async (e) => {
     if (t.dataset.extend) return sub({ action: 'extend', days: Number(t.dataset.extend) }, `Продлено на ${t.dataset.extend} дн.`)
     const a = t.dataset.act
     if (a === 'logout') return logout()
+    if (a === 'logout-all') return logout('', true)
     if (a === 'reload') { await refresh(); return toast('Обновлено') }
     if (a === 'close') return closeDrawer()
     if (a === 'grant') return sub({ action: 'grant', plan: $('#gp').value, days: Number($('#gd').value) }, 'Тариф выдан')
@@ -271,28 +344,32 @@ document.addEventListener('change', (e) => { if (e.target.id === 'sort') { F.sor
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer() })
 
 function handle(e) {
-  if (e instanceof AuthError) return logout('Сессия закончилась, войди снова')
+  if (e instanceof AuthError) { me = ''; lg.step = 'email'; return renderLogin('Сессия закончилась, войди снова') }
   console.error(e)
   toast(e.message || 'Не получилось', true)
 }
 
 async function refresh() {
   const r = location.hash.replace(/^#\/?/, '').split('?')[0] || 'home'
-  page = ['users', 'payments', 'support'].includes(r) ? r : 'home'
+  page = ['users', 'payments', 'support', 'admins'].includes(r) ? r : 'home'
   try {
     if (page === 'users') await renderUsers()
     else if (page === 'payments') await renderPayments()
     else if (page === 'support') await renderSupport()
+    else if (page === 'admins') await renderAdmins()
     else await renderHome()
   } catch (e) { handle(e) }
 }
 
-function start() {
+async function start() {
   window.onhashchange = () => { closeDrawer(); refresh() }
+  if (!me) {
+    try { me = (await api('/auth/me')).email } catch { return renderLogin() }
+  }
   refresh()
   clearInterval(window.__poll)
   // раз в минуту обновляем счётчик «Ждут ответа» в меню, остальное по запросу
-  window.__poll = setInterval(async () => { try { const o = await api('/overview'); const n = o.totals.supportOpen; if (n !== counts.support) { counts.support = n; if (!$('#dw') && page === 'home') refresh() } } catch { /* тихо */ } }, 60000)
+  window.__poll = setInterval(async () => { try { const o = await api('/overview'); const n = o.totals.supportOpen; if (n !== counts.support) { counts.support = n; if (!$('#dw') && page === 'home') refresh() } } catch (e) { if (e instanceof AuthError) handle(e) } }, 60000)
 }
 
-if (token) start(); else renderLogin()
+start()

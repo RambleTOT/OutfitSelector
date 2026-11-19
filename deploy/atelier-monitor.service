@@ -1,0 +1,17 @@
+# /etc/systemd/system/atelier-monitor.service: запускается таймером раз в минуту (atelier-monitor.timer)
+[Unit]
+Description=Atelier: проверка сайта, API, распознавания, диска и сертификата
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=atelier
+WorkingDirectory=/opt/atelier/server
+EnvironmentFile=/opt/atelier/server/.env
+ExecStart=/usr/bin/node monitor.mjs
+TimeoutStartSec=60
+# ограничения безопасности: писать можно только в каталог данных (состояние монитора)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/opt/atelier/server/data

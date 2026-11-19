@@ -1,0 +1,17 @@
+# /etc/systemd/system/atelier-backup.service: запускается таймером раз в сутки (atelier-backup.timer), вручную: sudo systemctl start atelier-backup
+[Unit]
+Description=Atelier: ежедневный зашифрованный бэкап
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=atelier
+WorkingDirectory=/opt/atelier/server
+EnvironmentFile=/opt/atelier/server/.env
+Environment=BACKUP_DIR=/opt/atelier/backups
+ExecStart=/usr/bin/node backup.mjs
+TimeoutStartSec=600
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=-/opt/atelier/backups

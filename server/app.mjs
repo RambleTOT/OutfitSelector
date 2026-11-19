@@ -13,6 +13,8 @@ import { spend, spendPhoto, usageSnapshot } from './plans.mjs'
 import { createWeather } from './weather.mjs'
 import { buildRobokassaUrl, handleRobokassaResult, returnPage, robokassaEnabled } from './robokassa.mjs'
 import { addMessage, notifyTeam, view as supportView } from './support.mjs'
+import { adminRecord, adminsList, checkAdminCode, checkSecondFactor, clearCookie, COOKIE, createSession, destroyAllSessions, destroySession, isAdminEmail, issueAdminCode, nextStep, parseCookies, reset2fa, readTicket, sessionCookie, sessionEmail } from './admin-auth.mjs'
+import { notifyOps } from './notify.mjs'
 import { listUsers, logDelete, overview, paymentsList, recentLog, subAction, userDetail } from './admin.mjs'
 
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json', '.txt': 'text/plain', '.xml': 'application/xml', '.ico': 'image/x-icon' }
@@ -143,16 +145,86 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
       return res.end(returnPage(path.endsWith('success')))
     }
 
-    // ===== админка и ответы поддержки (по токену администратора из .env, SUPPORT_ADMIN_TOKEN)
+    // ===== админка: вход по коду из письма + приложение-аутентификатор, сессия в HttpOnly-cookie (server/admin-auth.mjs)
     if (path.startsWith('/api/admin/')) {
+      const secure = config.dev ? false : String(req.headers['x-forwarded-proto'] ?? '') === 'https'
+      const setCookie = (v) => ({ 'Set-Cookie': v })
+      const sid = parseCookies(req.headers.cookie)[COOKIE]
+      const ua = String(req.headers['user-agent'] ?? '')
+      // защита от CSRF поверх SameSite=Strict: изменяющие запросы только со своей страницы и с особым заголовком
+      if (m !== 'GET' && m !== 'HEAD') {
+        const origin = req.headers.origin
+        const host = String(req.headers.host ?? '')
+        if (req.headers['x-requested-with'] !== 'atelier-admin' || (origin && !origin.endsWith('//' + host) && origin !== config.siteUrl)) throw new HttpError(403, 'forbidden')
+      }
+
+      if (path.startsWith('/api/admin/auth/')) {
+        const step = path.slice('/api/admin/auth/'.length)
+        if (m === 'GET' && step === 'me') {
+          const email = sessionEmail(store, sid)
+          if (!email) throw new HttpError(401, 'unauthorized')
+          return send(res, 200, { email })
+        }
+        if (m === 'POST' && step === 'request') {
+          limit(`aa-req:${ip(req)}`, 10, 3600000)
+          const b = await json(req, 1000)
+          const email = normEmail(b.email ?? '')
+          // всегда один и тот же ответ, чтобы нельзя было выяснить, какие почты админские
+          if (emailOk(email) && isAdminEmail(email)) {
+            limit(`aa-reqm:${email}`, 6, 3600000)
+            const r = issueAdminCode(store, email)
+            if (!r.error) await mailer(email, r.code, 'admin').catch((e) => console.error('[admin] письмо не ушло:', e.message))
+          } else console.warn(`[admin] запрос кода для чужой почты с ${ip(req)}`)
+          return send(res, 200, { ok: true })
+        }
+        if (m === 'POST' && step === 'verify') {
+          limit(`aa-ver:${ip(req)}`, 20, 3600000)
+          const b = await json(req, 1000)
+          const email = normEmail(b.email ?? '')
+          const r = emailOk(email) && isAdminEmail(email) ? checkAdminCode(store, email, b.code) : 'wrong'
+          if (r !== 'ok') { console.warn(`[admin] неверный код для ${email} с ${ip(req)}`); throw new HttpError(401, 'code_wrong') }
+          if (adminRecord(store, email).lockedUntil > Date.now()) throw new HttpError(429, 'locked')
+          return send(res, 200, nextStep(store, email))
+        }
+        if (m === 'POST' && step === 'totp') {
+          limit(`aa-tp:${ip(req)}`, 30, 3600000)
+          const b = await json(req, 1000)
+          const t = readTicket(b.ticket)
+          if (!t || !isAdminEmail(t.email)) throw new HttpError(401, 'ticket_invalid')
+          const r = checkSecondFactor(store, t.email, t.stage, b.code)
+          if (r.error) {
+            if (r.justLocked) void notifyOps(`🚫 Админка: ${t.email} заблокирован на 15 минут, 5 неверных кодов подряд (${ip(req)})`)
+            throw new HttpError(r.error === 'locked' ? 429 : 401, r.error === 'locked' ? 'locked' : 'code_wrong')
+          }
+          const id = createSession(store, t.email, { ip: ip(req), ua })
+          void notifyOps(`🔐 Вход в админку: ${t.email}\nIP ${ip(req)}${t.stage === 'setup' ? '\nНастроен аутентификатор' : ''}${r.recoveryLeft !== undefined ? `\nИспользован резервный код, осталось ${r.recoveryLeft}` : ''}`)
+          return send(res, 200, { ok: true, email: t.email, recovery: r.recovery }, setCookie(sessionCookie(id, secure)))
+        }
+        if (m === 'POST' && step === 'logout') { destroySession(store, sid); return send(res, 200, { ok: true }, setCookie(clearCookie(secure))) }
+        throw new HttpError(404, 'not_found')
+      }
+
+      // CLI на самом сервере (support-cli.mjs): токен из .env, только с этой же машины и только для поддержки
       const tok = String(req.headers['x-admin-token'] ?? '')
-      // неверный токен считаем строже: 20 попыток в час с одного адреса, дальше 429
-      // слабый токен (короче 16 знаков) не принимаем вообще: админка закрыта, пока его не заменят
-      const good = config.supportAdminToken.length >= 16 && tok.length === config.supportAdminToken.length && timingSafeEqual(Buffer.from(tok), Buffer.from(config.supportAdminToken))
-      if (!good) { console.warn(`[admin] отказ ${m} ${path} с ${ip(req)}`); limit(`admfail:${ip(req)}`, 20, 3600000); throw new HttpError(401, 'unauthorized') }
-      if (m !== 'GET') console.log(`[admin] ${m} ${path} с ${ip(req)}`)
+      const localCli = (path.startsWith('/api/admin/support') || path === '/api/admin/reset-2fa' || path === '/api/admin/admins') && !req.headers['x-forwarded-for'] && ['127.0.0.1', '::1', '::ffff:127.0.0.1'].includes(req.socket.remoteAddress) &&
+        config.supportAdminToken.length >= 16 && tok.length === config.supportAdminToken.length && timingSafeEqual(Buffer.from(tok), Buffer.from(config.supportAdminToken))
+      const adminEmail = localCli ? 'cli' : sessionEmail(store, sid)
+      if (!adminEmail) { limit(`admfail:${ip(req)}`, 60, 3600000); throw new HttpError(401, 'unauthorized') }
+      if (m !== 'GET') console.log(`[admin] ${adminEmail} ${m} ${path} с ${ip(req)}`)
       limit(`adm:${ip(req)}`, 600, 3600000)
 
+      if (m === 'GET' && path === '/api/admin/admins') return send(res, 200, { admins: adminsList(store), me: adminEmail })
+      // потерян телефон: сбросить второй фактор может только команда на самом сервере (server/admin-cli.mjs), не из админки
+      if (m === 'POST' && path === '/api/admin/reset-2fa') {
+        if (!localCli) throw new HttpError(403, 'forbidden')
+        const b = await json(req, 500)
+        const email = normEmail(b.email ?? '')
+        if (!isAdminEmail(email)) throw new HttpError(404, 'no_admin')
+        reset2fa(store, email)
+        void notifyOps(`♻️ Админка: сброшен аутентификатор для ${email}, при следующем входе он настроит новый`)
+        return send(res, 200, { ok: true })
+      }
+      if (m === 'POST' && path === '/api/admin/logout-all') { destroyAllSessions(store, adminEmail); return send(res, 200, { ok: true }, setCookie(clearCookie(secure))) }
       if (m === 'GET' && path === '/api/admin/overview') return send(res, 200, { ...overview(store), log: recentLog(store) })
       if (m === 'GET' && path === '/api/admin/users') {
         const q = url.searchParams
@@ -170,13 +242,13 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
           if ((b.action === 'cancel' || b.action === 'revoke') && target.sub?.subscriptionId && cpEnabled()) {
             try { await cancelSubscription(store, target, fetchImpl) } catch (e) { console.error('[admin] отмена в CloudPayments:', e.message); throw new HttpError(502, 'cancel_failed') }
           }
-          const r = subAction(store, target, b)
+          const r = subAction(store, target, b, Date.now(), adminEmail)
           if (r.error) throw new HttpError(400, r.error)
           return send(res, 200, userDetail(store, target.id))
         }
         if (m === 'DELETE' && !au[2]) {
           if (target.sub?.subscriptionId && cpEnabled()) await cancelSubscription(store, target, fetchImpl).catch(() => {})
-          logDelete(store, target)
+          logDelete(store, target, Date.now(), adminEmail)
           store.deleteUser(target.id)
           return send(res, 200, { ok: true })
         }

@@ -12,6 +12,7 @@ process.env.AI_PROVIDER = 'openai'
 process.env.OPENAI_MODEL = 'x'
 process.env.VISION_URL = 'http://vision.local'
 process.env.SUPPORT_ADMIN_TOKEN = 'admin-secret-token'
+process.env.ADMIN_EMAILS = 'boss@x.ru, Second@x.ru'
 
 const { createApp } = await import('../app.mjs')
 const { Store } = await import('../store.mjs')
@@ -32,7 +33,7 @@ async function boot(over = {}) {
   const call = async (method, path, body, headers = {}) => {
     const r = await fetch(base + path, { method, headers: { 'Content-Type': 'application/json', ...headers }, body: body === undefined ? undefined : typeof body === 'string' ? body : JSON.stringify(body) })
     const text = await r.text()
-    return { status: r.status, body: text ? JSON.parse(text) : null }
+    return { status: r.status, body: text ? JSON.parse(text) : null, headers: r.headers }
   }
   const login = async (email = 'a@b.ru') => {
     await call('POST', '/api/auth/request', { email, consent: '2026-11-19' })
@@ -334,7 +335,7 @@ test('поддержка: человек пишет, команда отвеча
   assert.equal(sent.status, 200)
   assert.equal(sent.body.messages.length, 1)
   assert.equal(sent.body.messages[0].from, 'user')
-  const admin = { 'X-Admin-Token': 'admin-secret-token' }
+  const admin = { 'X-Admin-Token': 'admin-secret-token', 'X-Requested-With': 'atelier-admin' }
   assert.equal((await t.call('GET', '/api/admin/support', undefined, { 'X-Admin-Token': 'nope' })).status, 401)
   assert.equal((await t.call('GET', '/api/admin/support')).status, 401)
   const list = await t.call('GET', '/api/admin/support', undefined, admin)
@@ -352,13 +353,30 @@ test('поддержка: человек пишет, команда отвеча
   t.server.close()
 })
 
-test('админка: без токена закрыта, список и карточка, выдать, продлить, отменить, снять тариф, удалить', async () => {
+const XR = { 'X-Requested-With': 'atelier-admin' }
+const { totp } = await import('../totp.mjs')
+
+/** Полный вход админа: письмо, аутентификатор (на первом входе настройка), cookie сессии */
+async function adminLogin(t, email = 'boss@x.ru', { secret, offset = 0, code } = {}) {
+  assert.equal((await t.call('POST', '/api/admin/auth/request', { email }, XR)).status, 200)
+  const v = await t.call('POST', '/api/admin/auth/verify', { email, code: t.codes[email] }, XR)
+  assert.equal(v.status, 200)
+  const sec = v.body.step === 'setup' ? v.body.secret : secret
+  const r = await t.call('POST', '/api/admin/auth/totp', { ticket: v.body.ticket, code: code ?? totp(sec, Date.now() + offset) }, XR)
+  assert.equal(r.status, 200)
+  const cookie = r.headers.get('set-cookie').split(';')[0]
+  return { cookie, h: { Cookie: cookie, ...XR }, secret: sec, recovery: r.body.recovery, setCookie: r.headers.get('set-cookie') }
+}
+
+test('админка: без входа закрыта, список и карточка, выдать, продлить, отменить, снять тариф, удалить', async () => {
   const t = await boot()
   const a = await t.login('a@x.ru')
   await t.login('b@x.ru')
-  const admin = { 'X-Admin-Token': 'admin-secret-token' }
-  for (const p of ['/api/admin/overview', '/api/admin/users', '/api/admin/payments']) assert.equal((await t.call('GET', p)).status, 401)
-  assert.equal((await t.call('GET', '/api/admin/users', undefined, { 'X-Admin-Token': 'nope' })).status, 401)
+  for (const p of ['/api/admin/overview', '/api/admin/users', '/api/admin/payments', '/api/admin/admins']) assert.equal((await t.call('GET', p)).status, 401)
+  // старый токен больше не открывает админку
+  assert.equal((await t.call('GET', '/api/admin/users', undefined, { 'X-Admin-Token': 'admin-secret-token' })).status, 401)
+  const adm = await adminLogin(t)
+  const admin = adm.h
 
   const list = await t.call('GET', '/api/admin/users', undefined, admin)
   assert.equal(list.body.total, 2)
@@ -383,6 +401,7 @@ test('админка: без токена закрыта, список и кар
   assert.equal(ov.body.totals.plus, 1)
   assert.equal(ov.body.signupsByDay.length, 30)
   assert.ok(ov.body.log.length >= 3)
+  assert.equal(ov.body.log[0].by, 'boss@x.ru') // в журнале видно, кто сделал
 
   const r = await sub({ action: 'revoke' })
   assert.equal(r.body.plan, 'free')
@@ -392,6 +411,79 @@ test('админка: без токена закрыта, список и кар
   assert.equal((await t.call('GET', '/api/admin/users/' + 'f'.repeat(24), undefined, admin)).status, 404)
   assert.equal((await t.call('DELETE', `/api/admin/users/${id}`, undefined, admin)).status, 200)
   assert.equal((await t.call('GET', '/api/admin/users', undefined, admin)).body.total, 1)
+  t.server.close()
+})
+
+test('вход в админку: чужая почта, настройка аутентификатора, резервные коды, повтор кода, блокировка', async () => {
+  const t = await boot()
+  // чужая почта: тот же ответ, но кода нет и войти нельзя
+  assert.equal((await t.call('POST', '/api/admin/auth/request', { email: 'hacker@x.ru' }, XR)).status, 200)
+  assert.equal(t.codes['hacker@x.ru'], undefined)
+  assert.equal((await t.call('POST', '/api/admin/auth/verify', { email: 'hacker@x.ru', code: '123456' }, XR)).status, 401)
+  // без кода из письма билет не получить, а подделанный билет не принимается
+  assert.equal((await t.call('POST', '/api/admin/auth/totp', { ticket: 'x.y', code: '123456' }, XR)).status, 401)
+  // неверный код из письма и 5 попыток
+  await t.call('POST', '/api/admin/auth/request', { email: 'boss@x.ru' }, XR)
+  for (let i = 0; i < 5; i++) assert.equal((await t.call('POST', '/api/admin/auth/verify', { email: 'boss@x.ru', code: '000000' }, XR)).status, 401)
+  assert.equal((await t.call('POST', '/api/admin/auth/verify', { email: 'boss@x.ru', code: t.codes['boss@x.ru'] }, XR)).status, 401) // код сгорел после 5 ошибок
+
+  t.store.db.admCodes = {} // имитируем «прошла минута», чтобы запросить новый код
+  const first = await adminLogin(t)
+  assert.equal(first.recovery.length, 10) // резервные коды выданы один раз
+  assert.match(first.setCookie, /HttpOnly/)
+  assert.match(first.setCookie, /SameSite=Strict/)
+  assert.equal((await t.call('GET', '/api/admin/auth/me', undefined, first.h)).body.email, 'boss@x.ru')
+
+  // второй вход: уже нужен код аутентификатора; тот же код дважды не работает
+  t.store.db.admCodes = {}
+  const v = async () => { t.store.db.admCodes = {}; await t.call('POST', '/api/admin/auth/request', { email: 'boss@x.ru' }, XR); return (await t.call('POST', '/api/admin/auth/verify', { email: 'boss@x.ru', code: t.codes['boss@x.ru'] }, XR)).body }
+  const s2 = await v()
+  assert.equal(s2.step, 'totp')
+  const sameStep = await t.call('POST', '/api/admin/auth/totp', { ticket: s2.ticket, code: totp(first.secret) }, XR)
+  assert.equal(sameStep.status, 401) // этот шаг уже использован при настройке
+  const next = await t.call('POST', '/api/admin/auth/totp', { ticket: s2.ticket, code: totp(first.secret, Date.now() + 30000) }, XR)
+  assert.equal(next.status, 200)
+
+  // резервный код работает один раз
+  const s3 = await v()
+  assert.equal((await t.call('POST', '/api/admin/auth/totp', { ticket: s3.ticket, code: first.recovery[0] }, XR)).status, 200)
+  const s4 = await v()
+  assert.equal((await t.call('POST', '/api/admin/auth/totp', { ticket: s4.ticket, code: first.recovery[0] }, XR)).status, 401)
+
+  t.store.db.admins['boss@x.ru'].fails = 0
+  // 5 неверных кодов блокируют вход на 15 минут, даже верный код после этого не пройдёт
+  for (let i = 0; i < 4; i++) assert.equal((await t.call('POST', '/api/admin/auth/totp', { ticket: s4.ticket, code: '000000' }, XR)).status, 401)
+  assert.equal((await t.call('POST', '/api/admin/auth/totp', { ticket: s4.ticket, code: '000000' }, XR)).status, 429)
+  assert.equal((await t.call('POST', '/api/admin/auth/totp', { ticket: s4.ticket, code: totp(first.secret, Date.now() + 60000) }, XR)).status, 429)
+  t.server.close()
+})
+
+test('сессия админа: CSRF, простой, выход, выход везде, смена админов', async () => {
+  const t = await boot()
+  const a = await adminLogin(t)
+  // изменяющие запросы без особого заголовка и с чужого сайта отклоняются
+  assert.equal((await t.call('POST', '/api/admin/logout-all', {}, { Cookie: a.cookie })).status, 403)
+  assert.equal((await t.call('POST', '/api/admin/logout-all', {}, { ...a.h, Origin: 'https://evil.example' })).status, 403)
+  // список админов без секретов
+  const list = await t.call('GET', '/api/admin/admins', undefined, a.h)
+  assert.deepEqual(list.body.admins.map((x) => x.email), ['boss@x.ru', 'second@x.ru'])
+  assert.equal(list.body.admins[0].totp, true)
+  assert.ok(!JSON.stringify(list.body).includes(a.secret))
+  // простой больше 30 минут: сессия закрывается
+  const key = Object.keys(t.store.db.admSessions)[0]
+  t.store.db.admSessions[key].seen -= 31 * 60000
+  assert.equal((await t.call('GET', '/api/admin/overview', undefined, a.h)).status, 401)
+  // выход
+  const b = await adminLogin(t, 'second@x.ru')
+  assert.equal((await t.call('POST', '/api/admin/auth/logout', {}, b.h)).status, 200)
+  assert.equal((await t.call('GET', '/api/admin/overview', undefined, b.h)).status, 401)
+  // выход везде
+  t.store.db.admCodes = {}
+  const c = await adminLogin(t, 'second@x.ru', { secret: b.secret, offset: 30000 })
+  t.store.db.admCodes = {}
+  const d = await adminLogin(t, 'second@x.ru', { secret: b.secret, code: b.recovery[0] })
+  assert.equal((await t.call('POST', '/api/admin/logout-all', {}, c.h)).status, 200)
+  assert.equal((await t.call('GET', '/api/admin/overview', undefined, d.h)).status, 401)
   t.server.close()
 })
 
@@ -411,7 +503,21 @@ test('согласие на обработку данных: без него к�
   const saved = t.store.user(user.id).consent
   assert.equal(saved.version, '2026-11-19')
   assert.ok(Math.abs(saved.at - Date.now()) < 10000)
-  const admin = { 'X-Admin-Token': 'admin-secret-token' }
+  const admin = (await adminLogin(t)).h
   assert.equal((await t.call('GET', `/api/admin/users/${user.id}`, undefined, admin)).body.consent.version, '2026-11-19')
+  t.server.close()
+})
+
+test('админка: сброс второго фактора только с сервера по токену, из браузера нельзя', async () => {
+  const t = await boot()
+  const a = await adminLogin(t)
+  const tok = { 'X-Admin-Token': 'admin-secret-token', ...XR }
+  assert.equal((await t.call('POST', '/api/admin/reset-2fa', { email: 'boss@x.ru' }, a.h)).status, 403) // из админки нельзя
+  assert.equal((await t.call('POST', '/api/admin/reset-2fa', { email: 'boss@x.ru' }, { ...tok, 'X-Forwarded-For': '1.2.3.4' })).status, 401) // токен не работает через nginx
+  assert.equal((await t.call('POST', '/api/admin/reset-2fa', { email: 'nobody@x.ru' }, tok)).status, 404)
+  assert.equal((await t.call('POST', '/api/admin/reset-2fa', { email: 'boss@x.ru' }, tok)).status, 200)
+  assert.equal((await t.call('GET', '/api/admin/overview', undefined, a.h)).status, 401) // сессии закрыты
+  const again = await adminLogin(t) // снова настройка, а не ввод старого кода
+  assert.equal(again.recovery.length, 10)
   t.server.close()
 })
