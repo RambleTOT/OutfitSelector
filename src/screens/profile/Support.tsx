@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Button, CtaPlate, Icon, IconButton } from '../../ui'
 import { loadSupport, sendSupport, type SupportMessage } from '../../lib/support'
-import { SUPPORT_TG } from '../../lib/config'
+import { SUPPORT_EMAIL, SUPPORT_TG } from '../../lib/config'
 import { toast } from '../../store/ui'
 
 const time = (t: number) => new Date(t).toLocaleString('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
@@ -63,7 +63,12 @@ export function Support() {
           ))}
           <div ref={endRef} />
         </div>
-        {SUPPORT_TG && <a className="t-callout" href={`https://t.me/${SUPPORT_TG}`} target="_blank" rel="noopener">Или написать в Telegram</a>}
+        {(SUPPORT_TG || SUPPORT_EMAIL) && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {SUPPORT_TG && <a className="t-callout" href={`https://t.me/${SUPPORT_TG}`} target="_blank" rel="noopener" style={{ minHeight: 44, display: 'flex', alignItems: 'center' }}>Или написать в Telegram</a>}
+            {SUPPORT_EMAIL && <a className="t-callout" href={`mailto:${SUPPORT_EMAIL}`} style={{ minHeight: 44, display: 'flex', alignItems: 'center' }}>Или на почту {SUPPORT_EMAIL}</a>}
+          </div>
+        )}
       </div>
       <CtaPlate>
         <textarea

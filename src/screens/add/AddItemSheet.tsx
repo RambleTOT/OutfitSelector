@@ -24,7 +24,7 @@ export function AddItemSheet() {
   const go = (to: string) => { close(); navigate(to) }
   const upsell = lim.plan === 'free'
     ? { title: '30 фото в месяц с подпиской', text: '299 ₽ на 30 дней, без автосписаний' }
-    : { title: 'Фото без лимита с Подпиской+', text: '599 ₽ на 30 дней, без автосписаний' }
+    : { title: '100 фото в месяц с Подпиской+', text: '599 ₽ на 30 дней, без автосписаний' }
 
   return (
     <>

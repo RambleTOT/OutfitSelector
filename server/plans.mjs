@@ -2,7 +2,7 @@
 export const LIMITS = {
   free: { outfitsWeek: 5, photosTotal: 3, photosMonth: null },
   sub: { outfitsWeek: 10, photosTotal: null, photosMonth: 30 },
-  plus: { outfitsWeek: null, photosTotal: null, photosMonth: null },
+  plus: { outfitsWeek: null, photosTotal: null, photosMonth: 100 },
 }
 export const MONTHLY_CAP = 300
 
@@ -34,7 +34,7 @@ export function spend(store, user, now = Date.now()) {
   return { ok: true, commit: () => { u.outfitsWeek++; u.outfitsMonth++; store.save() } }
 }
 
-/** Лимит фото: Free 3 за всё время, Подписка 30 в месяц, Подписка+ без лимита. Одно фото с несколькими вещами считается за одно */
+/** Лимит фото: Free 3 за всё время, Подписка 30 в месяц, Подписка+ 100 в месяц. Одно фото с несколькими вещами считается за одно */
 export function spendPhoto(store, user, now = Date.now()) {
   const plan = effectivePlan(user.sub, now)
   const l = LIMITS[plan]

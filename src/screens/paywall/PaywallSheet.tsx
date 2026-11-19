@@ -8,7 +8,7 @@ import { effectivePlan, useApp, type Plan } from '../../store/app'
 const SHORT: Record<Plan, string> = {
   free: '5 образов в неделю',
   sub: '10 образов в неделю, 30 фото',
-  plus: 'Всё без лимитов',
+  plus: 'Образы без лимита, 100 фото',
 }
 
 /** Шторка пейвола (PAY-01 inline): три тарифа, галочка автоплатежа, оплата имитируется */

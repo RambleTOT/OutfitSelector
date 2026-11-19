@@ -4,14 +4,14 @@ import type { Plan } from './app'
 export interface PlanLimits {
   outfitsWeek: number | null // null = без лимита
   photosTotal: number | null // за всё время (только Free)
-  photosMonth: number | null // в месяц (только Подписка)
+  photosMonth: number | null // в месяц (Подписка и Подписка+)
   favorites: number | null
 }
 
 export const LIMITS: Record<Plan, PlanLimits> = {
   free: { outfitsWeek: 5, photosTotal: 3, photosMonth: null, favorites: 3 },
   sub: { outfitsWeek: 10, photosTotal: null, photosMonth: 30, favorites: 10 },
-  plus: { outfitsWeek: null, photosTotal: null, photosMonth: null, favorites: null },
+  plus: { outfitsWeek: null, photosTotal: null, photosMonth: 100, favorites: null },
 }
 
 /** Потолок «безлимита» в оферте: 300 образов в месяц */

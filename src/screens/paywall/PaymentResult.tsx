@@ -10,7 +10,7 @@ import { LIMITS } from '../../store/limits'
 function unlocked(plan: 'sub' | 'plus'): string[] {
   const l = LIMITS[plan]
   return plan === 'plus'
-    ? ['Образы без лимита', 'Фото вещей без лимита', 'Избранное без лимита', 'Каталог и конструктор без лимита']
+    ? ['Образы без лимита', `${LIMITS.plus.photosMonth} фото вещей в месяц`, 'Избранное без лимита', 'Каталог и конструктор без лимита']
     : [`${l.outfitsWeek} образов в неделю`, `${l.photosMonth} фото вещей в месяц`, `${l.favorites} мест в избранном`, 'Каталог и конструктор без лимита']
 }
 const CONFETTI = ['var(--accent)', 'var(--success)', 'var(--ink-primary)', 'var(--accent-text)']

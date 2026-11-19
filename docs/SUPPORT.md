@@ -17,3 +17,7 @@ node /opt/atelier/server/support-cli.mjs reply почта@пример.ру "П�
 
 ## Что хранится
 Только текст сообщений и время. Переписка удаляется вместе с аккаунтом. Лимит: 10 сообщений в час от одного человека, до 1500 символов.
+
+## Контакты (с 19 ноября 2026)
+
+Почта `support@atelierai.ru` (ящик на Рег.ру, почта на домене сайта), Telegram `@RambleTOT`, телефон +7 952 738-10-99. Они показаны на лендинге, в юридических документах (`docs/legal/values.json`, не в git) и на экране «Поддержка» (`VITE_SUPPORT_TG`, `VITE_SUPPORT_EMAIL` в `.env.production`). Письма с кодами уходят с `no-reply@atelierai.ru`, ответы на них приходят на `support@atelierai.ru` (`MAIL_REPLY_TO` в `.env` сервера).

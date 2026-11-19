@@ -521,3 +521,21 @@ test('админка: сброс второго фактора только с �
   assert.equal(again.recovery.length, 10)
   t.server.close()
 })
+
+test('фото: у Подписки+ потолок 100 в месяц, у Подписки 30', async () => {
+  const t = await boot()
+  const { auth, user } = await t.login('p@x.ru')
+  const png = Buffer.alloc(200, 1)
+  const u = t.store.user(user.id)
+  u.sub = { plan: 'plus', status: 'active', subscriptionId: null, endsAt: Date.now() + 86400000, cancelled: true }
+  const { monthKey } = await import('../plans.mjs')
+  t.store.db.usage[user.id] = { weekKey: '', outfitsWeek: 0, monthKey: '', outfitsMonth: 0, photoMonthKey: monthKey(Date.now()), photosMonth: 99, photosTotal: 99 }
+  const send = () => fetch(`http://localhost:${t.server.address().port}/api/ai/analyze`, { method: 'POST', headers: { ...auth, 'Content-Type': 'image/png' }, body: png })
+  const ok = await send()
+  assert.notEqual(ok.status, 429) // 100-е фото ещё можно (дальше ответ сервиса распознавания, не лимит)
+  t.store.db.usage[user.id].photosMonth = 100
+  const over = await send()
+  assert.equal(over.status, 429)
+  assert.equal((await over.json()).error, 'photo_limit')
+  t.server.close()
+})
