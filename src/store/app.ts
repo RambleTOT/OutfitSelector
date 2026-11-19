@@ -53,6 +53,7 @@ interface Data {
   via: 'email' | 'telegram' | null
   geoAsked: boolean // после первого входа спросили геопозицию (экран «Где ты сейчас»)
   gateDone: boolean // экран установки на главный экран пройден или пропущен
+  consent: string // редакция согласия на обработку данных, которую человек принял на этом устройстве
   email: string
   name: string
   avatar: string
@@ -131,6 +132,7 @@ const initial = (): Data => ({
   via: null,
   geoAsked: false,
   gateDone: false,
+  consent: '',
   email: '',
   name: '',
   avatar: '',

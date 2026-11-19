@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Button, TextInput } from '../../ui'
+import { Button, Checkbox, TextInput } from '../../ui'
 import { useApp } from '../../store/app'
 import { toast } from '../../store/ui'
-import { HAS_API } from '../../lib/config'
+import { CONSENT_VERSION, HAS_API } from '../../lib/config'
 import { authErrorText, requestCode } from '../../lib/api'
 
 export const emailOk = (v: string) => /.+@.+\..+/.test(v.trim())
@@ -18,13 +18,15 @@ export function Login() {
   const [email, setEmail] = useState(stored)
   const bad = !emailOk(email)
   const [busy, setBusy] = useState(false)
+  // согласие даётся действием: галочка снята, пока человек сам не отметит (на устройстве, где он уже соглашался с этой редакцией, она уже стоит)
+  const [agree, setAgree] = useState(useApp.getState().consent === CONSENT_VERSION)
 
   const next = async () => {
-    if (bad || busy) return
-    patch({ email: email.trim() })
+    if (bad || busy || !agree) return
+    patch({ email: email.trim(), consent: CONSENT_VERSION })
     if (HAS_API) {
       setBusy(true)
-      try { await requestCode(email.trim()) } catch (e) { toast(authErrorText(e), 'error'); setBusy(false); return }
+      try { await requestCode(email.trim(), CONSENT_VERSION) } catch (e) { toast(authErrorText(e), 'error'); setBusy(false); return }
       setBusy(false)
     }
     navigate('/code', { state: { next: after } })
@@ -44,7 +46,14 @@ export function Login() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <TextInput label="Почта" placeholder="name@mail.ru" type="email" inputMode="email" icon="envelope-simple" value={email} onChange={setEmail} onEnter={next} />
-        <Button full disabled={bad} loading={busy} onClick={next}>Получить код</Button>
+        <Checkbox checked={agree} onChange={setAgree}>Даю согласие на обработку персональных данных</Checkbox>
+        <p className="t-caption muted" style={{ textWrap: 'pretty', paddingLeft: 36 }}>
+          Читай{' '}
+          <a href="/legal/consent.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>согласие</a>,{' '}
+          <a href="/legal/privacy.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>политику конфиденциальности</a>{' '}и{' '}
+          <a href="/legal/offer.html" target="_blank" rel="noopener" style={{ color: 'var(--text-link)' }}>оферту</a>. Продолжая, ты принимаешь оферту
+        </p>
+        <Button full disabled={bad || !agree} loading={busy} onClick={next}>Получить код</Button>
       </div>
       {!HAS_API && (
         <>

@@ -39,7 +39,7 @@ export interface ServerUsage { weekKey: string; outfitsWeek: number; monthKey: s
 export interface ServerMe { id: string; email: string; sub: ServerSub; usage?: ServerUsage }
 export interface ServerCaps { ai: boolean; analyze: boolean; pay: boolean }
 
-export const requestCode = (email: string) => api('POST', '/api/auth/request', { email })
+export const requestCode = (email: string, consent?: string) => api('POST', '/api/auth/request', { email, consent })
 export const verifyCode = (email: string, code: string) =>
   api<{ token: string; user: ServerMe; isNew: boolean; state: Record<string, unknown> | null; stateAt: number }>('POST', '/api/auth/verify', { email, code })
 
@@ -58,6 +58,7 @@ export function authErrorText(e: unknown): string {
   switch (e.code) {
     case 'network': return 'Нет связи с сервером, проверь интернет'
     case 'bad_email': return 'Проверь адрес почты'
+    case 'consent_required': return 'Отметь согласие на обработку данных'
     case 'too_soon': return `Код уже отправлен, новый можно через ${e.extra.wait ?? 60} с`
     case 'photo_limit': return 'Лимит фото на тарифе закончился'
     case 'busy': return 'Сервер занят, попробуй через минуту'

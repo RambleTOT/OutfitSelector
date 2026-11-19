@@ -27,7 +27,7 @@ async function boot() {
     return { status: r.status, text, json: () => JSON.parse(text) }
   }
   const login = async (email = 'p@x.ru') => {
-    await call('POST', '/api/auth/request', JSON.stringify({ email }), { 'Content-Type': 'application/json' })
+    await call('POST', '/api/auth/request', JSON.stringify({ email, consent: '2026-11-19' }), { 'Content-Type': 'application/json' })
     const r = await call('POST', '/api/auth/verify', JSON.stringify({ email, code: codes[email] }), { 'Content-Type': 'application/json' })
     return { 'Authorization': `Bearer ${r.json().token}`, 'Content-Type': 'application/json' }
   }

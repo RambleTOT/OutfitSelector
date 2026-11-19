@@ -4,7 +4,7 @@ import { extname, join, normalize } from 'node:path'
 import { randomBytes, timingSafeEqual } from 'node:crypto'
 import { config } from './config.mjs'
 import { Store } from './store.mjs'
-import { checkCode, emailOk, issueCode, normEmail, signToken, verifyToken } from './auth.mjs'
+import { CONSENT_RE, checkCode, emailOk, issueCode, normEmail, signToken, verifyToken } from './auth.mjs'
 import { sendCode } from './mail.mjs'
 import { chat, aiEnabled } from './ai/providers.mjs'
 import { SYSTEM, buildUserPrompt, parseOutfit, repairOutfit, outfitProblems } from './ai/prompt.mjs'
@@ -97,7 +97,12 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
       const b = await json(req)
       if (!emailOk(b.email)) throw new HttpError(400, 'bad_email')
       const email = normEmail(b.email)
-      const r = issueCode(store, email)
+      // согласие на обработку данных: без него даже код не отправляем (почта уже персональные данные)
+      const known = store.userByEmail(email)
+      const signedIn = (() => { try { return authUser(req).email === email } catch { return false } })()
+      const has = typeof b.consent === 'string' && CONSENT_RE.test(b.consent)
+      if (!has && !(known?.consent || signedIn)) throw new HttpError(400, 'consent_required')
+      const r = issueCode(store, email, has ? b.consent : undefined)
       if (r.error) throw new HttpError(429, r.error, { wait: r.wait })
       await mailer(email, r.code)
       return send(res, 200, { ok: true })
@@ -107,10 +112,13 @@ export function createApp({ store = new Store(config.dataDir), mailer = sendCode
       const b = await json(req)
       if (!emailOk(b.email)) throw new HttpError(400, 'bad_email')
       const email = normEmail(b.email)
+      const consent = store.db.codes[email]?.consent
       const r = checkCode(store, email, b.code)
       if (r !== 'ok') throw new HttpError(r === 'wrong' ? 401 : 410, `code_${r}`)
       const existing = store.userByEmail(email)
       const u = existing ?? store.createUser(email)
+      // доказательство согласия: какая редакция и когда (последнее по времени остаётся в карточке)
+      if (consent) { u.consent = { version: consent, at: Date.now(), ip: ip(req) }; store.save() }
       store.event({ event: existing ? 'login' : 'signup', uid: u.id, t: Date.now() })
       return send(res, 200, { token: signToken(u.id), user: me(u), isNew: !existing, state: u.state, stateAt: u.stateAt })
     }

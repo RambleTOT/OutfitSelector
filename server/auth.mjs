@@ -25,11 +25,13 @@ const CODE_TTL = 10 * 60 * 1000
 const MAX_TRIES = 5
 
 /** Код из 4 цифр, как в интерфейсе. Защита от перебора: 5 попыток на код, 10 минут жизни, не чаще раза в минуту на почту */
-export function issueCode(store, email) {
+export const CONSENT_RE = /^\d{4}-\d{2}-\d{2}$/ // версия согласия = дата редакции документа
+
+export function issueCode(store, email, consent) {
   const prev = store.db.codes[email]
   if (prev && Date.now() - prev.at < 60000) return { error: 'too_soon', wait: Math.ceil((60000 - (Date.now() - prev.at)) / 1000) }
   const code = String(randomInt(0, 10000)).padStart(4, '0')
-  store.db.codes[email] = { code, at: Date.now(), exp: Date.now() + CODE_TTL, tries: 0 }
+  store.db.codes[email] = { code, at: Date.now(), exp: Date.now() + CODE_TTL, tries: 0, consent }
   store.save()
   return { code }
 }

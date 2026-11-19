@@ -35,7 +35,7 @@ async function boot(over = {}) {
     return { status: r.status, body: text ? JSON.parse(text) : null }
   }
   const login = async (email = 'a@b.ru') => {
-    await call('POST', '/api/auth/request', { email })
+    await call('POST', '/api/auth/request', { email, consent: '2026-11-19' })
     const r = await call('POST', '/api/auth/verify', { email, code: codes[email] })
     return { token: r.body.token, auth: { Authorization: `Bearer ${r.body.token}` }, user: r.body.user, r }
   }
@@ -56,8 +56,8 @@ test('вход по коду: создаёт пользователя, токе�
 
 test('неверный код: 5 попыток, потом блок; повторный запрос кода не чаще раза в минуту', async () => {
   const t = await boot()
-  await t.call('POST', '/api/auth/request', { email: 'x@y.ru' })
-  assert.equal((await t.call('POST', '/api/auth/request', { email: 'x@y.ru' })).status, 429)
+  await t.call('POST', '/api/auth/request', { email: 'x@y.ru', consent: '2026-11-19' })
+  assert.equal((await t.call('POST', '/api/auth/request', { email: 'x@y.ru', consent: '2026-11-19' })).status, 429)
   const wrong = t.codes['x@y.ru'] === '0000' ? '1111' : '0000'
   for (let i = 0; i < 5; i++) assert.equal((await t.call('POST', '/api/auth/verify', { email: 'x@y.ru', code: wrong })).status, 401)
   assert.equal((await t.call('POST', '/api/auth/verify', { email: 'x@y.ru', code: t.codes['x@y.ru'] })).status, 410)
@@ -398,6 +398,20 @@ test('админка: без токена закрыта, список и кар
 test('почта с разметкой и кавычками отклоняется, обычная проходит', async () => {
   const t = await boot()
   for (const bad of ['"><svg/onload=alert(1)>@x.ru', 'a<b@x.ru', "o'x@x.ru", 'a&b@x.ru', 'a`b@x.ru']) assert.equal((await t.call('POST', '/api/auth/request', { email: bad })).status, 400, bad)
-  assert.equal((await t.call('POST', '/api/auth/request', { email: 'ivan.petrov+t@mail.ru' })).status, 200)
+  assert.equal((await t.call('POST', '/api/auth/request', { email: 'ivan.petrov+t@mail.ru', consent: '2026-11-19' })).status, 200)
+  t.server.close()
+})
+
+test('согласие на обработку данных: без него код не отправляется, с ним версия и время сохраняются у человека', async () => {
+  const t = await boot()
+  assert.equal((await t.call('POST', '/api/auth/request', { email: 'c@x.ru' })).status, 400)
+  assert.equal((await t.call('POST', '/api/auth/request', { email: 'c@x.ru', consent: 'да' })).status, 400)
+  assert.equal(Object.keys(t.store.db.codes).length, 0) // ничего не выдали и не сохранили
+  const { user } = await t.login('c@x.ru')
+  const saved = t.store.user(user.id).consent
+  assert.equal(saved.version, '2026-11-19')
+  assert.ok(Math.abs(saved.at - Date.now()) < 10000)
+  const admin = { 'X-Admin-Token': 'admin-secret-token' }
+  assert.equal((await t.call('GET', `/api/admin/users/${user.id}`, undefined, admin)).body.consent.version, '2026-11-19')
   t.server.close()
 })

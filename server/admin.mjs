@@ -80,6 +80,7 @@ export function userDetail(store, id, now = Date.now()) {
   return {
     ...userRow(store, u, now),
     subscriptionId: u.sub?.subscriptionId ?? null,
+    consent: u.consent ? { version: u.consent.version, at: u.consent.at } : null,
     quiz: st.quiz ?? null, height: st.height ?? null, size: st.size ?? null,
     itemCounts: itemCounts(u),
     usage: usageSnapshot(store, u, now),
